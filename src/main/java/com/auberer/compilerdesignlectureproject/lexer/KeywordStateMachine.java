@@ -1,6 +1,6 @@
-package com.auberer.compilerdesignlectureproject.lexer.statemachine;
+package com.auberer.compilerdesignlectureproject.lexer;
 
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
 public class KeywordStateMachine extends StateMachine {
     @Override
