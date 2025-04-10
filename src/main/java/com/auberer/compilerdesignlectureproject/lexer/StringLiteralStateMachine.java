@@ -11,17 +11,17 @@ public class StringLiteralStateMachine extends StateMachine {
     stateStart.setStartState(true);
     addState(stateStart);
     // Content state
-    State contentState = new State("content");
-    addState(contentState);
+    State stateContent = new State("content");
+    addState(stateContent);
     // End state
     State stateEnd = new State("end");
     stateEnd.setAcceptState(true);
     addState(stateEnd);
 
     // Transitions
-    addCharTransition(stateStart, contentState, '"');
-    addElseTransition(contentState, contentState);
-    addCharTransition(contentState, stateEnd, '"');
+    addCharTransition(stateStart, stateContent, '"');
+    addElseTransition(stateContent, stateContent);
+    addCharTransition(stateContent, stateEnd, '"');
   }
 
   @Override

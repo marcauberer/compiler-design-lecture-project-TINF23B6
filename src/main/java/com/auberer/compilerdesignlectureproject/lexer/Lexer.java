@@ -9,12 +9,16 @@ import org.antlr.v4.runtime.misc.Pair;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Lexer class for tokenizing the input stream.
+ * Input: Character stream
+ * Output: Token stream
+ */
 @Slf4j
 public class Lexer implements ILexer {
-
   private final Reader reader;
-  private final List<StateMachine> stateMachines = new ArrayList<StateMachine>();
-  private final Queue<Pair<Character, CodeLoc>> inputBuffer = new LinkedList<Pair<Character, CodeLoc>>();
+  private final List<StateMachine> stateMachines = new ArrayList<>();
+  private final Queue<Pair<Character, CodeLoc>> inputBuffer = new LinkedList<>();
   private Token currentToken;
   private final boolean dumpTokens;
 
@@ -27,9 +31,8 @@ public class Lexer implements ILexer {
     stateMachines.add(new StringLiteralStateMachine());
 
     // Initialize all state machines
-    for (StateMachine stateMachine : stateMachines) {
+    for (StateMachine stateMachine : stateMachines)
       stateMachine.init();
-    }
 
     // Read first token
     advance();
@@ -41,16 +44,19 @@ public class Lexer implements ILexer {
   }
 
   private char peekChar() {
-    if (!inputBuffer.isEmpty()) {
+    if (!inputBuffer.isEmpty())
       return inputBuffer.peek().a;
-    }
     return reader.getChar();
   }
 
   private Pair<Character, CodeLoc> getCurrentCharAndCodeLoc() {
-    if (!inputBuffer.isEmpty()) {
+    // If there are characters in the input buffer, return the next one
+    // This is required to backtrack to the position, where a previously matching state machine accepted
+    // e.g. in case of the keyword machines "for" and "foreach", with the input "forea", the "for" machine
+    // would accept first, but the "foreach" machine would continue matching. Later, the "foreach" machine
+    // would fail. Then we want to produce the token "for" and continue with the "ea" part of the input.
+    if (!inputBuffer.isEmpty())
       return inputBuffer.poll();
-    }
     char currentChar = reader.getChar();
     CodeLoc currentCodeLoc = reader.getCodeLoc().clone();
     reader.advance();
@@ -60,14 +66,12 @@ public class Lexer implements ILexer {
   @Override
   public void advance() {
     // Reset all state machines to start from the respective initial state
-    for (StateMachine stateMachine : stateMachines) {
+    for (StateMachine stateMachine : stateMachines)
       stateMachine.reset();
-    }
 
     // Skip any whitespaces
-    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar())) {
+    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar()))
       getCurrentCharAndCodeLoc();
-    }
 
     CodeLoc tokenCodeLoc = null;
 
@@ -126,17 +130,15 @@ public class Lexer implements ILexer {
 
   @Override
   public void expect(TokenType expectedType) throws RuntimeException {
-    if (currentToken.getType() != expectedType) {
-      throw new RuntimeException("Unexpected token type: " + currentToken.getType());
-    }
+    if (currentToken.getType() != expectedType)
+      throw new RuntimeException("Unexpected token: " + currentToken.getType() + " at " + currentToken.getCodeLoc() + ". Expected: " + expectedType);
     advance();
   }
 
   @Override
-  public void expectOneOf(Set<TokenType> expectedTypes) {
-    if (expectedTypes.contains(currentToken.getType())) {
-      throw new RuntimeException("Unexpected token type: " + currentToken.getType());
-    }
+  public void expectOneOf(Set<TokenType> expectedTypes) throws RuntimeException {
+    if (!expectedTypes.contains(currentToken.getType()))
+      throw new RuntimeException("Unexpected token: " + currentToken.getType() + " at " + currentToken.getCodeLoc() + ". Expected one of: " + expectedTypes);
     advance();
   }
 
