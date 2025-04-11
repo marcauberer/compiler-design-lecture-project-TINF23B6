@@ -12,6 +12,10 @@ public class IdentifierStateMachine extends StateMachine {
         stateStart.setStartState(true);
         addState(stateStart);
 
+        // Error state
+        State stateError = new State("error");
+        addState(stateError);
+
         // End state
         State stateEnd = new State("end");
         stateEnd.setAcceptState(true);
@@ -22,6 +26,8 @@ public class IdentifierStateMachine extends StateMachine {
         addRangeTransition(stateStart, stateEnd, new Range('A','Z'));
         addCharTransition(stateStart, stateEnd, '_');
         addElseTransition(stateEnd, stateEnd);
+        addElseTransition(stateStart, stateError);
+        addElseTransition(stateError, stateError);
     }
 
     @Override

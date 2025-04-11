@@ -18,6 +18,10 @@ public class KeywordStateMachine extends StateMachine {
             stateStart.setStartState(true);
             addState(stateStart);
 
+            // Error state
+            State stateError = new State("error");
+            addState(stateError);
+
             // State i
             State stateI = new State("one");
             addState(stateI);
@@ -30,6 +34,10 @@ public class KeywordStateMachine extends StateMachine {
             // Transitions
             addCharTransition(stateStart, stateI, 'i');
             addCharTransition(stateI, stateEnd, 'f');
+            addElseTransition(stateStart, stateError);
+            addElseTransition(stateI, stateError);
+            addElseTransition(stateEnd, stateError);
+            addElseTransition(stateError, stateError);
         }
     }
 
