@@ -6,6 +6,6 @@ public enum TokenType {
   TOK_INTEGER_LIT,
   TOK_DOUBLE_LIT,
   TOK_IDENTIFIER,
-  TOK_KEYWORD,
+  TOK_IF,
   TOK_EOF,
 }
