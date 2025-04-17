@@ -29,12 +29,15 @@ public class IdentifierStateMachine extends StateMachine {
         // Transitions
         addRangeTransition(stateStart,stateEnd,lowLetters);
         addRangeTransition(stateStart,stateEnd,upperLetters);
+        addRangeTransition(stateStart,stateEnd,numbers);
         addCharTransition(stateStart, contentState, '_');
         addRangeTransition(stateEnd,stateEnd,lowLetters);
         addRangeTransition(stateEnd,stateEnd,upperLetters);
+        addRangeTransition(stateEnd,stateEnd,numbers);
         addCharTransition(stateEnd, stateEnd, '_');
         addRangeTransition(contentState,stateEnd,lowLetters);
         addRangeTransition(contentState,stateEnd,upperLetters);
+        addRangeTransition(contentState,stateEnd,numbers);
         addCharTransition(contentState, stateEnd, '_');
         addElseTransition(stateEnd,failState);
         addElseTransition(stateStart,failState);
