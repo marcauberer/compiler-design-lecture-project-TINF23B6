@@ -22,19 +22,17 @@ public class CompilerDesignLectureProject {
         System.exit(0);
       }
 
-      //String[] positionalArgs = cli.getArgs();
-      //Path path = Paths.get(positionalArgs[0]).toAbsolutePath();
+      if (args.length == 0) {
+        System.out.println("No file path provided!");
+        System.exit(1);
+      }
+      Path path = Paths.get(args[0]).toAbsolutePath();
 
       // ToDo(Marc): Implement
     } catch (ParseException e) {
       new HelpFormatter().printHelp("tinf-compiler args...", cliOptions);
     } catch (Exception e) {
       log.error("An error occurred", e);
-    }
-
-    if (args.length == 0) {
-      System.out.println("No file path provided!");
-      System.exit(1);
     }
   }
 }

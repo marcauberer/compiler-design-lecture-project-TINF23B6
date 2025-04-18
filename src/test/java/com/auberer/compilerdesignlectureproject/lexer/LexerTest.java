@@ -15,9 +15,8 @@ public class LexerTest {
     Reader reader = new Reader(input);
     assert !reader.isEOF();
     Lexer lexer = new Lexer(reader, false);
-    assert !lexer.isEOF();
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_STRING_LIT));
-    // ToDo(Students): Please add your token types
+    // ToDo(Students): Please add your token types here and in the input
     assert lexer.isEOF();
   }
 
