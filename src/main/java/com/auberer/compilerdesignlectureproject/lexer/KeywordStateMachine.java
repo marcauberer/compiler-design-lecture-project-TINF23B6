@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordStateMachine extends StateMachine {
-    private String keyword;
-    private Token token;
+    private final String keyword;
+    private final Token token;
     private boolean isKeyword = true;
-    private List<State> states = new ArrayList<>();
+    private final List<State> states = new ArrayList<>();
 
     public KeywordStateMachine(String keyword, Token token) {
         this.keyword = keyword;
@@ -51,10 +51,10 @@ public class KeywordStateMachine extends StateMachine {
 
         if (isKeyword) {
             addCharTransition(stateStart, states.getFirst(),keywordChars[0]);
-            for (int i = 1; i < keyword.length()-1; i++) {
+            for (int i = 1; i < states.size(); i++) {
                 addCharTransition(states.get(i-1),states.get(i),keywordChars[i]);
             }
-            addCharTransition(states.getLast(), stateEnd,keywordChars[keyword.length()-1]);
+            addCharTransition(states.getLast(), stateEnd,keywordChars[keywordChars.length-1]);
         }else{
             addElseTransition(stateStart, stateFail);
         }
