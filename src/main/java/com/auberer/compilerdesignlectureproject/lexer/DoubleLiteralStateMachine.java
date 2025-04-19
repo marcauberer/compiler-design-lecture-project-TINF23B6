@@ -11,19 +11,29 @@ public class DoubleLiteralStateMachine extends StateMachine {
     State stateStart = new State("Start");
     stateStart.setStartState(true);
     addState(stateStart);
+
+    State stateZero = new State("Zero");
+    addState(stateZero);
+
+
     State stateBeforeDot = new State("Before");
     addState(stateBeforeDot);
     State stateDot = new State("Dot");
     addState(stateDot);
+
     State stateEnd = new State("Double");
     stateEnd.setAcceptState(true);
     addState(stateEnd);
 
     // Transitions
-    addRangeTransition(stateStart, stateBeforeDot, new Range('0', '9'));
-    addCharTransition(stateStart, stateDot, '.');
+
+    addCharTransition(stateStart, stateZero, '0');
+    addRangeTransition(stateStart, stateBeforeDot, new Range('1', '9'));
+
     addRangeTransition(stateBeforeDot, stateBeforeDot, new Range('0', '9'));
-    addCharTransition(stateBeforeDot, stateDot, '.');
+    addCharTransition(stateBeforeDot, stateDot,'.');
+    addCharTransition(stateZero, stateDot,'.');
+
     addRangeTransition(stateDot, stateEnd, new Range('0', '9'));
     addRangeTransition(stateEnd, stateEnd, new Range('0', '9'));
   }

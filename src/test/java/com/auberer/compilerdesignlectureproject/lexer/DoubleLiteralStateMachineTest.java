@@ -43,10 +43,9 @@ public class DoubleLiteralStateMachineTest {
     stateMachine.init();
     stateMachine.reset();
 
-    // Expecting an exception when the state machine encounters a non-digit character ('a')
     assertThrows(IllegalStateException.class, () -> {
       for (char c : input.toCharArray()) {
-        stateMachine.processInput(c); // This should throw an exception when 'a' is encountered
+        stateMachine.processInput(c);
       }
     });
   }
