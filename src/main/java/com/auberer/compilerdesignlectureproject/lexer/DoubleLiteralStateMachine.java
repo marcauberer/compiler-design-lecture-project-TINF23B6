@@ -13,7 +13,7 @@ public class DoubleLiteralStateMachine extends StateMachine {
         addState(stateStart);
         // Content state
         State contentState = new State("content");
-        stateStart.setAcceptState(true);
+        contentState.setAcceptState(true);
         addState(contentState);
         // End state
         State stateEnd = new State("end");
@@ -21,7 +21,7 @@ public class DoubleLiteralStateMachine extends StateMachine {
         addState(stateEnd);
 
         State failState = new State("fail");
-        stateEnd.setAcceptState(false);
+        failState.setAcceptState(false);
         addState(failState);
 
         // Transitions

@@ -31,8 +31,8 @@ public class Lexer implements ILexer {
     stateMachines.add(new StringLiteralStateMachine());
     stateMachines.add(new IntegerLiteralStateMachine());
     stateMachines.add(new DoubleLiteralStateMachine());
+    stateMachines.add(new KeywordStateMachine(inputBuffer.toString(),new Token(TokenType.TOK_KEYWORD_LIT, "while",null)));
     stateMachines.add(new IdentifierStateMachine());
-    stateMachines.add(new KeywordStateMachine("while",new Token(TokenType.TOK_KEYWORD_LIT, "while",null)));
 
     // Initialize all state machines
     for (StateMachine stateMachine : stateMachines)

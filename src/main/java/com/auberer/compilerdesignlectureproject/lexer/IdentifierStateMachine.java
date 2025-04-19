@@ -20,7 +20,7 @@ public class IdentifierStateMachine extends StateMachine {
         //Fail
         State failState = new State("fail");
         addState(failState);
-        stateEnd.setAcceptState(false);
+        failState.setAcceptState(false);
 
         Range lowLetters = new Range('a','z');
         Range upperLetters = new Range('A','Z');
@@ -29,7 +29,6 @@ public class IdentifierStateMachine extends StateMachine {
         // Transitions
         addRangeTransition(stateStart,stateEnd,lowLetters);
         addRangeTransition(stateStart,stateEnd,upperLetters);
-        addRangeTransition(stateStart,stateEnd,numbers);
         addCharTransition(stateStart, contentState, '_');
         addRangeTransition(stateEnd,stateEnd,lowLetters);
         addRangeTransition(stateEnd,stateEnd,upperLetters);

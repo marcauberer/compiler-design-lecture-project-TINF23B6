@@ -4,7 +4,6 @@ import com.auberer.compilerdesignlectureproject.lexer.statemachine.Range;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.State;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
-import java.util.regex.Pattern;
 
 public class IntegerLiteralStateMachine extends StateMachine {
     @Override
@@ -20,7 +19,7 @@ public class IntegerLiteralStateMachine extends StateMachine {
 
         //Fail State
         State failState = new State("fail");
-        stateEnd.setAcceptState(false);
+        failState.setAcceptState(false);
         addState(failState);
 
         // Transitions
