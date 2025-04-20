@@ -11,13 +11,14 @@ public class LexerTest {
   @Test
   @DisplayName("Full lexer test")
   public void testAll() {
-    String input = "\"string\"";
+    String input = "\"String\"" + "-123i" + "12,12";
     Reader reader = new Reader(input);
     assert !reader.isEOF();
     Lexer lexer = new Lexer(reader, false);
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_STRING_LIT));
     // ToDo(Students): Please add your token types here and in the input
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_INTEGER_LIT));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_DOUBLE_LIT));
     assert lexer.isEOF();
   }
-
 }

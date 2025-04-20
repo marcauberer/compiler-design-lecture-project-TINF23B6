@@ -29,6 +29,8 @@ public class Lexer implements ILexer {
     // Here, the order matters. The last state machine has the highest priority in case
     // multiple machines match the given input at the same length.
     stateMachines.add(new StringLiteralStateMachine());
+    stateMachines.add(new IntegerLiteralStateMachine());
+    stateMachines.add(new DoubleLiteralStateMachine());
 
     // Initialize all state machines
     for (StateMachine stateMachine : stateMachines)
