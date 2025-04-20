@@ -2,78 +2,101 @@ package com.auberer.compilerdesignlectureproject.reader;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
+import java.nio.file.Path;
 
+/**
+ * Reader class for reading characters from a file.
+ * Input: File path
+ * Output: Character stream from file
+ */
 @Slf4j
-public class Reader implements IReader{
-    private BufferedReader inputReader;
-    private char currentChar;
-    private CodeLoc codeLoc;
-    private boolean eof;
+public class Reader implements IReader {
 
-    @Override
-    public char getChar() {
-        return currentChar;
+  private BufferedReader inputReader;
+  private char currentChar;
+  private final CodeLoc currentCodeLoc = new CodeLoc(1, 0);
+  private boolean eofReached = false;
+
+  public Reader(Path path) {
+    try {
+      File file = path.toFile();
+      FileReader fileReader = new FileReader(file);
+      inputReader = new BufferedReader(fileReader);
+      assert inputReader.ready();
+
+      // Read first character
+      advance();
+    } catch (IOException e) {
+      log.error("Reader error in constructor: {}", e.getMessage());
     }
+  }
 
-    public Reader(String input){
-        try {
-            StringReader stringReader = new StringReader(input);
-            inputReader = new BufferedReader(stringReader);
-            assert inputReader.ready();
+  // Only for testing purposes
+  public Reader(String input) {
+    try {
+      StringReader stringReader = new StringReader(input);
+      inputReader = new BufferedReader(stringReader);
+      assert inputReader.ready();
 
-            advance();
-        } catch (Exception e) {
-            throw new RuntimeException("Error initializing reader", e);
-        }
+      // Read first character
+      advance();
+    } catch (IOException e) {
+      log.error("Reader error in testing constructor: {}", e.getMessage());
     }
-    @Override
-    public CodeLoc getCodeLoc() {
-        return null;
+  }
+
+  @Override
+  public char getChar() {
+    return currentChar;
+  }
+
+  @Override
+  public CodeLoc getCodeLoc() {
+    return currentCodeLoc;
+  }
+
+  @Override
+  public void advance() {
+    assert !isEOF();
+    try {
+      int input = inputReader.read();
+
+      if (input == -1) {
+        eofReached = true;
+        return;
+      }
+
+      currentChar = (char) input;
+      if (currentChar == '\n') {
+        currentCodeLoc.setLine(currentCodeLoc.getLine() + 1);
+        currentCodeLoc.setColumn(0);
+      } else {
+        currentCodeLoc.setColumn(currentCodeLoc.getColumn() + 1);
+      }
+    } catch (IOException e) {
+      log.error("Reader error in advance: {}", e.getMessage());
     }
+  }
 
+  @Override
+  public void expect(char expectedChar) throws RuntimeException {
+    if (currentChar != expectedChar)
+      throw new RuntimeException("Expected character '" + expectedChar + "' but got '" + currentChar + "'");
+    advance();
+  }
 
-    // muss noch implementiert werden
-    @Override
-    public void advance() {
-        assert !isEOF();
-        try {
-            currentChar = (char) inputReader.read();
-            if (currentChar == '\n') {
-                codeLoc.line++;
-                codeLoc.column = 0;
-            } else {
-                codeLoc.column++;
-            }
-        } catch (IOException e) {
-            eof = true;
-            log.error("Error reading character", e.getMessage());
-        }
+  @Override
+  public boolean isEOF() {
+    return eofReached;
+  }
+
+  @Override
+  public void close() {
+    try {
+      inputReader.close();
+    } catch (IOException e) {
+      log.error("Reader error in close: {}", e.getMessage());
     }
-
-    @Override
-    public void expect(char c) throws RuntimeException {
-        if (currentChar != c) {
-            throw new RuntimeException("Expected " + c + " but found " + currentChar);
-        } else {
-            advance();
-        }
-    }
-
-    @Override
-    public boolean isEOF() {
-        return eof;
-    }
-
-    @Override
-    public void close() {
-        try {
-            inputReader.close();
-        } catch (IOException e) {
-            log.error("Error closing reader", e.getMessage());
-        }
-
-    }
+  }
 }
