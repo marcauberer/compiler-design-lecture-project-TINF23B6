@@ -9,7 +9,7 @@ public class IdentifierStateMachineTest {
     @Test
     @DisplayName("Happy path")
     public void testHappyPath() {
-        String input = "test";
+        String input = "test1";
         IdentifierStateMachine stateMachine = new IdentifierStateMachine();
         stateMachine.init();
         stateMachine.reset();

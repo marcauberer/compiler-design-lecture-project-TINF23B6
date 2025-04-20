@@ -13,10 +13,6 @@ public class DoubleLiteralStateMachine extends StateMachine {
         stateStart.setStartState(true);
         addState(stateStart);
 
-        // Error state
-        State stateError = new State("error");
-        addState(stateError);
-
         // State 1
         State stateOne = new State("one");
         addState(stateOne);
@@ -36,10 +32,6 @@ public class DoubleLiteralStateMachine extends StateMachine {
         addCharTransition(stateOne, stateTwo, '.');
         addRangeTransition(stateTwo, stateEnd, zeroToNine);
         addRangeTransition(stateEnd, stateEnd, zeroToNine);
-        addElseTransition(stateStart, stateError);
-        addElseTransition(stateOne, stateError);
-        addElseTransition(stateTwo, stateError);
-        addElseTransition(stateEnd, stateError);
     }
 
     @Override

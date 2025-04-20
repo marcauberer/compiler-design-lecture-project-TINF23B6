@@ -32,7 +32,7 @@ public class Lexer implements ILexer {
     stateMachines.add(new IntegerLiteralStateMachine());
     stateMachines.add(new DoubleLiteralStateMachine());
     stateMachines.add(new IdentifierStateMachine());
-    stateMachines.add(new KeywordStateMachine("if"));
+    stateMachines.add(new KeywordStateMachine("if", TokenType.TOK_IF));
 
     // Initialize all state machines
     for (StateMachine stateMachine : stateMachines)

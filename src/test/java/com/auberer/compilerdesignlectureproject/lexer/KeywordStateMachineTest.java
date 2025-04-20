@@ -10,7 +10,7 @@ public class KeywordStateMachineTest {
     @DisplayName("Happy path")
     public void testHappyPath() {
         String input = "if";
-        KeywordStateMachine stateMachine = new KeywordStateMachine("if");
+        KeywordStateMachine stateMachine = new KeywordStateMachine("if", TokenType.TOK_IF);
         stateMachine.init();
         stateMachine.reset();
         char[] chars = input.toCharArray();
@@ -24,17 +24,20 @@ public class KeywordStateMachineTest {
     @Test
     @DisplayName("Test erroneous input")
     public void testErroneousInput() {
-        String input = "for"; // Incorrect identifier
-        KeywordStateMachine stateMachine = new KeywordStateMachine("if");
+        String input = "for"; // Incorrect keyword
+        KeywordStateMachine stateMachine = new KeywordStateMachine("if", TokenType.TOK_IF);
         stateMachine.init();
         stateMachine.reset();
+        boolean illegalState = false;
 
-        for (char c : input.toCharArray()) {
-            assertDoesNotThrow(() -> stateMachine.processInput(c));
-            assertFalse(stateMachine.isInAcceptState());
-            assertEquals("error", stateMachine.getCurrentState().getName());
+        try {
+            for (char c : input.toCharArray()) {
+                stateMachine.processInput(c);
+                assertFalse(stateMachine.isInAcceptState());
+            }
+        } catch (IllegalStateException e) {
+            illegalState = true;
         }
-        assertFalse(stateMachine.isInAcceptState());
-        assertEquals("error", stateMachine.getCurrentState().getName());
+        assertTrue(illegalState);
     }
 }

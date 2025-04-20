@@ -3,46 +3,45 @@ package com.auberer.compilerdesignlectureproject.lexer;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.State;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KeywordStateMachine extends StateMachine {
     private final String keyword;
+    private final TokenType token;
 
-    public KeywordStateMachine(String keyword) {
+    public KeywordStateMachine(String keyword, TokenType token) {
         this.keyword = keyword;
+        this.token = token;
     }
 
     @Override
     public void init() {
-        if (keyword.equals("if")) {
-            // Start state
-            State stateStart = new State("start");
-            stateStart.setStartState(true);
-            addState(stateStart);
+        List<State> states = new ArrayList<>();
 
-            // Error state
-            State stateError = new State("error");
-            addState(stateError);
+        // Start State
+        State startState = new State("start");
+        startState.setStartState(true);
+        states.add(startState);
+        addState(startState);
 
-            // State i
-            State stateI = new State("one");
-            addState(stateI);
-
-            // End state
-            State stateEnd = new State("end");
-            stateEnd.setAcceptState(true);
-            addState(stateEnd);
-
-            // Transitions
-            addCharTransition(stateStart, stateI, 'i');
-            addCharTransition(stateI, stateEnd, 'f');
-            addElseTransition(stateStart, stateError);
-            addElseTransition(stateI, stateError);
-            addElseTransition(stateEnd, stateError);
-            addElseTransition(stateError, stateError);
+        // New State for every char in keyword
+        for (int i = 0; i < keyword.length(); i++) {
+            char c = keyword.charAt(i);
+            State newState = new State("state_" + i);
+            addState(newState);
+            states.add(newState);
+            addCharTransition(states.get(i), newState, c);
         }
+
+        // Last State
+        State stateEnd = states.getLast();
+        stateEnd.setAcceptState(true);
     }
+
 
     @Override
     public TokenType getTokenType() {
-        return TokenType.TOK_IF;
+        return this.token;
     }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class IntegerLiteralStateMachineTest {
     @Test
@@ -29,17 +28,18 @@ public class IntegerLiteralStateMachineTest {
         stateMachine.init();
         stateMachine.reset();
         char[] chars = input.toCharArray();
+        boolean illegalState = false;
 
         for (int i = 0; i < 3; i++) {
             char c = chars[i];
             assertDoesNotThrow(() -> stateMachine.processInput(c));
             assertTrue(stateMachine.isInAcceptState());
         }
-        assertDoesNotThrow(() -> stateMachine.processInput(chars[3]));
-        assertFalse(stateMachine.isInAcceptState());
-        assertEquals("error", stateMachine.getCurrentState().getName());
-        assertDoesNotThrow(() -> stateMachine.processInput(chars[4]));
-        assertFalse(stateMachine.isInAcceptState());
-        assertEquals("error", stateMachine.getCurrentState().getName());
+        try {
+            stateMachine.processInput(chars[3]);
+        } catch (IllegalStateException e) {
+            illegalState = true;
+        }
+        assertTrue(illegalState);
     }
 }
