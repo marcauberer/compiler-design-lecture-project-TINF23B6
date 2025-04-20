@@ -40,4 +40,21 @@ public class KeywordStateMachine extends StateMachine {
     public TokenType getTokenType() {
         return tokenType;
     }
+
+    static TokenType getTokenType(String keyword) {
+        return switch (keyword) {
+            case "if" -> TokenType.TOK_KEYWORD_IF;
+            case "else" -> TokenType.TOK_KEYWORD_ELSE;
+            case "while" -> TokenType.TOK_KEYWORD_WHILE;
+            case "for" -> TokenType.TOK_KEYWORD_FOR;
+            case "return" -> TokenType.TOK_KEYWORD_RETURN;
+            case "int" -> TokenType.TOK_KEYWORD_INT;
+            case "float" -> TokenType.TOK_KEYWORD_FLOAT;
+            case "char" -> TokenType.TOK_KEYWORD_CHAR;
+            case "boolean" -> TokenType.TOK_KEYWORD_BOOLEAN;
+            case "switch" -> TokenType.TOK_KEYWORD_SWITCH;
+            default -> throw new IllegalArgumentException("Unknown keyword: " + keyword);
+        };
+    }
+
 }

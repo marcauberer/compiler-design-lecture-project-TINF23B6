@@ -25,7 +25,7 @@ public class KeywordLiteralStateMachineTest {
         };
 
         for (String keyword : validKeywords) {
-            KeywordStateMachine stateMachine = new KeywordStateMachine(keyword, TokenType.TOK_KEYWORD);
+            KeywordStateMachine stateMachine = new KeywordStateMachine(keyword, KeywordStateMachine.getTokenType(keyword));
             stateMachine.init();
             stateMachine.reset();
 
@@ -54,7 +54,7 @@ public class KeywordLiteralStateMachineTest {
         };
 
         for (String keyword : invalidKeywords) {
-            KeywordStateMachine stateMachine = new KeywordStateMachine("if", TokenType.TOK_KEYWORD);
+            KeywordStateMachine stateMachine = new KeywordStateMachine("if", KeywordStateMachine.getTokenType("if"));
             stateMachine.init();
             stateMachine.reset();
 
