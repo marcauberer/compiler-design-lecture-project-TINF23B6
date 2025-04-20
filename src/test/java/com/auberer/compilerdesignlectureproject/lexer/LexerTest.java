@@ -16,7 +16,8 @@ public class LexerTest {
                     "while do for " +
                     "func return " +
                     "call print " +
-                    "3.14 123 \"sampleString\" identifier";
+                    "3.14 123 \"sampleString\" identifier" +
+                    "{ int i = 1 }";
 
     Reader reader = new Reader(input);
     Lexer lexer = new Lexer(reader, false);
@@ -44,6 +45,13 @@ public class LexerTest {
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_STRING_LIT));
 
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_IDENTIFIER));
+
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_LBRACE));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_TYPE_INT));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_IDENTIFIER));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_ASSIGN));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_INT_LIT));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_RBRACE));
 
     assertTrue(lexer.isEOF());
   }

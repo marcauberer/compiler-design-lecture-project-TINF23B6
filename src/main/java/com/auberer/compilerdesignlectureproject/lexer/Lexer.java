@@ -46,6 +46,30 @@ public class Lexer implements ILexer {
     stateMachines.add(new KeywordStateMachine("call", TokenType.TOK_CALL));
     stateMachines.add(new KeywordStateMachine("print", TokenType.TOK_PRINT));
 
+    stateMachines.add(new SymbolStateMachine("{", TokenType.TOK_LBRACE));
+    stateMachines.add(new SymbolStateMachine("}", TokenType.TOK_RBRACE));
+    stateMachines.add(new SymbolStateMachine("(", TokenType.TOK_LPAREN));
+    stateMachines.add(new SymbolStateMachine(")", TokenType.TOK_RPAREN));
+    stateMachines.add(new SymbolStateMachine("[", TokenType.TOK_LBRACKET));
+    stateMachines.add(new SymbolStateMachine("]", TokenType.TOK_RBRACKET));
+
+    stateMachines.add(new SymbolStateMachine("=", TokenType.TOK_ASSIGN));
+    stateMachines.add(new SymbolStateMachine("==", TokenType.TOK_EQUAL));
+    stateMachines.add(new SymbolStateMachine("!", TokenType.TOK_NOT));
+    stateMachines.add(new SymbolStateMachine("!=", TokenType.TOK_NOT_EQUAL));
+    stateMachines.add(new SymbolStateMachine("<", TokenType.TOK_LT));
+    stateMachines.add(new SymbolStateMachine(">", TokenType.TOK_GT));
+    stateMachines.add(new SymbolStateMachine("<=", TokenType.TOK_LE));
+    stateMachines.add(new SymbolStateMachine(">=", TokenType.TOK_GE));
+    stateMachines.add(new SymbolStateMachine("&&", TokenType.TOK_AND));
+    stateMachines.add(new SymbolStateMachine("||", TokenType.TOK_OR));
+    stateMachines.add(new SymbolStateMachine("+", TokenType.TOK_PLUS));
+    stateMachines.add(new SymbolStateMachine("-", TokenType.TOK_MINUS));
+    stateMachines.add(new SymbolStateMachine("*", TokenType.TOK_MUL));
+    stateMachines.add(new SymbolStateMachine("/", TokenType.TOK_DIV));
+    stateMachines.add(new SymbolStateMachine("%", TokenType.TOK_MOD));
+
+
     stateMachines.add(new DoubleLiteralStateMachine());
     stateMachines.add(new IntegerLiteralStateMachine());
     stateMachines.add(new StringLiteralStateMachine());
