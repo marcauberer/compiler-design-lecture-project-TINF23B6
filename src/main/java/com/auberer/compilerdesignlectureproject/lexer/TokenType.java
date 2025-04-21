@@ -8,4 +8,5 @@ public enum TokenType {
   TOK_KEYWORD_LIT,
   TOK_IDENTIFIER_LIT,
   TOK_EOF,
+  TOK_IF,
 }
