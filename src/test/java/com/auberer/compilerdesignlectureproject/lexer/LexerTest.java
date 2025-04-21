@@ -19,6 +19,7 @@ public class LexerTest {
     // ToDo(Students): Please add your token types here and in the input
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_INTEGER_LIT));
     assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_DOUBLE_LIT));
+    assertDoesNotThrow(() -> lexer.expect(TokenType.TOK_IDENTIFIER_LIT));
     assert lexer.isEOF();
   }
 }

@@ -7,5 +7,5 @@ public enum TokenType {
   TOK_DOUBLE_LIT,
   TOK_KEYWORD_LIT,
   TOK_IDENTIFIER_LIT,
-  TOK_EOF,
+  TOK_EOF, TOK_IDENTIFIER,
 }
