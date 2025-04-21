@@ -18,7 +18,7 @@ public class IntegerLiteralStateMachine extends StateMachine {
         addState(stateEnd);
 
         // Transitions
-        addRangeTransition(stateStart, stateEnd, digits);
+        addRangeTransition(stateStart, stateEnd, new Range('1', '9'));
         addRangeTransition(stateEnd, stateEnd, digits);
     }
 
