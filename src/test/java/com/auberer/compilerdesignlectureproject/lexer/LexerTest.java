@@ -11,7 +11,7 @@ public class LexerTest {
   @Test
   @DisplayName("Full lexer test")
   public void testAll() {
-    String input = "\"String\"" + "-123i" + "12,12";
+    String input = "\"String\"" + "-123i" + "12,12d";
     Reader reader = new Reader(input);
     assert !reader.isEOF();
     Lexer lexer = new Lexer(reader, false);

@@ -24,10 +24,11 @@ public class DoubleLiteralStateMachine extends StateMachine {
         addState(q2);
         addState(q3);
         addState(q4);
+        addState(q5);
 
 
         q0.setStartState(true);
-        q4.setAcceptState(true);
+        q5.setAcceptState(true);
 
         // Transitions
         addCharTransition(q0, q1, '-');
@@ -44,7 +45,7 @@ public class DoubleLiteralStateMachine extends StateMachine {
 
         addRangeTransition(q4, q4, new Range('0', '9'));
 
-        addElseTransition(q4, q5);
+        addCharTransition(q4, q5, 'd');
     }
 
     @Override
