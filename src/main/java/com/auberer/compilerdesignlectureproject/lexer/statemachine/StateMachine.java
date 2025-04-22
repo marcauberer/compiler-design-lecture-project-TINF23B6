@@ -17,7 +17,7 @@ public abstract class StateMachine implements IStateMachine {
   private String acceptedInput = "";
   @Setter
   @Getter
-  private boolean traceEnabled = true;
+  private boolean traceEnabled = false;
 
   /**
    * Add a state to the state machine.
