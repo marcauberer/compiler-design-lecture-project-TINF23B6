@@ -38,9 +38,9 @@ public class DoubleLiteralStateMachine extends StateMachine {
         addCharTransition(q1, q2, '0');
         addRangeTransition(q1, q3, new Range('1', '9'));
 
-        addCharTransition(q2, q4, ',');
+        addCharTransition(q2, q4, '.');
 
-        addCharTransition(q3, q4, ',');
+        addCharTransition(q3, q4, '.');
         addRangeTransition(q3, q3, new Range('0', '9'));
 
         addRangeTransition(q4, q4, new Range('0', '9'));
