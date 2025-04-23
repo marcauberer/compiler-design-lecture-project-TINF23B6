@@ -26,9 +26,54 @@ public class Lexer implements ILexer {
     this.reader = reader;
     this.dumpTokens = dumpTokens;
 
-    // Here, the order matters. The last state machine has the highest priority in case
-    // multiple machines match the given input at the same length.
+    stateMachines.add(new KeywordStateMachine("int", TokenType.TOK_TYPE_INT));
+    stateMachines.add(new KeywordStateMachine("double", TokenType.TOK_TYPE_DOUBLE));
+    stateMachines.add(new KeywordStateMachine("string", TokenType.TOK_TYPE_STRING));
+
+    stateMachines.add(new KeywordStateMachine("if", TokenType.TOK_IF));
+    stateMachines.add(new KeywordStateMachine("else", TokenType.TOK_ELSE));
+    stateMachines.add(new KeywordStateMachine("switch", TokenType.TOK_SWITCH));
+    stateMachines.add(new KeywordStateMachine("case", TokenType.TOK_CASE));
+    stateMachines.add(new KeywordStateMachine("default", TokenType.TOK_DEFAULT));
+
+    stateMachines.add(new KeywordStateMachine("while", TokenType.TOK_WHILE));
+    stateMachines.add(new KeywordStateMachine("do", TokenType.TOK_DO));
+    stateMachines.add(new KeywordStateMachine("for", TokenType.TOK_FOR));
+
+    stateMachines.add(new KeywordStateMachine("func", TokenType.TOK_FUNC));
+    stateMachines.add(new KeywordStateMachine("return", TokenType.TOK_RETURN));
+
+    stateMachines.add(new KeywordStateMachine("call", TokenType.TOK_CALL));
+    stateMachines.add(new KeywordStateMachine("print", TokenType.TOK_PRINT));
+
+    stateMachines.add(new PunctuationStateMachine("{", TokenType.TOK_LBRACE));
+    stateMachines.add(new PunctuationStateMachine("}", TokenType.TOK_RBRACE));
+    stateMachines.add(new PunctuationStateMachine("(", TokenType.TOK_LPAREN));
+    stateMachines.add(new PunctuationStateMachine(")", TokenType.TOK_RPAREN));
+    stateMachines.add(new PunctuationStateMachine("[", TokenType.TOK_LBRACKET));
+    stateMachines.add(new PunctuationStateMachine("]", TokenType.TOK_RBRACKET));
+
+    stateMachines.add(new PunctuationStateMachine("=", TokenType.TOK_ASSIGN));
+    stateMachines.add(new PunctuationStateMachine("==", TokenType.TOK_EQUAL));
+    stateMachines.add(new PunctuationStateMachine("!", TokenType.TOK_NOT));
+    stateMachines.add(new PunctuationStateMachine("!=", TokenType.TOK_NOT_EQUAL));
+    stateMachines.add(new PunctuationStateMachine("<", TokenType.TOK_LT));
+    stateMachines.add(new PunctuationStateMachine(">", TokenType.TOK_GT));
+    stateMachines.add(new PunctuationStateMachine("<=", TokenType.TOK_LE));
+    stateMachines.add(new PunctuationStateMachine(">=", TokenType.TOK_GE));
+    stateMachines.add(new PunctuationStateMachine("&&", TokenType.TOK_AND));
+    stateMachines.add(new PunctuationStateMachine("||", TokenType.TOK_OR));
+    stateMachines.add(new PunctuationStateMachine("+", TokenType.TOK_PLUS));
+    stateMachines.add(new PunctuationStateMachine("-", TokenType.TOK_MINUS));
+    stateMachines.add(new PunctuationStateMachine("*", TokenType.TOK_MUL));
+    stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
+    stateMachines.add(new PunctuationStateMachine("%", TokenType.TOK_MOD));
+
+
+    stateMachines.add(new DoubleLiteralStateMachine());
+    stateMachines.add(new IntegerLiteralStateMachine());
     stateMachines.add(new StringLiteralStateMachine());
+    stateMachines.add(new IdentifierStateMachine());
 
     // Initialize all state machines
     for (StateMachine stateMachine : stateMachines)

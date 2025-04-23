@@ -1,41 +1,33 @@
 package com.auberer.compilerdesignlectureproject.lexer;
 
-
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.Range;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.State;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
 public class IntegerLiteralStateMachine extends StateMachine {
-    @Override
-    public void init() {
+  @Override
+  public void init() {
+    // Start state
+    State stateStart = new State("start");
+    stateStart.setStartState(true);
+    addState(stateStart);
 
-        // start state
-        State startState = new State("start");
-        startState.setStartState(true);
-        addState(startState);
+    State digetsState = new State("digets");
+    digetsState.setAcceptState(true);
+    addState(digetsState);
 
-        State signState = new State("sign");
-        addState(signState);
+    State stateZero = new State("zero");
+    stateZero.setAcceptState(true);
+    addState(stateZero);
 
-        State contentState = new State("integer");
-        contentState.setAcceptState(true);
-        addState(contentState);
+    // Transitions
+    addCharTransition(stateStart, stateZero, '0');
+    addRangeTransition(stateStart, digetsState, new Range('1', '9'));
+    addRangeTransition(digetsState, digetsState, new Range('0', '9'));
+  }
 
-
-        // transitions
-        addCharTransition(startState, signState, '+');
-        addCharTransition(startState, signState, '-');
-
-        addRangeTransition(startState, contentState, new Range('0', '9'));
-        addRangeTransition(signState, contentState, new Range('0', '9'));
-        addRangeTransition(contentState, contentState, new Range('0', '9'));
-
-        //addElseTransition(contentState, contentState);
-
-    }
-
-    @Override
-    public TokenType getTokenType() {
-        return TokenType.TOK_INTEGER_LIT;
-    }
+  @Override
+  public TokenType getTokenType() {
+    return TokenType.TOK_INT_LIT;
+  }
 }

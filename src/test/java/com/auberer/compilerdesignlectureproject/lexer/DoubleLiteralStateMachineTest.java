@@ -7,63 +7,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DoubleLiteralStateMachineTest {
 
-    @Test
-    @DisplayName("Happy path: Valid double literals")
-    public void testHappyPath() {
-        String[] validInputs = {
-                "0.0",
-                "1.5",
-                "-3.14",
-                "123.456",
-                "0.123456",
-                "999999.000001"
-        };
-
-        for (String input : validInputs) {
-            DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
-            stateMachine.init();
-            stateMachine.reset();
-
-            for (char c : input.toCharArray()) {
-                assertDoesNotThrow(() -> stateMachine.processInput(c), "Exception for input: " + input);
-            }
-
-            assertTrue(stateMachine.isInAcceptState(), "Should be in accept state for input: " + input);
-        }
+  @Test
+  @DisplayName("Happy path: Valid double literal")
+  public void testHappyPath() {
+    String input = "123.45";
+    DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
+    for (char c : input.toCharArray()) {
+      assertDoesNotThrow(() -> stateMachine.processInput(c));
     }
+    assertTrue(stateMachine.isInAcceptState());
+  }
 
-    @Test
-    @DisplayName("Erroneous input: Invalid double literals")
-    public void testErroneousInput() {
-        String[] invalidInputs = {
-                ".",
-                "12.",
-                "-.5",
-                "",
-                "1.2.3",
-                "abc",
-                "--3.0",
-                "4.5a",
-                "-.123",
-                "-"
-        };
+  @Test
+  @DisplayName("Test erroneous input: Invalid double literal (leading zero)")
+  public void testErroneousInput() {
+    String input = "0123.45";
+    DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
 
-        for (String input : invalidInputs) {
-            DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
-            stateMachine.init();
-            stateMachine.reset();
+    assertThrows(IllegalStateException.class, () -> {
+      for (char c : input.toCharArray()) {
+        stateMachine.processInput(c);
+      }
+    });
+  }
 
-            boolean threwException = false;
-            try {
-                for (char c : input.toCharArray()) {
-                    stateMachine.processInput(c);
-                }
-            } catch (IllegalStateException e) {
-                threwException = true;
-            }
+  @Test
+  @DisplayName("Test erroneous input: Non-digit character in double literal")
+  public void testNonDigitCharacter() {
+    String input = "123.45a";
+    DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
 
-            assertTrue(threwException || !stateMachine.isInAcceptState(),
-                    "Should not be in accept state for input: " + input);
-        }
-    }
+    assertThrows(IllegalStateException.class, () -> {
+      for (char c : input.toCharArray()) {
+        stateMachine.processInput(c);
+      }
+    });
+  }
 }

@@ -7,60 +7,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegerLiteralStateMachineTest {
 
-    @Test
-    @DisplayName("Happy path: Valid integer literals")
-    public void testHappyPath() {
-        String[] validInputs = {
-                "0",
-                "123",
-                "+42",
-                "-7",
-                "00123"
-        };
-
-        for (String input : validInputs) {
-            IntegerLiteralStateMachine stateMachine = new IntegerLiteralStateMachine();
-            stateMachine.init();
-            stateMachine.reset();
-
-            for (char c : input.toCharArray()) {
-                assertDoesNotThrow(() -> stateMachine.processInput(c), "Input: " + input);
-            }
-
-            assertTrue(stateMachine.isInAcceptState(), "Should be in accept state for input: " + input);
-        }
+  @Test
+  @DisplayName("Happy path: Valid integer literal")
+  public void testHappyPath() {
+    String input = "12345";
+    IntegerLiteralStateMachine stateMachine = new IntegerLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
+    for (char c : input.toCharArray()) {
+      assertDoesNotThrow(() -> stateMachine.processInput(c));
     }
+    assertTrue(stateMachine.isInAcceptState());
+  }
 
-    @Test
-    @DisplayName("Erroneous input: Invalid integer literals")
-    public void testErroneousInput() {
-        String[] invalidInputs = {
-                "",
-                "+",
-                "-",
-                "12a3",
-                "42!",
-                "++10",
-                "--5"
-        };
+  @Test
+  @DisplayName("Test erroneous input: Invalid integer literal (leading zero)")
+  public void testErroneousInput() {
+    String input = "01234";
+    IntegerLiteralStateMachine stateMachine = new IntegerLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
 
-        for (String input : invalidInputs) {
-            IntegerLiteralStateMachine stateMachine = new IntegerLiteralStateMachine();
-            stateMachine.init();
-            stateMachine.reset();
+    assertThrows(IllegalStateException.class, () -> {
+      for (char c : input.toCharArray()) {
+        stateMachine.processInput(c);
+      }
+    });
+  }
 
-            boolean threwException = false;
-            try {
-                for (char c : input.toCharArray()) {
-                    stateMachine.processInput(c);
-                }
-            } catch (IllegalStateException e) {
-                threwException = true;
-            }
+  @Test
+  @DisplayName("Test erroneous input: Non-digit character in integer literal")
+  public void testNonDigitCharacter() {
+    String input = "123a4";
+    IntegerLiteralStateMachine stateMachine = new IntegerLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
 
-            assertTrue(threwException || !stateMachine.isInAcceptState(),
-                    "Should not be in accept state for input: " + input);
-        }
-    }
-
+    assertThrows(IllegalStateException.class, () -> {
+      for (char c : input.toCharArray()) {
+        stateMachine.processInput(c);
+      }
+    });
+  }
 }
