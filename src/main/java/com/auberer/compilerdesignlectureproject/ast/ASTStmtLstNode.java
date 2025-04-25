@@ -13,7 +13,9 @@ public class ASTStmtLstNode extends ASTNode {
 
   public static Set<TokenType> getSelectionSet() {
     Set<TokenType> selectionSet = new HashSet<>();
-    // ToDo
+    selectionSet.add(TokenType.TOK_SWITCH);
+    selectionSet.add(TokenType.TOK_CASE);
+    selectionSet.add(TokenType.TOK_DEFAULT);
     return selectionSet;
   }
 }

@@ -73,5 +73,8 @@ public class ASTVisitor<T> {
   }
 
   // ToDo(Students): Insert your visit methods here
+  T visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    return visitChildren(node);
+  }
 
 }

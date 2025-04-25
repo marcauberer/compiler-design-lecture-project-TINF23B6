@@ -16,6 +16,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Slf4j
 public class Lexer implements ILexer {
+
+  @Override
+  public boolean peek(TokenType expectedType) {
+    return currentToken != null && currentToken.getType() == expectedType;
+  }
+
   private final Reader reader;
   private final List<StateMachine> stateMachines = new ArrayList<>();
   private final Queue<Pair<Character, CodeLoc>> inputBuffer = new LinkedList<>();
@@ -69,6 +75,8 @@ public class Lexer implements ILexer {
     stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
     stateMachines.add(new PunctuationStateMachine("%", TokenType.TOK_MOD));
 
+    stateMachines.add(new PunctuationStateMachine("?", TokenType.TOK_QUESTION));
+    stateMachines.add(new PunctuationStateMachine(":", TokenType.TOK_COLON));
 
     stateMachines.add(new DoubleLiteralStateMachine());
     stateMachines.add(new IntegerLiteralStateMachine());
