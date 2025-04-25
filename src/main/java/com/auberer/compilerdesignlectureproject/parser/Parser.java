@@ -202,20 +202,17 @@ public class Parser implements IParser {
     ASTTernaryExprNode node = new ASTTernaryExprNode();
     enterNode(node);
 
-    // Parse the condition
     ASTNode condition = parseStmt();
     node.addChild(condition);
 
     if (lexer.peek(TokenType.TOK_QUESTION)) {
         lexer.expect(TokenType.TOK_QUESTION);
 
-        // Parse the true expression
         ASTNode trueExpr = parseStmt();
         node.addChild(trueExpr);
 
         lexer.expect(TokenType.TOK_COLON);
 
-        // Parse the false expression
         ASTNode falseExpr = parseStmt();
         node.addChild(falseExpr);
     } else {
