@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.*;
 import java.nio.file.Path;
 
+/**
+ * Reader class for reading characters from a file.
+ * Input: File path
+ * Output: Character stream from a file
+ */
 @Slf4j
 public class Reader implements IReader {
 
   private BufferedReader inputReader;
-  private char currentChar = '\0';
-  private CodeLoc currentCodeLoc = new CodeLoc(1, 0);
+  private char currentChar;
+  private final CodeLoc currentCodeLoc = new CodeLoc(1, 0);
   private boolean eofReached = false;
 
   public Reader(Path path) {
@@ -37,7 +42,7 @@ public class Reader implements IReader {
       // Read first character
       advance();
     } catch (IOException e) {
-      log.error("Reader error in constructor: {}", e.getMessage());
+      log.error("Reader error in testing constructor: {}", e.getMessage());
     }
   }
 
@@ -75,12 +80,10 @@ public class Reader implements IReader {
   }
 
   @Override
-  public void expect(char c) throws RuntimeException {
-    if (currentChar != c) {
-      throw new RuntimeException("Unexpected character");
-    } else {
-      advance();
-    }
+  public void expect(char expectedChar) throws RuntimeException {
+    if (currentChar != expectedChar)
+      throw new RuntimeException("Expected character '" + expectedChar + "' but got '" + currentChar + "'");
+    advance();
   }
 
   @Override

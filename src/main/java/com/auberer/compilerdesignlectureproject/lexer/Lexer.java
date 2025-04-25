@@ -9,12 +9,16 @@ import org.antlr.v4.runtime.misc.Pair;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Lexer class for tokenizing the input stream.
+ * Input: Character stream
+ * Output: Token stream
+ */
 @Slf4j
 public class Lexer implements ILexer {
-
   private final Reader reader;
-  private final List<StateMachine> stateMachines = new ArrayList<StateMachine>();
-  private final Queue<Pair<Character, CodeLoc>> inputBuffer = new LinkedList<Pair<Character, CodeLoc>>();
+  private final List<StateMachine> stateMachines = new ArrayList<>();
+  private final Queue<Pair<Character, CodeLoc>> inputBuffer = new LinkedList<>();
   private Token currentToken;
   private final boolean dumpTokens;
 
@@ -22,9 +26,61 @@ public class Lexer implements ILexer {
     this.reader = reader;
     this.dumpTokens = dumpTokens;
 
-    // Here, the order matters. The last state machine has the highest priority in case
-    // multiple machines match the given input at the same length.
+    stateMachines.add(new KeywordStateMachine("int", TokenType.TOK_TYPE_INT));
+    stateMachines.add(new KeywordStateMachine("double", TokenType.TOK_TYPE_DOUBLE));
+    stateMachines.add(new KeywordStateMachine("string", TokenType.TOK_TYPE_STRING));
+
+    stateMachines.add(new KeywordStateMachine("if", TokenType.TOK_IF));
+    stateMachines.add(new KeywordStateMachine("else", TokenType.TOK_ELSE));
+    stateMachines.add(new KeywordStateMachine("switch", TokenType.TOK_SWITCH));
+    stateMachines.add(new KeywordStateMachine("case", TokenType.TOK_CASE));
+    stateMachines.add(new KeywordStateMachine("default", TokenType.TOK_DEFAULT));
+
+    stateMachines.add(new KeywordStateMachine("while", TokenType.TOK_WHILE));
+    stateMachines.add(new KeywordStateMachine("do", TokenType.TOK_DO));
+    stateMachines.add(new KeywordStateMachine("for", TokenType.TOK_FOR));
+
+    stateMachines.add(new KeywordStateMachine("func", TokenType.TOK_FUNC));
+    stateMachines.add(new KeywordStateMachine("return", TokenType.TOK_RET));
+
+    stateMachines.add(new KeywordStateMachine("call", TokenType.TOK_CALL));
+    stateMachines.add(new KeywordStateMachine("print", TokenType.TOK_PRINT));
+
+    stateMachines.add(new PunctuationStateMachine("{", TokenType.TOK_LBRACE));
+    stateMachines.add(new PunctuationStateMachine("}", TokenType.TOK_RBRACE));
+    stateMachines.add(new PunctuationStateMachine("(", TokenType.TOK_LPAREN));
+    stateMachines.add(new PunctuationStateMachine(")", TokenType.TOK_RPAREN));
+    stateMachines.add(new PunctuationStateMachine("[", TokenType.TOK_LBRACKET));
+    stateMachines.add(new PunctuationStateMachine("]", TokenType.TOK_RBRACKET));
+
+    stateMachines.add(new PunctuationStateMachine("=", TokenType.TOK_ASSIGN));
+    stateMachines.add(new PunctuationStateMachine("==", TokenType.TOK_EQUAL));
+    stateMachines.add(new PunctuationStateMachine("!", TokenType.TOK_NOT));
+    stateMachines.add(new PunctuationStateMachine("!=", TokenType.TOK_NOT_EQUAL));
+    stateMachines.add(new PunctuationStateMachine("<", TokenType.TOK_LT));
+    stateMachines.add(new PunctuationStateMachine(">", TokenType.TOK_GT));
+    stateMachines.add(new PunctuationStateMachine("<=", TokenType.TOK_LE));
+    stateMachines.add(new PunctuationStateMachine(">=", TokenType.TOK_GE));
+    stateMachines.add(new PunctuationStateMachine("&&", TokenType.TOK_AND));
+    stateMachines.add(new PunctuationStateMachine("||", TokenType.TOK_OR));
+    stateMachines.add(new PunctuationStateMachine("+", TokenType.TOK_PLUS));
+    stateMachines.add(new PunctuationStateMachine("-", TokenType.TOK_MINUS));
+    stateMachines.add(new PunctuationStateMachine("*", TokenType.TOK_MUL));
+    stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
+    stateMachines.add(new PunctuationStateMachine("%", TokenType.TOK_MOD));
+
+
+    stateMachines.add(new DoubleLiteralStateMachine());
+    stateMachines.add(new IntegerLiteralStateMachine());
     stateMachines.add(new StringLiteralStateMachine());
+    stateMachines.add(new IdentifierStateMachine());
+
+    // Initialize all state machines
+    for (StateMachine stateMachine : stateMachines)
+      stateMachine.init();
+
+    // Read first token
+    advance();
   }
 
   @Override
@@ -33,16 +89,19 @@ public class Lexer implements ILexer {
   }
 
   private char peekChar() {
-    if (!inputBuffer.isEmpty()) {
+    if (!inputBuffer.isEmpty())
       return inputBuffer.peek().a;
-    }
     return reader.getChar();
   }
 
   private Pair<Character, CodeLoc> getCurrentCharAndCodeLoc() {
-    if (!inputBuffer.isEmpty()) {
+    // If there are characters in the input buffer, return the next one
+    // This is required to backtrack to the position, where a previously matching state machine accepted
+    // e.g. in case of the keyword machines "for" and "foreach", with the input "forea", the "for" machine
+    // would accept first, but the "foreach" machine would continue matching. Later, the "foreach" machine
+    // would fail. Then we want to produce the token "for" and continue with the "ea" part of the input.
+    if (!inputBuffer.isEmpty())
       return inputBuffer.poll();
-    }
     char currentChar = reader.getChar();
     CodeLoc currentCodeLoc = reader.getCodeLoc().clone();
     reader.advance();
@@ -52,14 +111,12 @@ public class Lexer implements ILexer {
   @Override
   public void advance() {
     // Reset all state machines to start from the respective initial state
-    for (StateMachine stateMachine : stateMachines) {
+    for (StateMachine stateMachine : stateMachines)
       stateMachine.reset();
-    }
 
     // Skip any whitespaces
-    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar())) {
+    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar()))
       getCurrentCharAndCodeLoc();
-    }
 
     CodeLoc tokenCodeLoc = null;
 
@@ -118,17 +175,15 @@ public class Lexer implements ILexer {
 
   @Override
   public void expect(TokenType expectedType) throws RuntimeException {
-    if (currentToken.getType() != expectedType) {
-      throw new RuntimeException("Unexpected token type: " + currentToken.getType());
-    }
+    if (currentToken.getType() != expectedType)
+      throw new RuntimeException("Unexpected token: " + currentToken.getType() + " at " + currentToken.getCodeLoc() + ". Expected: " + expectedType);
     advance();
   }
 
   @Override
-  public void expectOneOf(Set<TokenType> expectedTypes) {
-    if (expectedTypes.contains(currentToken.getType())) {
-      throw new RuntimeException("Unexpected token type: " + currentToken.getType());
-    }
+  public void expectOneOf(Set<TokenType> expectedTypes) throws RuntimeException {
+    if (!expectedTypes.contains(currentToken.getType()))
+      throw new RuntimeException("Unexpected token: " + currentToken.getType() + " at " + currentToken.getCodeLoc() + ". Expected one of: " + expectedTypes);
     advance();
   }
 

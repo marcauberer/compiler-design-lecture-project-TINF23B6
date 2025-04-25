@@ -5,32 +5,30 @@ import com.auberer.compilerdesignlectureproject.lexer.statemachine.State;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
 public class IdentifierStateMachine extends StateMachine {
-    @Override
-    public void init() {
-        // Start state
-        State stateStart = new State("Start");
-        stateStart.setStartState(true);
-        addState(stateStart);
-        // Identifier state
-        State stateEnd = new State("Identifier");
-        stateEnd.setAcceptState(true);
-        addState(stateEnd);
+  @Override
+  public void init() {
+    // States
+    State stateStart = new State("start");
+    stateStart.setStartState(true);
+    addState(stateStart);
 
-        // Transitions
-        Range letters = new Range('a', 'z');
-        Range capitalLetters = new Range('A', 'Z');
-        Range digits = new Range('0', '9');
-        addRangeTransition(stateStart, stateEnd, letters);
-        addRangeTransition(stateStart, stateEnd, capitalLetters);
-        addCharTransition(stateStart, stateEnd, '_');
-        addRangeTransition(stateEnd, stateEnd, letters);
-        addRangeTransition(stateEnd, stateEnd, capitalLetters);
-        addRangeTransition(stateEnd, stateEnd, digits);
-        addCharTransition(stateEnd, stateEnd, '_');
-    }
+    State stateIdentifier = new State("identifier");
+    stateIdentifier.setAcceptState(true);
+    addState(stateIdentifier);
 
-    @Override
-    public TokenType getTokenType() {
-        return TokenType.TOK_IDENTIFIER;
-    }
+    // Transitions
+    addRangeTransition(stateStart, stateIdentifier, new Range('a', 'z'));
+    addRangeTransition(stateStart, stateIdentifier, new Range('A', 'Z'));
+    addCharTransition(stateStart, stateIdentifier, '_');
+
+    addRangeTransition(stateIdentifier, stateIdentifier, new Range('a', 'z'));
+    addRangeTransition(stateIdentifier, stateIdentifier, new Range('A', 'Z'));
+    addRangeTransition(stateIdentifier, stateIdentifier, new Range('0', '9'));
+    addCharTransition(stateIdentifier, stateIdentifier, '_');
+  }
+
+  @Override
+  public TokenType getTokenType() {
+    return TokenType.TOK_IDENTIFIER;
+  }
 }
