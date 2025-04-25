@@ -184,6 +184,25 @@ public class Parser implements IParser {
     return node;
   }
 
+    public ASTDoWhileLoopNode parseDoWhileLoop() {
+        ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+        enterNode(node);
+
+        lexer.expect(TokenType.TOK_DO);
+        lexer.expect(TokenType.TOK_LBRACE);
+        ASTStmtLstNode stmtLst = node.getBody();
+        node.addChild(stmtLst);
+        lexer.expect(TokenType.TOK_RBRACE);
+        lexer.expect(TokenType.TOK_WHILE);
+        lexer.expect(TokenType.TOK_LPAREN);
+        ASTTernaryExprNode ternaryExprNode =  node.getCondition();
+        node.addChild(ternaryExprNode);
+        lexer.expect(TokenType.TOK_RPAREN);
+        lexer.expect(TokenType.TOK_SEMICOLON);
+
+        exitNode(node);
+        return node;
+    }
 
   public ASTAnonymousBlockStmtNode parseAnonymousBlockStmt() {
     ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();

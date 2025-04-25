@@ -36,6 +36,7 @@ public enum TokenType {
   TOK_SEMICOLON,
   TOK_COMMA,
   TOK_DOT,
+  TOK_COLON,
 
   TOK_ASSIGN,
   TOK_EQUAL,
