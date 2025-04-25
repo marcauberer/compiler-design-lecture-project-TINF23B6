@@ -77,4 +77,8 @@ public class ASTVisitor<T> {
     return visitChildren(node);
   }
 
+  T visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    return visitChildren(node);
+  }
+
 }

@@ -3,9 +3,12 @@ package com.auberer.compilerdesignlectureproject.parser;
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -178,6 +181,21 @@ public class Parser implements IParser {
     ASTStmtLstNode defaultStmtLst = parseStmtLst();
     node.addChild(defaultStmtLst);
 
+    return node;
+  }
+
+
+  public ASTAnonymousBlockStmtNode parseAnonymousBlockStmt() {
+    ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_LBRACE);
+    ASTStmtLstNode stmtLst = parseStmtLst();
+    lexer.expect(TokenType.TOK_RBRACE);
+
+    node.addChild(stmtLst);
+
+    exitNode(node);
     return node;
   }
 
