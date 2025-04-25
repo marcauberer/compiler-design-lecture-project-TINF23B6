@@ -145,12 +145,12 @@ public class Parser implements IParser {
         lexer.expect(TokenType.TOK_DO);
         lexer.expect(TokenType.TOK_LBRACE);
         ASTStmtLstNode stmtLst = node.getBody();
-        node.setChildren(stmtLst.getChildren());
+        node.addChild(stmtLst);
         lexer.expect(TokenType.TOK_RBRACE);
         lexer.expect(TokenType.TOK_WHILE);
         lexer.expect(TokenType.TOK_LPAREN);
         ASTTernaryExprNode ternaryExprNode =  node.getCondition();
-        node.setChildren(ternaryExprNode.getChildren());
+        node.addChild(ternaryExprNode);
         lexer.expect(TokenType.TOK_RPAREN);
         lexer.expect(TokenType.TOK_SEMICOLON);
 
