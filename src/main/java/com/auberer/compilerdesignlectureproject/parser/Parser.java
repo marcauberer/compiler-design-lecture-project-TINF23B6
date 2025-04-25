@@ -404,13 +404,11 @@ public class Parser implements IParser {
 
     lexer.expect(TokenType.TOK_SWITCH);
     lexer.expect(TokenType.TOK_LPAREN);
-    // Parse the switch expression (ternaryExpr)
-    ASTNode switchExpr = parseTernaryExpr(); // You need to implement or call your ternaryExpr parser
+    ASTNode switchExpr = parseTernaryExpr();
     node.addChild(switchExpr);
     lexer.expect(TokenType.TOK_RPAREN);
     lexer.expect(TokenType.TOK_LBRACE);
 
-    // Parse one or more case blocks
     do {
         lexer.expect(TokenType.TOK_CASE);
         ASTLiteralNode caseLiteral = parseLiteral();
@@ -420,7 +418,6 @@ public class Parser implements IParser {
         node.addChild(caseStmtLst);
     } while (lexer.peek(TokenType.TOK_CASE));
 
-    // Optionally parse default block
     if (lexer.peek(TokenType.TOK_DEFAULT)) {
         lexer.expect(TokenType.TOK_DEFAULT);
         lexer.expect(TokenType.TOK_COLON);
