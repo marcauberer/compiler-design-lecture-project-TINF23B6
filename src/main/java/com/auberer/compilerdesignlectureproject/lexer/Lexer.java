@@ -59,6 +59,8 @@ public class Lexer implements ILexer {
     stateMachines.add(new PunctuationStateMachine("-", TokenType.TOK_MINUS));
     stateMachines.add(new PunctuationStateMachine("*", TokenType.TOK_MUL));
     stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
+    stateMachines.add(new PunctuationStateMachine(":", TokenType.TOK_COLON));
+    stateMachines.add(new PunctuationStateMachine("?", TokenType.TOK_QUESTION_MARK));
 
     stateMachines.add(new PunctuationStateMachine("?", TokenType.TOK_QUESTION));
     stateMachines.add(new PunctuationStateMachine(":", TokenType.TOK_COLON));

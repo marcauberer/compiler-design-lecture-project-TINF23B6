@@ -38,6 +38,7 @@ public enum TokenType {
   TOK_COMMA,
   TOK_DOT,
   TOK_COLON,
+  TOK_QUESTION_MARK,
 
   TOK_ASSIGN,
   TOK_EQUAL,

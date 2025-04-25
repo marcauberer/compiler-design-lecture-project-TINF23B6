@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 public class ASTTypeNode extends ASTNode {
 
-  enum Type {
+  public enum Type {
     INT,
     DOUBLE,
     STRING,
