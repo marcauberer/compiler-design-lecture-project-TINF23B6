@@ -142,7 +142,7 @@ public class Parser implements IParser {
 
     lexer.expect(TokenType.TOK_SWITCH);
     lexer.expect(TokenType.TOK_LPAREN);
-    ASTNode switchExpr = parseTernaryExpr();
+    ASTTernaryExprNode switchExpr = new ASTTernaryExprNode();
     node.addChild(switchExpr);
     lexer.expect(TokenType.TOK_RPAREN);
     lexer.expect(TokenType.TOK_LBRACE);
@@ -191,37 +191,5 @@ public class Parser implements IParser {
     assert parentStack.peek() == node;
     // Remove the node from the stack
     parentStack.pop();
-  }
-
-  /**
-   * Parses a ternary expression and returns the corresponding AST node.
-   *
-   * @return AST node representing the ternary expression
-   */
-  public ASTTernaryExprNode parseTernaryExpr() {
-    ASTTernaryExprNode node = new ASTTernaryExprNode();
-    enterNode(node);
-
-    ASTNode condition = parseStmt();
-    node.addChild(condition);
-
-    if (lexer.peek(TokenType.TOK_QUESTION)) {
-        lexer.expect(TokenType.TOK_QUESTION);
-
-        ASTNode trueExpr = parseStmt();
-        node.addChild(trueExpr);
-
-        lexer.expect(TokenType.TOK_COLON);
-
-        ASTNode falseExpr = parseStmt();
-        node.addChild(falseExpr);
-    } else {
-        node.addChild(condition);
-        exitNode(node);
-        return node;
-    }
-
-    exitNode(node);
-    return node;
   }
 }
