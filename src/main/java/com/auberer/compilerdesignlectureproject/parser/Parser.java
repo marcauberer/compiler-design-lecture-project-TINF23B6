@@ -145,9 +145,9 @@ public class Parser implements IParser {
     node.getBody();
     lexer.expect(TokenType.TOK_RBRACE);
     lexer.expect(TokenType.TOK_WHILE);
-    lexer.expect(TokenType.TOK_LBRACE);
+    lexer.expect(TokenType.TOK_LPAREN);
     node.getCondition();
-    lexer.expect(TokenType.TOK_RBRACE);
+    lexer.expect(TokenType.TOK_RPAREN);
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
