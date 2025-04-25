@@ -77,4 +77,8 @@ public class ASTVisitor<T> {
 
   // ToDo(Students): Insert your visit methods here
 
+  T visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    return visitChildren(node);
+  }
+
 }

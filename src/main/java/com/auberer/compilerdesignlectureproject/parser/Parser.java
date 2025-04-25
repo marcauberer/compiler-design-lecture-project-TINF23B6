@@ -6,6 +6,8 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -136,21 +138,35 @@ public class Parser implements IParser {
     return node;
   }
 
-  public ASTDoWhileLoopNode parseDoWhileLoop() {
-    ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+    public ASTDoWhileLoopNode parseDoWhileLoop() {
+        ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+        enterNode(node);
+
+        lexer.expect(TokenType.TOK_DO);
+        lexer.expect(TokenType.TOK_LBRACE);
+        ASTStmtLstNode stmtLst = node.getBody();
+        node.setChildren(stmtLst.getChildren());
+        lexer.expect(TokenType.TOK_RBRACE);
+        lexer.expect(TokenType.TOK_WHILE);
+        lexer.expect(TokenType.TOK_LPAREN);
+        ASTTernaryExprNode ternaryExprNode =  node.getCondition();
+        node.setChildren(ternaryExprNode.getChildren());
+        lexer.expect(TokenType.TOK_RPAREN);
+        lexer.expect(TokenType.TOK_SEMICOLON);
+
+        exitNode(node);
+        return node;
+    }
+
+  public ASTAnonymousBlockStmtNode parseAnonymousBlockStmt() {
+    ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
     enterNode(node);
 
-    lexer.expect(TokenType.TOK_DO);
     lexer.expect(TokenType.TOK_LBRACE);
-    ASTStmtLstNode stmtLst = node.getBody();
-    node.setChildren(stmtLst.getChildren());
+    ASTStmtLstNode stmtLst = parseStmtLst();
     lexer.expect(TokenType.TOK_RBRACE);
-    lexer.expect(TokenType.TOK_WHILE);
-    lexer.expect(TokenType.TOK_LPAREN);
-   ASTTernaryExprNode ternaryExprNode =  node.getCondition();
-    node.setChildren(ternaryExprNode.getChildren());
-    lexer.expect(TokenType.TOK_RPAREN);
-    lexer.expect(TokenType.TOK_SEMICOLON);
+
+    node.addChild(stmtLst);
 
     exitNode(node);
     return node;
