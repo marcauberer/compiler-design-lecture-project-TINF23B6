@@ -9,7 +9,7 @@ varDeclStmt: type IDENTIFIER ASSIGN ternaryExpr SEMICOLON;
 assignStmt: assignExpr SEMICOLON;
 assignExpr: (IDENTIFIER ASSIGN)? ternaryExpr;
 printBuiltinCall: PRINT LPAREN ternaryExpr RPAREN;
-literal: INT_LIT | DOUBLE_LIT | STRING_LIT;
+literal: INT_LIT | DOUBLE_LIT | STRING_LIT | TRUE | FALSE;
 type: TYPE_INT | TYPE_DOUBLE | TYPE_STRING | TYPE_BOOL;
 
 // Team 1: If/Else statement
@@ -78,6 +78,8 @@ TYPE_INT: 'int';
 TYPE_DOUBLE: 'double';
 TYPE_STRING: 'string';
 TYPE_BOOL: 'bool';
+TRUE: 'true';
+FALSE: 'false';
 
 INT_LIT: [1-9][0-9]* | '0';
 DOUBLE_LIT: ([1-9][0-9]* | '0')[.][0-9]+;

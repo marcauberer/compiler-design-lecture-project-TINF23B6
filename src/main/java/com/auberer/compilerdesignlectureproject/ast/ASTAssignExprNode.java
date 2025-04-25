@@ -13,7 +13,8 @@ public class ASTAssignExprNode extends ASTNode {
 
   public static Set<TokenType> getSelectionSet() {
     Set<TokenType> selectionSet = new HashSet<>();
-    // ToDo
+    selectionSet.add(TokenType.TOK_IDENTIFIER);
+    selectionSet.addAll(ASTTernaryExprNode.getSelectionSet());
     return selectionSet;
   }
 }

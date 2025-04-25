@@ -11,7 +11,12 @@ import java.util.Set;
 @Setter
 public class ASTTypeNode extends ASTNode {
 
-  enum Type {INT, DOUBLE, STRING, BOOL}
+  enum Type {
+    INT,
+    DOUBLE,
+    STRING,
+    BOOL
+  }
 
   private Type type;
 
@@ -21,8 +26,11 @@ public class ASTTypeNode extends ASTNode {
   }
 
   public static Set<TokenType> getSelectionSet() {
-    Set<TokenType> selectionSet = new HashSet<>();
-    // ToDo
-    return selectionSet;
+    return Set.of(
+        TokenType.TOK_TYPE_INT,
+        TokenType.TOK_TYPE_DOUBLE,
+        TokenType.TOK_TYPE_STRING,
+        TokenType.TOK_TYPE_BOOL
+    );
   }
 }

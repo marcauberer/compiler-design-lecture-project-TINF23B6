@@ -30,22 +30,19 @@ public class Lexer implements ILexer {
     stateMachines.add(new KeywordStateMachine("int", TokenType.TOK_TYPE_INT));
     stateMachines.add(new KeywordStateMachine("double", TokenType.TOK_TYPE_DOUBLE));
     stateMachines.add(new KeywordStateMachine("string", TokenType.TOK_TYPE_STRING));
-
     stateMachines.add(new KeywordStateMachine("if", TokenType.TOK_IF));
     stateMachines.add(new KeywordStateMachine("else", TokenType.TOK_ELSE));
     stateMachines.add(new KeywordStateMachine("switch", TokenType.TOK_SWITCH));
     stateMachines.add(new KeywordStateMachine("case", TokenType.TOK_CASE));
     stateMachines.add(new KeywordStateMachine("default", TokenType.TOK_DEFAULT));
-
     stateMachines.add(new KeywordStateMachine("while", TokenType.TOK_WHILE));
     stateMachines.add(new KeywordStateMachine("do", TokenType.TOK_DO));
     stateMachines.add(new KeywordStateMachine("for", TokenType.TOK_FOR));
-
-    stateMachines.add(new KeywordStateMachine("func", TokenType.TOK_FUNC));
-    stateMachines.add(new KeywordStateMachine("return", TokenType.TOK_RET));
-
+    stateMachines.add(new KeywordStateMachine("ret", TokenType.TOK_RET));
     stateMachines.add(new KeywordStateMachine("call", TokenType.TOK_CALL));
     stateMachines.add(new KeywordStateMachine("print", TokenType.TOK_PRINT));
+    stateMachines.add(new KeywordStateMachine("true", TokenType.TOK_TRUE));
+    stateMachines.add(new KeywordStateMachine("false", TokenType.TOK_FALSE));
 
     stateMachines.add(new PunctuationStateMachine("{", TokenType.TOK_LBRACE));
     stateMachines.add(new PunctuationStateMachine("}", TokenType.TOK_RBRACE));
@@ -58,17 +55,10 @@ public class Lexer implements ILexer {
     stateMachines.add(new PunctuationStateMachine("==", TokenType.TOK_EQUAL));
     stateMachines.add(new PunctuationStateMachine("!", TokenType.TOK_NOT));
     stateMachines.add(new PunctuationStateMachine("!=", TokenType.TOK_NOT_EQUAL));
-    stateMachines.add(new PunctuationStateMachine("<", TokenType.TOK_LT));
-    stateMachines.add(new PunctuationStateMachine(">", TokenType.TOK_GT));
-    stateMachines.add(new PunctuationStateMachine("<=", TokenType.TOK_LE));
-    stateMachines.add(new PunctuationStateMachine(">=", TokenType.TOK_GE));
-    stateMachines.add(new PunctuationStateMachine("&&", TokenType.TOK_AND));
-    stateMachines.add(new PunctuationStateMachine("||", TokenType.TOK_OR));
     stateMachines.add(new PunctuationStateMachine("+", TokenType.TOK_PLUS));
     stateMachines.add(new PunctuationStateMachine("-", TokenType.TOK_MINUS));
     stateMachines.add(new PunctuationStateMachine("*", TokenType.TOK_MUL));
     stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
-    stateMachines.add(new PunctuationStateMachine("%", TokenType.TOK_MOD));
 
     stateMachines.add(new PunctuationStateMachine("?", TokenType.TOK_QUESTION));
     stateMachines.add(new PunctuationStateMachine(":", TokenType.TOK_COLON));
@@ -82,7 +72,7 @@ public class Lexer implements ILexer {
     for (StateMachine stateMachine : stateMachines)
       stateMachine.init();
 
-    // Read first token
+    // Read the first token
     advance();
   }
 
@@ -145,11 +135,11 @@ public class Lexer implements ILexer {
           continue;
         }
 
-        // If the machine is in an accept state, add it to the list of accepting machines
+        // If the machine is in an accepting state, add it to the list of accepting machines
         if (stateMachine.isInAcceptState()) {
           acceptingMachines.remove(stateMachine);
           acceptingMachines.put(stateMachine, stateMachine.getAcceptedInput().length());
-          // Clear input buffer to make sure we backtrack to this point in the input in case
+          // Clear the input buffer to make sure we backtrack to this point in the input in case
           // no other running machine accepts later.
           newInputBuffer.clear();
         }

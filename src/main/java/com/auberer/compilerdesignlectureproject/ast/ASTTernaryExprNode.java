@@ -12,8 +12,6 @@ public class ASTTernaryExprNode extends ASTNode {
   }
 
   public static Set<TokenType> getSelectionSet() {
-    Set<TokenType> selectionSet = new HashSet<>();
-    // ToDo
-    return selectionSet;
+    return ASTEqualityExprNode.getSelectionSet();
   }
 }
