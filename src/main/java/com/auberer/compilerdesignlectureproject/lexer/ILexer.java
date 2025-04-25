@@ -11,4 +11,5 @@ public interface ILexer {
   void expectOneOf(Set<TokenType> expectedTypes);
   boolean isEOF();
   CodeLoc getCodeLoc();
+  boolean peek(TokenType tokCase);
 }
