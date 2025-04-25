@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.parser;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -130,6 +131,24 @@ public class Parser implements IParser {
     enterNode(node);
 
     // ...
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTDoWhileLoopNode parseDoWhileLoop() {
+    ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_DO);
+    lexer.expect(TokenType.TOK_LBRACE);
+    node.getBody();
+    lexer.expect(TokenType.TOK_RBRACE);
+    lexer.expect(TokenType.TOK_WHILE);
+    lexer.expect(TokenType.TOK_LBRACE);
+    node.getCondition();
+    lexer.expect(TokenType.TOK_RBRACE);
+    lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
     return node;

@@ -71,6 +71,9 @@ public class ASTVisitor<T> {
   T visitAtomicExpr(ASTAtomicExprNode node) {
     return visitChildren(node);
   }
+  T visitDoWhileLoop(ASTDoWhileLoopNode node) {
+    return visitChildren(node);
+  }
 
   // ToDo(Students): Insert your visit methods here
 
