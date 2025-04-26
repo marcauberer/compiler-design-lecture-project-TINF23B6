@@ -95,9 +95,10 @@ public class Parser implements IParser {
   public ASTParamLstNode parseParamLst() {
     ASTParamLstNode node = new ASTParamLstNode();
     enterNode(node);
-    Set<TokenType> selectionSet = ASTParamNode.getSelectionSet();
-    while(selectionSet.contains(lexer.getToken().getType())) {
-      ASTParamNode childnode = parseParam();
+    ASTParamNode childnode = parseParam();
+    node.addChild(childnode);
+    while(lexer.getToken().getType().equals(TokenType.TOK_SEMICOLON)) {
+      childnode = parseParam();
       node.addChild(childnode);
     }
     exitNode(node);
@@ -113,6 +114,7 @@ public class Parser implements IParser {
     if(lexer.getToken().getType() == TokenType.TOK_SEMICOLON){
       lexer.expect(TokenType.TOK_SEMICOLON);
       childnode = parseAtomicExpr();
+      node.addChild(childnode);
     }
     exitNode(node);
     return node;
