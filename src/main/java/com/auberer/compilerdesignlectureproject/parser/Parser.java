@@ -342,17 +342,23 @@ public class Parser implements IParser {
     return node;
   }
 
-    public ASTElseStmtNode parseElseBody() {
-        ASTElseStmtNode node = new ASTElseStmtNode();
-        enterNode(node);
+  public ASTElseStmtNode parseElseBody() {
+    ASTElseStmtNode node = new ASTElseStmtNode();
+    enterNode(node);
 
-        lexer.expect(TokenType.TOK_ELSE);
-        ASTIfBodyNode ifBody = new ASTIfBodyNode();
-        node.addChild(ifBody);
+    lexer.expect(TokenType.TOK_ELSE);
 
-        exitNode(node);
-        return node;
+    if (lexer.getToken().getType() == TokenType.TOK_IF) {
+      ASTIfStmtNode ifStmt = parseIfStmt();
+      node.addChild(ifStmt);
+    } else if (lexer.getToken().getType() == TokenType.TOK_LBRACE) {
+      ASTIfBodyNode ifBody = parseIfBody();
+      node.addChild(ifBody);
     }
+
+    exitNode(node);
+    return node;
+  }
 
   private void enterNode(ASTNode node) {
     // Attach CodeLoc to AST node
