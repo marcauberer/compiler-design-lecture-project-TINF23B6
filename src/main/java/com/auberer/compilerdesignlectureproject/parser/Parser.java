@@ -158,6 +158,8 @@ public class Parser implements IParser {
       childNode = parseDoWhileLoop();
     } else if (ASTAnonymousBlockStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAnonymousBlockStmt();
+    } else if (ASTFunctionCallNode.getSelectionSet().contains(tokenType)) {
+      childNode = parseFctCall();
     }
     // ToDo(Marc): Add others
     node.addChild(childNode);
