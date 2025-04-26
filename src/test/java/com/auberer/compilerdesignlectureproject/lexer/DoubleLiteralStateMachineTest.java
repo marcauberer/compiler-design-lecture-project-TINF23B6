@@ -49,4 +49,19 @@ public class DoubleLiteralStateMachineTest {
       }
     });
   }
+
+  @Test
+  @DisplayName("prove that very ugly Doubles are accepted")
+  public void veryUglyDoubleMadeByNikolas() { //shame on you
+    String input = "123.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
+
+      for (char c : input.toCharArray()) {
+        assertDoesNotThrow(() ->stateMachine.processInput(c));
+      }
+      assertTrue(stateMachine.isInAcceptState());
+
+  }
 }
