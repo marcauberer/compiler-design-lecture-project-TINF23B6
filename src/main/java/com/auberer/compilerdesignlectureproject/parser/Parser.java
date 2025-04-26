@@ -55,20 +55,22 @@ public class Parser implements IParser {
     ASTFunctionDefNode node = new ASTFunctionDefNode();
     enterNode(node);
     // ToDO(add TypeNode)
+    ASTNode childnode = new ASTTypeNode();
+    node.addChild(childnode);
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_COLON);
     lexer.expect(TokenType.TOK_ASSIGN);
     lexer.expect(TokenType.TOK_LPAREN);
     Set<TokenType> selectionSet = ASTParamLstNode.getSelectionSet();
     if (selectionSet.contains(lexer.getToken().getType())){
-      ASTParamLstNode childnode = parseParamLst();
+      childnode = parseParamLst();
       node.addChild(childnode);
     }
     lexer.expect(TokenType.TOK_RPAREN);
     lexer.expect(TokenType.TOK_LBRACE);
     selectionSet = ASTStmtLstNode.getSelectionSet();
     if (selectionSet.contains(lexer.getToken().getType())){
-      ASTStmtLstNode childnode = parseStmtLst();
+      childnode = parseStmtLst();
       node.addChild(childnode);
     }
     lexer.expect(TokenType.TOK_RBRACE);
