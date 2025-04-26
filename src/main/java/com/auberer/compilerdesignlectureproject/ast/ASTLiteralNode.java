@@ -11,7 +11,12 @@ import java.util.Set;
 @Setter
 public class ASTLiteralNode extends ASTNode {
 
-  enum LiteralType {INT, DOUBLE, STRING, BOOL}
+  enum LiteralType {
+    INT,
+    DOUBLE,
+    STRING,
+    BOOL
+  }
 
   private LiteralType type;
   private String value;
@@ -22,9 +27,13 @@ public class ASTLiteralNode extends ASTNode {
   }
 
   public static Set<TokenType> getSelectionSet() {
-    Set<TokenType> selectionSet = new HashSet<>();
-    // ToDo
-    return selectionSet;
+    return Set.of(
+        TokenType.TOK_INT_LIT,
+        TokenType.TOK_DOUBLE_LIT,
+        TokenType.TOK_STRING_LIT,
+        TokenType.TOK_TRUE,
+        TokenType.TOK_FALSE
+    );
   }
 
   int getValueAsInt() {

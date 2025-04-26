@@ -13,17 +13,12 @@ public class ASTStmtNode extends ASTNode {
 
   public static Set<TokenType> getSelectionSet() {
     Set<TokenType> selectionSet = new HashSet<>();
-    selectionSet.add(TokenType.TOK_TYPE_INT);
-    selectionSet.add(TokenType.TOK_TYPE_DOUBLE);
-    selectionSet.add(TokenType.TOK_TYPE_STRING);
-    selectionSet.add(TokenType.TOK_TYPE_BOOL);
-    selectionSet.add(TokenType.TOK_RET);
-    selectionSet.add(TokenType.TOK_IF);
-    selectionSet.add(TokenType.TOK_WHILE);
-    selectionSet.add(TokenType.TOK_DO);
-    selectionSet.add(TokenType.TOK_FOR);
-    selectionSet.add(TokenType.TOK_SWITCH);
-    selectionSet.add(TokenType.TOK_LBRACE);
+    selectionSet.addAll(ASTVarDeclNode.getSelectionSet());
+    selectionSet.addAll(ASTAssignStmtNode.getSelectionSet());
+    // ToDo(Marc): Add others
+    selectionSet.addAll(ASTDoWhileLoopNode.getSelectionSet());
+    // ToDo(Marc): Add others
+    selectionSet.addAll(ASTAnonymousBlockStmtNode.getSelectionSet());
     return selectionSet;
   }
 }
