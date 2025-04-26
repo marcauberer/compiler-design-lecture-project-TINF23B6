@@ -6,6 +6,7 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.classfile.instruction.SwitchCase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -53,14 +54,14 @@ public class Parser implements IParser {
     // ToDo(Team 4)
     ASTFunctionDefNode node = new ASTFunctionDefNode();
     enterNode(node);
-
+    // ToDO(add TypeNode)
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_COLON);
     lexer.expect(TokenType.TOK_ASSIGN);
     lexer.expect(TokenType.TOK_LPAREN);
-    Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
+    Set<TokenType> selectionSet = ASTParamLstNode.getSelectionSet();
     if (selectionSet.contains(lexer.getToken().getType())){
-      ASTArgLstNode childnode = parseArgLst();
+      ASTParamLstNode childnode = parseParamLst();
       node.addChild(childnode);
     }
     lexer.expect(TokenType.TOK_RPAREN);
@@ -75,10 +76,53 @@ public class Parser implements IParser {
     return node;
   }
 
+  public ASTFunctionCallNode parseFctCall() {
+    ASTFunctionCallNode node = new ASTFunctionCallNode();
+    enterNode(node);
+    lexer.expect(TokenType.TOK_CALL);
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    lexer.expect(TokenType.TOK_LPAREN);
+    Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())) {
+      ASTArgLstNode childnode = parseArgLst();
+      node.addChild(childnode);
+    }
+    lexer.expect(TokenType.TOK_RPAREN);
+    exitNode(node);
+    return node;
+  }
+
+  public ASTParamLstNode parseParamLst() {
+    ASTParamLstNode node = new ASTParamLstNode();
+    enterNode(node);
+    Set<TokenType> selectionSet = ASTParamNode.getSelectionSet();
+    while(selectionSet.contains(lexer.getToken().getType())) {
+      ASTParamNode childnode = parseParam();
+      node.addChild(childnode);
+    }
+    exitNode(node);
+    return node;
+  }
+
+  private ASTParamNode parseParam() {
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node);
+    ASTNode childnode = parseType();
+    node.addChild(childnode);
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    if(lexer.getToken().getType() == TokenType.TOK_SEMICOLON){
+      lexer.expect(TokenType.TOK_SEMICOLON);
+      childnode = parseAtomicExpr();
+    }
+    exitNode(node);
+    return node;
+  }
+
   public ASTArgLstNode parseArgLst() {
     ASTArgLstNode node = new ASTArgLstNode();
     enterNode(node);
 
+    exitNode(node);
     return node;
   }
 
