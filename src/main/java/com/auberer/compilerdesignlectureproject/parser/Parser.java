@@ -39,15 +39,47 @@ public class Parser implements IParser {
     enterNode(node);
 
     do {
-      parseFctDef();
+      Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
+      if  (selectionSet.contains(lexer.getToken().getType())){
+        node.addChild(parseFctDef());
+      }
     } while (!lexer.isEOF());
 
     exitNode(node);
     return node;
   }
 
-  public void parseFctDef() {
+  public ASTFunctionDefNode parseFctDef() {
     // ToDo(Team 4)
+    ASTFunctionDefNode node = new ASTFunctionDefNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    lexer.expect(TokenType.TOK_COLON);
+    lexer.expect(TokenType.TOK_ASSIGN);
+    lexer.expect(TokenType.TOK_LPAREN);
+    Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())){
+      ASTArgLstNode childnode = parseArgLst();
+      node.addChild(childnode);
+    }
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+    selectionSet = ASTStmtLstNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())){
+      ASTStmtLstNode childnode = parseStmtLst();
+      node.addChild(childnode);
+    }
+    lexer.expect(TokenType.TOK_RBRACE);
+    exitNode(node);
+    return node;
+  }
+
+  public ASTArgLstNode parseArgLst() {
+    ASTArgLstNode node = new ASTArgLstNode();
+    enterNode(node);
+
+    return node;
   }
 
   public ASTStmtLstNode parseStmtLst() {
