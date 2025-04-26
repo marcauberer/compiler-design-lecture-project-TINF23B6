@@ -100,6 +100,7 @@ public class Parser implements IParser {
     ASTParamNode childnode = parseParam();
     node.addChild(childnode);
     while(lexer.getToken().getType().equals(TokenType.TOK_SEMICOLON)) {
+      lexer.expect(TokenType.TOK_SEMICOLON);
       childnode = parseParam();
       node.addChild(childnode);
     }
@@ -113,8 +114,8 @@ public class Parser implements IParser {
     ASTNode childnode = parseType();
     node.addChild(childnode);
     lexer.expect(TokenType.TOK_IDENTIFIER);
-    if(lexer.getToken().getType() == TokenType.TOK_SEMICOLON){
-      lexer.expect(TokenType.TOK_SEMICOLON);
+    if(lexer.getToken().getType() == TokenType.TOK_ASSIGN){
+      lexer.expect(TokenType.TOK_ASSIGN);
       childnode = parseAtomicExpr();
       node.addChild(childnode);
     }
@@ -125,7 +126,13 @@ public class Parser implements IParser {
   public ASTArgLstNode parseArgLst() {
     ASTArgLstNode node = new ASTArgLstNode();
     enterNode(node);
-
+    ASTNode childnode = parseAtomicExpr();
+    node.addChild(childnode);
+    while(lexer.getToken().getType().equals(TokenType.TOK_SEMICOLON)) {
+      lexer.expect(TokenType.TOK_SEMICOLON);
+      childnode = parseAtomicExpr();
+      node.addChild(childnode);
+    }
     exitNode(node);
     return node;
   }
