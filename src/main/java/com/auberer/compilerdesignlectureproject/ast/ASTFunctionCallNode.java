@@ -5,7 +5,8 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ASTFunctionDefNode extends ASTNode{
+public class ASTFunctionCallNode extends ASTNode{
+
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {
         return visitor.visit(this);
@@ -13,10 +14,7 @@ public class ASTFunctionDefNode extends ASTNode{
 
     public static Set<TokenType> getSelectionSet() {
         Set<TokenType> selectionSet = new HashSet<TokenType>();
-            selectionSet.add(TokenType.TOK_TYPE_INT);
-            selectionSet.add(TokenType.TOK_TYPE_DOUBLE);
-            selectionSet.add(TokenType.TOK_TYPE_STRING);
-            selectionSet.add(TokenType.TOK_TYPE_BOOL);
+        selectionSet.add(TokenType.TOK_CALL);
         return selectionSet;
     }
 }
