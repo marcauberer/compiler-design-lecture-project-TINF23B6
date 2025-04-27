@@ -79,6 +79,9 @@ public class Parser implements IParser {
     } else if (ASTAnonymousBlockStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAnonymousBlockStmt();
     }
+    else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)){
+      childNode = parseWhileLoopStmt();
+    }
     // ToDo(Marc): Add others
     node.addChild(childNode);
 
@@ -175,6 +178,36 @@ public class Parser implements IParser {
     exitNode(node);
     return node;
   }
+
+
+    /**
+     * Parses a while loop statement.
+     *
+     * @return the AST node representing the while loop statement
+     * Rule : whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
+     */
+    public ASTWhileLoopStmtNode parseWhileLoopStmt() {
+
+      ASTWhileLoopStmtNode node = new ASTWhileLoopStmtNode();
+      enterNode(node);
+      lexer.expect(TokenType.TOK_WHILE);
+      lexer.expect(TokenType.TOK_LPAREN);
+
+      ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
+      node.addChild(ternaryExprNode);
+
+      lexer.expect(TokenType.TOK_RPAREN);
+      lexer.expect(TokenType.TOK_LBRACE);
+
+      ASTStmtLstNode stmtLst = parseStmtLst();
+      node.addChild(stmtLst);
+
+      lexer.expect(TokenType.TOK_RBRACE);
+
+      exitNode(node);
+      return node;
+    }
+
 
     public ASTDoWhileLoopNode parseDoWhileLoop() {
         ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
