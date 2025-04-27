@@ -1,2 +1,4 @@
 usage: tinf-compiler args...
- -h,--help   Print this help text
+ -ast,--dump-ast         Dump the AST as dot file
+ -h,--help               Print this help text
+ -tokens,--dump-tokens   Dump the lexed tokens

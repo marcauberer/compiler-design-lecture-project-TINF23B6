@@ -1,0 +1,24 @@
+package com.auberer.compilerdesignlectureproject.ast;
+
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class ASTStmtNode extends ASTNode {
+  @Override
+  public <T> T accept(ASTVisitor<T> visitor) {
+    return visitor.visistStmt(this);
+  }
+
+  public static Set<TokenType> getSelectionSet() {
+    Set<TokenType> selectionSet = new HashSet<>();
+    selectionSet.addAll(ASTVarDeclNode.getSelectionSet());
+    selectionSet.addAll(ASTAssignStmtNode.getSelectionSet());
+    // ToDo(Marc): Add others
+    selectionSet.addAll(ASTDoWhileLoopNode.getSelectionSet());
+    // ToDo(Marc): Add others
+    selectionSet.addAll(ASTAnonymousBlockStmtNode.getSelectionSet());
+    return selectionSet;
+  }
+}

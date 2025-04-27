@@ -5,11 +5,14 @@ public enum TokenType {
   TOK_STRING_LIT,
   TOK_DOUBLE_LIT,
   TOK_INT_LIT,
+  TOK_TRUE,
+  TOK_FALSE,
   TOK_IDENTIFIER,
 
   TOK_TYPE_INT,
   TOK_TYPE_DOUBLE,
   TOK_TYPE_STRING,
+  TOK_TYPE_BOOL,
 
   TOK_IF,
   TOK_ELSE,
@@ -20,8 +23,7 @@ public enum TokenType {
   TOK_DO,
   TOK_FOR,
 
-  TOK_FUNC,
-  TOK_RETURN,
+  TOK_RET,
 
   TOK_CALL,
   TOK_PRINT,
@@ -35,22 +37,17 @@ public enum TokenType {
   TOK_SEMICOLON,
   TOK_COMMA,
   TOK_DOT,
+  TOK_COLON,
+  TOK_QUESTION_MARK,
 
   TOK_ASSIGN,
   TOK_EQUAL,
   TOK_NOT,
   TOK_NOT_EQUAL,
-  TOK_LT,
-  TOK_GT,
-  TOK_LE,
-  TOK_GE,
-  TOK_AND,
-  TOK_OR,
   TOK_PLUS,
   TOK_MINUS,
   TOK_MUL,
   TOK_DIV,
-  TOK_MOD,
 
   TOK_EOF,
 }

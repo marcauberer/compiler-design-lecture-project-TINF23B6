@@ -8,7 +8,7 @@ import java.nio.file.Path;
 /**
  * Reader class for reading characters from a file.
  * Input: File path
- * Output: Character stream from file
+ * Output: Character stream from a file
  */
 @Slf4j
 public class Reader implements IReader {
