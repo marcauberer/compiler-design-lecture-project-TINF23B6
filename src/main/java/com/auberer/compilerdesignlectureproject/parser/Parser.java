@@ -41,9 +41,7 @@ public class Parser implements IParser {
     Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
     if  (selectionSet.contains(lexer.getToken().getType())){
     do {
-
-        node.addChild(parseFctDef());
-
+      node.addChild(parseFctDef());
     } while (!lexer.isEOF());
     }else{
       throw new RuntimeException("Need at least one function definition");

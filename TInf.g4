@@ -27,7 +27,7 @@ doWhileLoop: DO LBRACE stmtLst RBRACE WHILE LPAREN ternaryExpr RPAREN SEMICOLON;
 fctDef: type IDENTIFIER COLON ASSIGN LPAREN paramLst? RPAREN LBRACE stmtLst RBRACE;
 paramLst: param (SEMICOLON param)*;
 param: type IDENTIFIER (ASSIGN atomicExpr)?;
-fctCall: CALL IDENTIFIER LPAREN argLst RPAREN;
+fctCall: CALL IDENTIFIER LPAREN argLst? RPAREN;
 argLst: atomicExpr (SEMICOLON atomicExpr)*;
 returnStmt: RET ternaryExpr SEMICOLON;
 
