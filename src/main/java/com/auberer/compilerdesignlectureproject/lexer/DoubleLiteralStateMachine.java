@@ -46,6 +46,7 @@ public class DoubleLiteralStateMachine extends StateMachine {
     addRangeTransition(unnecessarZeroAfterDot, numberAfterDot, new Range('1','9'));
     addRangeTransition(dot, numberAfterDot, new Range('1','9'));
     addRangeTransition(numberAfterDot, numberAfterDot, new Range('1','9'));
+    addCharTransition(numberAfterDot, unnecessarZeroAfterDot, '0');
   }
 
   @Override
