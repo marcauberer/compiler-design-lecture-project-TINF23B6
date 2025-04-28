@@ -82,24 +82,17 @@ public class Parser implements IParser {
       childNode = parseVarDeclStmt();
     } else if (ASTAssignStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAssignStmt();
+    } else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)){
+      childNode = parseWhileLoopStmt();
     } else if (ASTDoWhileLoopNode.getSelectionSet().contains(tokenType)) {
       childNode = parseDoWhileLoop();
+    } else if (ASTForLoopNode.getSelectionSet().contains(lexer.getToken().getType())) {
+      childNode = parseForLoop();
     } else if (ASTAnonymousBlockStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAnonymousBlockStmt();
     }
-    else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)){
-      childNode = parseWhileLoopStmt();
-    }
     // ToDo(Marc): Add others
     node.addChild(childNode);
-
-
-
-
-    if (ASTForLoopNode.getSelectionSet().contains(lexer.getToken().getType())) {
-      node.addChild(parseForLoop());
-    }
-
 
     exitNode(node);
     return node;
