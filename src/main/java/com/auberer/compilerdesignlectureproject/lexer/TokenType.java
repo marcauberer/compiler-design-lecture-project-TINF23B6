@@ -49,8 +49,6 @@ public enum TokenType {
   TOK_MUL,
   TOK_DIV,
   TOK_MOD,
-  TOK_QUESTION,
-  TOK_COLON,
 
   TOK_EOF,
 }

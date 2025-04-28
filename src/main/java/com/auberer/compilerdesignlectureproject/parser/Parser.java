@@ -4,9 +4,6 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -55,14 +52,6 @@ public class Parser implements IParser {
   }
 
   // stmtLst: stmt*;
-  // stmt: varDeclStmt | assignStmt | returnStmt | ifStmt | whileLoop |
-  // doWhileLoop | forLoop | switchCaseStmt | anonymousBlockStmt;
-  // varDeclStmt: type IDENTIFIER ASSIGN ternaryExpr SEMICOLON;
-  // assignStmt: assignExpr SEMICOLON;
-  // assignExpr: (IDENTIFIER ASSIGN)? ternaryExpr;
-  // printBuiltinCall: PRINT LPAREN ternaryExpr RPAREN;
-  // literal: INT_LIT | DOUBLE_LIT | STRING_LIT;
-  // type: TYPE_INT | TYPE_DOUBLE | TYPE_STRING | TYPE_BOOL;
 
   public ASTStmtLstNode parseStmtLst() {
     ASTStmtLstNode node = new ASTStmtLstNode();
@@ -398,56 +387,6 @@ public class Parser implements IParser {
     return node;
   }
 
-  public ASTSwitchCaseStmtNode parseSwitchCaseStmt() {
-    ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
-    enterNode(node);
-    enterNode(parseSwitchStmt(node));
-
-    do {
-      enterNode(parseCaseStmt(node));
-    } while (lexer.getToken().getType() == TokenType.TOK_CASE);
-
-    if (lexer.getToken().getType() == TokenType.TOK_DEFAULT) {
-      enterNode(parseDefaultStmt(node));
-    }
-
-    lexer.expect(TokenType.TOK_RBRACE);
-
-    exitNode(node);
-    return node;
-  }
-
-  public ASTSwitchCaseStmtNode parseSwitchStmt(ASTSwitchCaseStmtNode node) {
-    lexer.expect(TokenType.TOK_SWITCH);
-    lexer.expect(TokenType.TOK_LPAREN);
-    ASTNode switchExpr = parseTernaryExpr();
-    node.addChild(switchExpr);
-    lexer.expect(TokenType.TOK_RPAREN);
-    lexer.expect(TokenType.TOK_LBRACE);
-
-    return node;
-  }
-
-  public ASTSwitchCaseStmtNode parseCaseStmt(ASTSwitchCaseStmtNode node) {
-    lexer.expect(TokenType.TOK_CASE);
-    ASTLiteralNode caseLiteral = parseLiteral();
-    node.addChild(caseLiteral);
-    lexer.expect(TokenType.TOK_COLON);
-    ASTStmtLstNode caseStmtLst = parseStmtLst();
-    node.addChild(caseStmtLst);
-
-    return node;
-  }
-
-  public ASTSwitchCaseStmtNode parseDefaultStmt(ASTSwitchCaseStmtNode node) {
-    lexer.expect(TokenType.TOK_DEFAULT);
-    lexer.expect(TokenType.TOK_COLON);
-    ASTStmtLstNode defaultStmtLst = parseStmtLst();
-    node.addChild(defaultStmtLst);
-
-    return node;
-  }
-
   private void enterNode(ASTNode node) {
     // Attach CodeLoc to AST node
     node.setCodeLoc(lexer.getToken().getCodeLoc());
@@ -497,39 +436,6 @@ public class Parser implements IParser {
     node.addChild(stmtlNode);
 
     lexer.expect(TokenType.TOK_RBRACE);
-
-    exitNode(node);
-    return node;
-  }
-
-
-  /**
-   * Parses a ternary expression and returns the corresponding AST node.
-   *
-   * @return AST node representing the ternary expression
-   */
-  public ASTTernaryExprNode parseTernaryExpr() {
-    ASTTernaryExprNode node = new ASTTernaryExprNode();
-    enterNode(node);
-
-    ASTNode condition = parseStmt();
-    node.addChild(condition);
-
-    if (lexer.peek(TokenType.TOK_QUESTION)) {
-        lexer.expect(TokenType.TOK_QUESTION);
-
-        ASTNode trueExpr = parseStmt();
-        node.addChild(trueExpr);
-
-        lexer.expect(TokenType.TOK_COLON);
-
-        ASTNode falseExpr = parseStmt();
-        node.addChild(falseExpr);
-    } else {
-        node.addChild(condition);
-        exitNode(node);
-        return node;
-    }
 
     exitNode(node);
     return node;
