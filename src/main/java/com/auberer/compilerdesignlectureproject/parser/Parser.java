@@ -51,10 +51,8 @@ public class Parser implements IParser {
   }
 
   public ASTFunctionDefNode parseFctDef() {
-    // ToDo(Team 4)
     ASTFunctionDefNode node = new ASTFunctionDefNode();
     enterNode(node);
-    // ToDO(add TypeNode)
     ASTNode childnode = new ASTTypeNode();
     node.addChild(childnode);
     lexer.expect(TokenType.TOK_IDENTIFIER);

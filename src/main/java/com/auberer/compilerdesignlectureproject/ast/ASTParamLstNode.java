@@ -13,10 +13,7 @@ public class ASTParamLstNode extends ASTNode {
 
     public static Set<TokenType> getSelectionSet() {
         Set<TokenType> selectionSet = new HashSet<TokenType>();
-        selectionSet.add(TokenType.TOK_TYPE_INT);
-        selectionSet.add(TokenType.TOK_TYPE_DOUBLE);
-        selectionSet.add(TokenType.TOK_TYPE_STRING);
-        selectionSet.add(TokenType.TOK_TYPE_BOOL);
+        selectionSet.addAll(ASTTypeNode.getSelectionSet());
         return selectionSet;
     }
 }
