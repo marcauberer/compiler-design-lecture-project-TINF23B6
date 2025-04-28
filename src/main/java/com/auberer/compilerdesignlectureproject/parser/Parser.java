@@ -1,4 +1,6 @@
 package com.auberer.compilerdesignlectureproject.parser;
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
@@ -90,6 +92,14 @@ public class Parser implements IParser {
     }
     // ToDo(Marc): Add others
     node.addChild(childNode);
+
+
+
+
+    if (ASTForLoopNode.getSelectionSet().contains(lexer.getToken().getType())) {
+      node.addChild(parseForLoop());
+    }
+
 
     exitNode(node);
     return node;
@@ -418,4 +428,36 @@ public class Parser implements IParser {
     // Remove the node from the stack
     parentStack.pop();
   }
+  public ASTForLoopNode parseForLoop() {
+    ASTForLoopNode node = new ASTForLoopNode();
+    enterNode(node);
+
+
+    lexer.expect(TokenType.TOK_FOR);
+    lexer.expect(TokenType.TOK_LPAREN);
+
+    ASTVarDeclNode varNode = parseVarDeclStmt();
+    node.addChild(varNode);
+
+    ASTTernaryExprNode ternaryNode = parseTernaryExpr();
+    node.addChild(ternaryNode);
+
+    lexer.expect(TokenType.TOK_SEMICOLON);
+
+    ASTAssignExprNode assignNode = parseAssignExpr();
+    node.addChild(assignNode);
+
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+
+    ASTStmtLstNode stmtlNode = parseStmtLst();
+    node.addChild(stmtlNode);
+
+    lexer.expect(TokenType.TOK_RBRACE);
+
+    exitNode(node);
+    return node;
+  }
+
+
 }
