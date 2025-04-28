@@ -38,16 +38,16 @@ public class Parser implements IParser {
   public ASTEntryNode parse() {
     ASTEntryNode node = new ASTEntryNode();
     enterNode(node);
-
+    Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
+    if  (selectionSet.contains(lexer.getToken().getType())){
     do {
-      Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
-      if  (selectionSet.contains(lexer.getToken().getType())){
-        node.addChild(parseFctDef());
-      }else{
-        throw new RuntimeException("Unexpected Token: " + lexer.getToken().getText());
-      }
-    } while (!lexer.isEOF());
 
+        node.addChild(parseFctDef());
+
+    } while (!lexer.isEOF());
+    }else{
+      throw new RuntimeException("Need at least one function definition");
+    }
     exitNode(node);
     return node;
   }
