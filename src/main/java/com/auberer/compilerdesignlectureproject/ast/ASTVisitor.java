@@ -92,4 +92,12 @@ public class ASTVisitor<T> {
   T visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     return visitChildren(node);
   }
+
+  T visitCaseStmt(ASTCaseStmtNode node) {
+    return visitChildren(node);
+  }
+
+  T visitDefaultStmt(ASTDefaultStmtNode node) {
+    return visitChildren(node);
+  }
 }
