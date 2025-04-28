@@ -84,4 +84,8 @@ public class ASTVisitor<T> {
   T visitWhileLoopStmt(ASTWhileLoopStmtNode node) {
     return visitChildren(node);
   }
+
+  T visitForLoop(ASTForLoopNode node) {
+    return visitChildren(node);
+  }
 }
