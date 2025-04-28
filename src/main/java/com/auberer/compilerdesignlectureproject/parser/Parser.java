@@ -70,11 +70,8 @@ public class Parser implements IParser {
     }
     lexer.expect(TokenType.TOK_RPAREN);
     lexer.expect(TokenType.TOK_LBRACE);
-    selectionSet = ASTStmtLstNode.getSelectionSet();
-    if (selectionSet.contains(lexer.getToken().getType())){
-      childnode = parseStmtLst();
-      node.addChild(childnode);
-    }
+    childnode = parseStmtLst();
+    node.addChild(childnode);
     lexer.expect(TokenType.TOK_RBRACE);
     exitNode(node);
     return node;
