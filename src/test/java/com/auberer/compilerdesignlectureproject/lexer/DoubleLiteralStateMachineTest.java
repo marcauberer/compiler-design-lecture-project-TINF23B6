@@ -51,8 +51,8 @@ public class DoubleLiteralStateMachineTest {
   }
 
   @Test
-  @DisplayName("prove that very ugly Doubles are accepted")
-  public void veryUglyDoubleMadeByNikolas() { //shame on you
+  @DisplayName("prove that very ugly Doubles aren't accepted")
+  public void badVeryUglyDouble() {
     String input = "123.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
     stateMachine.init();
@@ -61,7 +61,22 @@ public class DoubleLiteralStateMachineTest {
       for (char c : input.toCharArray()) {
         assertDoesNotThrow(() ->stateMachine.processInput(c));
       }
-      assertTrue(stateMachine.isInAcceptState());
+      assertFalse(stateMachine.isInAcceptState());
+
+  }
+
+  @Test
+  @DisplayName("checkout new double implementation")
+  public void checkoutDoubleImplementation() {
+    String input = "42.010012000123042";
+    DoubleLiteralStateMachine stateMachine = new DoubleLiteralStateMachine();
+    stateMachine.init();
+    stateMachine.reset();
+
+    for (char c : input.toCharArray()) {
+      assertDoesNotThrow(() ->stateMachine.processInput(c));
+    }
+    assertTrue(stateMachine.isInAcceptState());
 
   }
 }
