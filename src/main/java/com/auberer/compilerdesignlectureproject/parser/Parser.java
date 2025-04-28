@@ -139,7 +139,13 @@ public class Parser implements IParser {
   public ASTSwitchCaseStmtNode parseSwitchCaseStmt() {
     ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
     enterNode(node);
-    enterNode(parseSwitchStmt(node));
+    
+    lexer.expect(TokenType.TOK_SWITCH);
+    lexer.expect(TokenType.TOK_LPAREN);
+    ASTTernaryExprNode switchExpr = new ASTTernaryExprNode();
+    node.addChild(switchExpr);
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
 
     do {
       enterNode(parseCaseStmt(node));
@@ -152,17 +158,6 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
-  }
-
-  public ASTSwitchCaseStmtNode parseSwitchStmt(ASTSwitchCaseStmtNode node) {
-    lexer.expect(TokenType.TOK_SWITCH);
-    lexer.expect(TokenType.TOK_LPAREN);
-    ASTTernaryExprNode switchExpr = new ASTTernaryExprNode();
-    node.addChild(switchExpr);
-    lexer.expect(TokenType.TOK_RPAREN);
-    lexer.expect(TokenType.TOK_LBRACE);
-
     return node;
   }
 
