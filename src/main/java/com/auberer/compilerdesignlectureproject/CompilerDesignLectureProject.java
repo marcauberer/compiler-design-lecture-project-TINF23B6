@@ -60,6 +60,8 @@ public class CompilerDesignLectureProject {
       }
 
       // ToDo(Marc): Implement
+
+      System.out.println("Compilation successful!");
     } catch (ParseException e) {
       new HelpFormatter().printHelp("tinf-compiler args...", cliOptions);
     } catch (Exception e) {

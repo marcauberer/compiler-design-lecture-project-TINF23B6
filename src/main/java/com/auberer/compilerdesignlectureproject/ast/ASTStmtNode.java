@@ -15,9 +15,12 @@ public class ASTStmtNode extends ASTNode {
     Set<TokenType> selectionSet = new HashSet<>();
     selectionSet.addAll(ASTVarDeclNode.getSelectionSet());
     selectionSet.addAll(ASTAssignStmtNode.getSelectionSet());
+    selectionSet.addAll(ASTReturnStmtNode.getSelectionSet());
     // ToDo(Marc): Add others
+    selectionSet.addAll(ASTWhileLoopStmtNode.getSelectionSet());
     selectionSet.addAll(ASTDoWhileLoopNode.getSelectionSet());
-    // ToDo(Marc): Add others
+    selectionSet.addAll(ASTForLoopNode.getSelectionSet());
+    selectionSet.addAll(ASTSwitchCaseStmtNode.getSelectionSet());
     selectionSet.addAll(ASTAnonymousBlockStmtNode.getSelectionSet());
     return selectionSet;
   }

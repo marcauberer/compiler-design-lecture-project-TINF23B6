@@ -6,14 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ASTReturnStmtNode extends ASTNode {
-    @Override
-    public <T> T accept(ASTVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
+  @Override
+  public <T> T accept(ASTVisitor<T> visitor) {
+    return visitor.visit(this);
+  }
 
-    public static Set<TokenType> getSelectionSet() {
-        Set<TokenType> selectionSet = new HashSet<TokenType>();
-        selectionSet.add(TokenType.TOK_RET);
-        return selectionSet;
-    }
+  public static Set<TokenType> getSelectionSet() {
+    return Set.of(TokenType.TOK_RET);
+  }
 }

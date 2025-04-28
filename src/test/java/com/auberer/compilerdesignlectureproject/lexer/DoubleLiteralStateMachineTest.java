@@ -58,11 +58,10 @@ public class DoubleLiteralStateMachineTest {
     stateMachine.init();
     stateMachine.reset();
 
-      for (char c : input.toCharArray()) {
-        assertDoesNotThrow(() ->stateMachine.processInput(c));
-      }
-      assertFalse(stateMachine.isInAcceptState());
-
+    for (char c : input.toCharArray()) {
+      assertDoesNotThrow(() ->stateMachine.processInput(c));
+    }
+    assertFalse(stateMachine.isInAcceptState());
   }
 
   @Test
@@ -77,6 +76,5 @@ public class DoubleLiteralStateMachineTest {
       assertDoesNotThrow(() ->stateMachine.processInput(c));
     }
     assertTrue(stateMachine.isInAcceptState());
-
   }
 }
