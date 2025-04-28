@@ -43,6 +43,8 @@ public class Parser implements IParser {
       Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
       if  (selectionSet.contains(lexer.getToken().getType())){
         node.addChild(parseFctDef());
+      }else{
+        throw new RuntimeException("Unexpected Token: " + lexer.getToken().getText());
       }
     } while (!lexer.isEOF());
 
