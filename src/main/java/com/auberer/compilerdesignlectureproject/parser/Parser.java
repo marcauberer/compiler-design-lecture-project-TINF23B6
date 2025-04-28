@@ -1,4 +1,6 @@
 package com.auberer.compilerdesignlectureproject.parser;
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
@@ -74,8 +76,12 @@ public class Parser implements IParser {
       childNode = parseVarDeclStmt();
     } else if (ASTAssignStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAssignStmt();
+    } else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)){
+      childNode = parseWhileLoopStmt();
     } else if (ASTDoWhileLoopNode.getSelectionSet().contains(tokenType)) {
       childNode = parseDoWhileLoop();
+    } else if (ASTForLoopNode.getSelectionSet().contains(lexer.getToken().getType())) {
+      childNode = parseForLoop();
     } else if (ASTAnonymousBlockStmtNode.getSelectionSet().contains(tokenType)) {
       childNode = parseAnonymousBlockStmt();
     }
@@ -175,6 +181,36 @@ public class Parser implements IParser {
     exitNode(node);
     return node;
   }
+
+
+    /**
+     * Parses a while loop statement.
+     *
+     * @return the AST node representing the while loop statement
+     * Rule : whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
+     */
+    public ASTWhileLoopStmtNode parseWhileLoopStmt() {
+
+      ASTWhileLoopStmtNode node = new ASTWhileLoopStmtNode();
+      enterNode(node);
+      lexer.expect(TokenType.TOK_WHILE);
+      lexer.expect(TokenType.TOK_LPAREN);
+
+      ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
+      node.addChild(ternaryExprNode);
+
+      lexer.expect(TokenType.TOK_RPAREN);
+      lexer.expect(TokenType.TOK_LBRACE);
+
+      ASTStmtLstNode stmtLst = parseStmtLst();
+      node.addChild(stmtLst);
+
+      lexer.expect(TokenType.TOK_RBRACE);
+
+      exitNode(node);
+      return node;
+    }
+
 
     public ASTDoWhileLoopNode parseDoWhileLoop() {
         ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
@@ -383,5 +419,37 @@ public class Parser implements IParser {
     // Remove the node from the stack
     parentStack.pop();
   }
+
+  public ASTForLoopNode parseForLoop() {
+    ASTForLoopNode node = new ASTForLoopNode();
+    enterNode(node);
+
+
+    lexer.expect(TokenType.TOK_FOR);
+    lexer.expect(TokenType.TOK_LPAREN);
+
+    ASTVarDeclNode varNode = parseVarDeclStmt();
+    node.addChild(varNode);
+
+    ASTTernaryExprNode ternaryNode = parseTernaryExpr();
+    node.addChild(ternaryNode);
+
+    lexer.expect(TokenType.TOK_SEMICOLON);
+
+    ASTAssignExprNode assignNode = parseAssignExpr();
+    node.addChild(assignNode);
+
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+
+    ASTStmtLstNode stmtlNode = parseStmtLst();
+    node.addChild(stmtlNode);
+
+    lexer.expect(TokenType.TOK_RBRACE);
+
+    exitNode(node);
+    return node;
+  }
+
 
 }
