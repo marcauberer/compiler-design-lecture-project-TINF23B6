@@ -6,7 +6,7 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.classfile.instruction.SwitchCase;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

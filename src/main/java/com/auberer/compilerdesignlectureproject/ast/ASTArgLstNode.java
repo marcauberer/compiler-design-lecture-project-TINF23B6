@@ -13,18 +13,10 @@ public class ASTArgLstNode extends ASTNode {
 
     public static Set<TokenType> getSelectionSet() {
         Set<TokenType> selectionSet = new HashSet<TokenType>();
-        for (TokenType s : ASTLiteralNode.getSelectionSet()) {
-            selectionSet.add(s);
-        }
-        for (TokenType s : ASTFunctionCallNode.getSelectionSet()) {
-            selectionSet.add(s);
-        }
-        for (TokenType s : ASTPrintBuiltinCallNode.getSelectionSet()) {
-            selectionSet.add(s);
-        }
-        for (TokenType s : ASTLiteralNode.getSelectionSet()) {
-            selectionSet.add(s);
-        }
+        selectionSet.addAll(ASTLiteralNode.getSelectionSet());
+        selectionSet.addAll(ASTFunctionCallNode.getSelectionSet());
+        selectionSet.addAll(ASTPrintBuiltinCallNode.getSelectionSet());
+        selectionSet.addAll(ASTLiteralNode.getSelectionSet());
         selectionSet.add(TokenType.TOK_LPAREN);
         return selectionSet;
     }
