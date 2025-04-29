@@ -359,6 +359,10 @@ public class Parser implements IParser {
     ASTIfBodyNode ifBody = new ASTIfBodyNode();
     node.addChild(ifBody);
 
+    if (lexer.getToken().getType() == TokenType.TOK_ELSE) {
+      ASTElseStmtNode elseStmt = parseElseStmt();
+      node.addChild(elseStmt);
+    }
 
     exitNode(node);
 
@@ -378,7 +382,7 @@ public class Parser implements IParser {
     return node;
   }
 
-  public ASTElseStmtNode parseElseBody() {
+  public ASTElseStmtNode parseElseStmt() {
     ASTElseStmtNode node = new ASTElseStmtNode();
     enterNode(node);
 
