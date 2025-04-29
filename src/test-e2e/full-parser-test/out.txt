@@ -1,0 +1,13 @@
+Compiling with own parser...
+Dumping AST ...
+digraph AST {
+ L1C1_ASTEntryNode [label="ASTEntryNode"];
+ L1C1_ASTFunctionDefNode [label="ASTFunctionDefNode"];
+ L1C1_ASTEntryNode -> L1C1_ASTFunctionDefNode;
+ L1C1_ASTTypeNode [label="ASTTypeNode"];
+ L1C1_ASTFunctionDefNode -> L1C1_ASTTypeNode;
+ L1C17_ASTStmtLstNode [label="ASTStmtLstNode"];
+ L1C1_ASTFunctionDefNode -> L1C17_ASTStmtLstNode;
+}
+
+Compilation successful!

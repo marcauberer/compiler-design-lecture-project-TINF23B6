@@ -41,11 +41,16 @@ public class EndToEndTest {
     File argsFile = new File(testDir, "args.txt");
     File expectedOutputFile = new File(testDir, "out.txt");
 
+    // Check if test should be executed
+    File disabledFile = new File(testDir, "disabled");
+    if (disabledFile.exists())
+      return;
+
     assertTrue(argsFile.exists(), "Missing args.txt in " + testDir.getName());
     assertTrue(expectedOutputFile.exists(), "Missing out.txt in " + testDir.getName());
 
     try {
-      List<String> args = Files.readAllLines(argsFile.toPath());
+      String args = Files.readString(argsFile.toPath());
       String expectedOutput = Files.readString(expectedOutputFile.toPath()).trim();
 
       List<String> command = new ArrayList<>();
@@ -53,7 +58,7 @@ public class EndToEndTest {
       command.add("-cp");
       command.add(System.getProperty("java.class.path"));
       command.add(CompilerDesignLectureProject.class.getCanonicalName());
-      command.addAll(args);
+      command.addAll(List.of(args.split(" ")));
 
       ProcessBuilder pb = new ProcessBuilder(command);
       pb.redirectErrorStream(true);
