@@ -14,7 +14,6 @@ public class ASTElseStmtNode extends ASTNode {
     public static Set<TokenType> getSelectionSet() {
         Set<TokenType> selectionSet = new HashSet<>();
         selectionSet.add(TokenType.TOK_ELSE);
-        selectionSet.add(TokenType.TOK_LPAREN);
         return selectionSet;
     }
 }
