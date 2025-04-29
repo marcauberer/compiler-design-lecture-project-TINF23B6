@@ -28,6 +28,7 @@ null
 'double'
 'string'
 'bool'
+'call'
 'true'
 'false'
 null
@@ -67,6 +68,7 @@ TYPE_INT
 TYPE_DOUBLE
 TYPE_STRING
 TYPE_BOOL
+CALL
 TRUE
 FALSE
 INT_LIT
@@ -105,6 +107,7 @@ TYPE_INT
 TYPE_DOUBLE
 TYPE_STRING
 TYPE_BOOL
+CALL
 TRUE
 FALSE
 INT_LIT

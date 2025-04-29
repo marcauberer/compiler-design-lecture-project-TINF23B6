@@ -12,30 +12,41 @@ public class DoubleLiteralStateMachine extends StateMachine {
     stateStart.setStartState(true);
     addState(stateStart);
 
-    State stateZero = new State("Zero");
-    addState(stateZero);
+    State zeroBeforeDot = new State("Zero Before Dot");
+    addState(zeroBeforeDot);
 
+    State dot = new State("Dot");
+    addState(dot);
 
-    State stateBeforeDot = new State("Before");
-    addState(stateBeforeDot);
-    State stateDot = new State("Dot");
-    addState(stateDot);
+    State numberBeforeDot = new State("Number Before Dot");
+    addState(numberBeforeDot);
 
-    State stateEnd = new State("Double");
-    stateEnd.setAcceptState(true);
-    addState(stateEnd);
+    State singleZeroAfterDot = new State("Single Zero After Dot");
+    singleZeroAfterDot.setAcceptState(true);
+    addState(singleZeroAfterDot);
 
-    // Transitions
+    State unnecessarZeroAfterDot = new State("Unnecessar Zero After Dot");
+    addState(unnecessarZeroAfterDot);
 
-    addCharTransition(stateStart, stateZero, '0');
-    addRangeTransition(stateStart, stateBeforeDot, new Range('1', '9'));
+    State numberAfterDot = new State("Number After Dot");
+    numberAfterDot.setAcceptState(true);
+    addState(numberAfterDot);
 
-    addRangeTransition(stateBeforeDot, stateBeforeDot, new Range('0', '9'));
-    addCharTransition(stateBeforeDot, stateDot,'.');
-    addCharTransition(stateZero, stateDot,'.');
+    addCharTransition(stateStart, zeroBeforeDot, '0');
+    addRangeTransition(stateStart, numberBeforeDot, new Range('1','9'));
+    addRangeTransition(numberBeforeDot, numberBeforeDot, new Range('0','9'));
 
-    addRangeTransition(stateDot, stateEnd, new Range('0', '9'));
-    addRangeTransition(stateEnd, stateEnd, new Range('0', '9'));
+    addCharTransition(zeroBeforeDot, dot, '.');
+    addCharTransition(numberBeforeDot, dot, '.');
+
+    addCharTransition(dot, singleZeroAfterDot, '0');
+    addCharTransition(singleZeroAfterDot, unnecessarZeroAfterDot, '0');
+    addCharTransition(unnecessarZeroAfterDot, unnecessarZeroAfterDot, '0');
+    addRangeTransition(singleZeroAfterDot, numberAfterDot, new Range('1','9'));
+    addRangeTransition(unnecessarZeroAfterDot, numberAfterDot, new Range('1','9'));
+    addRangeTransition(dot, numberAfterDot, new Range('1','9'));
+    addRangeTransition(numberAfterDot, numberAfterDot, new Range('1','9'));
+    addCharTransition(numberAfterDot, unnecessarZeroAfterDot, '0');
   }
 
   @Override

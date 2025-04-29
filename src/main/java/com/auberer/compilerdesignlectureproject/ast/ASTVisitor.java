@@ -95,4 +95,16 @@ public class ASTVisitor<T> {
   T visitForLoop(ASTForLoopNode node) {
     return visitChildren(node);
   }
+
+  T visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    return visitChildren(node);
+  }
+
+  T visitCaseStmt(ASTCaseStmtNode node) {
+    return visitChildren(node);
+  }
+
+  T visitDefaultStmt(ASTDefaultStmtNode node) {
+    return visitChildren(node);
+  }
 }

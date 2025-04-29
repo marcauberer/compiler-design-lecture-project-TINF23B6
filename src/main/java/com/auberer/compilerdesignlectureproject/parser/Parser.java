@@ -1,15 +1,10 @@
 package com.auberer.compilerdesignlectureproject.parser;
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -40,16 +35,111 @@ public class Parser implements IParser {
     ASTEntryNode node = new ASTEntryNode();
     enterNode(node);
 
-    do {
-      parseFctDef();
-    } while (!lexer.isEOF());
+    Set<TokenType> selectionSet = ASTFunctionDefNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())) {
+      do {
+        parseFctDef();
+      } while (!lexer.isEOF());
+    } else {
+      throw new RuntimeException("Need at least one function definition");
+    }
 
     exitNode(node);
     return node;
   }
 
-  public void parseFctDef() {
-    // ToDo(Team 4)
+  public ASTFunctionDefNode parseFctDef() {
+    ASTFunctionDefNode node = new ASTFunctionDefNode();
+    enterNode(node);
+
+    parseType();
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    lexer.expect(TokenType.TOK_COLON);
+    lexer.expect(TokenType.TOK_ASSIGN);
+    lexer.expect(TokenType.TOK_LPAREN);
+    Set<TokenType> selectionSet = ASTParamLstNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())) {
+      parseParamLst();
+    }
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+    parseStmtLst();
+    lexer.expect(TokenType.TOK_RBRACE);
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTFunctionCallNode parseFctCall() {
+    ASTFunctionCallNode node = new ASTFunctionCallNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_CALL);
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    lexer.expect(TokenType.TOK_LPAREN);
+    Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
+    if (selectionSet.contains(lexer.getToken().getType())) {
+      parseArgLst();
+    }
+    lexer.expect(TokenType.TOK_RPAREN);
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTParamLstNode parseParamLst() {
+    ASTParamLstNode node = new ASTParamLstNode();
+    enterNode(node);
+
+    parseParam();
+    while (lexer.getToken().getType().equals(TokenType.TOK_SEMICOLON)) {
+      lexer.expect(TokenType.TOK_SEMICOLON);
+      parseParam();
+    }
+
+    exitNode(node);
+    return node;
+  }
+
+  private ASTParamNode parseParam() {
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node);
+
+    parseType();
+    lexer.expect(TokenType.TOK_IDENTIFIER);
+    if (lexer.getToken().getType() == TokenType.TOK_ASSIGN) {
+      lexer.expect(TokenType.TOK_ASSIGN);
+      parseAtomicExpr();
+    }
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTArgLstNode parseArgLst() {
+    ASTArgLstNode node = new ASTArgLstNode();
+    enterNode(node);
+
+    parseAtomicExpr();
+    while (lexer.getToken().getType().equals(TokenType.TOK_SEMICOLON)) {
+      lexer.expect(TokenType.TOK_SEMICOLON);
+      parseAtomicExpr();
+    }
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTReturnStmtNode parseReturnStmt() {
+    ASTReturnStmtNode node = new ASTReturnStmtNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_RET);
+    parseTernaryExpr();
+    lexer.expect(TokenType.TOK_SEMICOLON);
+
+    exitNode(node);
+    return node;
   }
 
   public ASTStmtLstNode parseStmtLst() {
@@ -58,8 +148,7 @@ public class Parser implements IParser {
 
     Set<TokenType> selectionSet = ASTStmtNode.getSelectionSet();
     while (selectionSet.contains(lexer.getToken().getType())) {
-      ASTStmtNode stmt = parseStmt();
-      node.addChild(stmt);
+      parseStmt();
     }
 
     exitNode(node);
@@ -71,22 +160,26 @@ public class Parser implements IParser {
     enterNode(node);
 
     TokenType tokenType = lexer.getToken().getType();
-    ASTNode childNode = null;
     if (ASTVarDeclNode.getSelectionSet().contains(tokenType)) {
-      childNode = parseVarDeclStmt();
+      parseVarDeclStmt();
     } else if (ASTAssignStmtNode.getSelectionSet().contains(tokenType)) {
-      childNode = parseAssignStmt();
-    } else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)){
-      childNode = parseWhileLoopStmt();
+      parseAssignStmt();
+    } else if (ASTReturnStmtNode.getSelectionSet().contains(tokenType)) {
+      parseReturnStmt();
+    } else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)) {
+      parseWhileLoopStmt();
     } else if (ASTDoWhileLoopNode.getSelectionSet().contains(tokenType)) {
-      childNode = parseDoWhileLoop();
+      parseDoWhileLoop();
     } else if (ASTForLoopNode.getSelectionSet().contains(lexer.getToken().getType())) {
-      childNode = parseForLoop();
+      parseForLoop();
+    } else if (ASTSwitchCaseStmtNode.getSelectionSet().contains(tokenType)) {
+      parseSwitchCaseStmt();
     } else if (ASTAnonymousBlockStmtNode.getSelectionSet().contains(tokenType)) {
-      childNode = parseAnonymousBlockStmt();
+      parseAnonymousBlockStmt();
+    } else if (ASTFunctionCallNode.getSelectionSet().contains(tokenType)) {
+      parseFctCall();
     }
     // ToDo(Marc): Add others
-    node.addChild(childNode);
 
     exitNode(node);
     return node;
@@ -96,12 +189,10 @@ public class Parser implements IParser {
     ASTVarDeclNode node = new ASTVarDeclNode();
     enterNode(node);
 
-    ASTTypeNode typeNode = parseType();
-    node.addChild(typeNode);
+    parseType();
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_ASSIGN);
-    ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
-    node.addChild(ternaryExprNode);
+    parseTernaryExpr();
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
@@ -112,8 +203,7 @@ public class Parser implements IParser {
     ASTAssignStmtNode node = new ASTAssignStmtNode();
     enterNode(node);
 
-    ASTAssignExprNode assignExprNode = parseAssignExpr();
-    node.addChild(assignExprNode);
+    parseAssignExpr();
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
@@ -129,8 +219,7 @@ public class Parser implements IParser {
       lexer.expect(TokenType.TOK_IDENTIFIER);
       lexer.expect(TokenType.TOK_ASSIGN);
     }
-    ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
-    node.addChild(ternaryExprNode);
+    parseTernaryExpr();
 
     exitNode(node);
     return node;
@@ -142,8 +231,7 @@ public class Parser implements IParser {
 
     lexer.expect(TokenType.TOK_PRINT);
     lexer.expect(TokenType.TOK_LPAREN);
-    ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
-    node.addChild(ternaryExprNode);
+    parseTernaryExpr();
     lexer.expect(TokenType.TOK_RPAREN);
 
     exitNode(node);
@@ -177,70 +265,128 @@ public class Parser implements IParser {
     } else {
       throw new RuntimeException("Unexpected token type: " + tokenType);
     }
+    lexer.expect(tokenType);
+
+    exitNode(node);
+    return node;
+  }
+
+  /**
+   * Parses a while loop
+   *
+   * @return the AST node representing the while loop statement
+   * Rule: whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
+   */
+  public ASTWhileLoopStmtNode parseWhileLoopStmt() {
+
+    ASTWhileLoopStmtNode node = new ASTWhileLoopStmtNode();
+    enterNode(node);
+    lexer.expect(TokenType.TOK_WHILE);
+    lexer.expect(TokenType.TOK_LPAREN);
+    parseTernaryExpr();
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+    parseStmtLst();
+    lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
     return node;
   }
 
 
-    /**
-     * Parses a while loop statement.
-     *
-     * @return the AST node representing the while loop statement
-     * Rule : whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
-     */
-    public ASTWhileLoopStmtNode parseWhileLoopStmt() {
+  public ASTDoWhileLoopNode parseDoWhileLoop() {
+    ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+    enterNode(node);
 
-      ASTWhileLoopStmtNode node = new ASTWhileLoopStmtNode();
-      enterNode(node);
-      lexer.expect(TokenType.TOK_WHILE);
-      lexer.expect(TokenType.TOK_LPAREN);
+    lexer.expect(TokenType.TOK_DO);
+    lexer.expect(TokenType.TOK_LBRACE);
+    parseStmtLst();
+    lexer.expect(TokenType.TOK_RBRACE);
+    lexer.expect(TokenType.TOK_WHILE);
+    lexer.expect(TokenType.TOK_LPAREN);
+    parseTernaryExpr();
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_SEMICOLON);
 
-      ASTTernaryExprNode ternaryExprNode = parseTernaryExpr();
-      node.addChild(ternaryExprNode);
+    exitNode(node);
+    return node;
+  }
 
-      lexer.expect(TokenType.TOK_RPAREN);
-      lexer.expect(TokenType.TOK_LBRACE);
+  public ASTForLoopNode parseForLoop() {
+    ASTForLoopNode node = new ASTForLoopNode();
+    enterNode(node);
 
-      ASTStmtLstNode stmtLst = parseStmtLst();
-      node.addChild(stmtLst);
+    lexer.expect(TokenType.TOK_FOR);
+    lexer.expect(TokenType.TOK_LPAREN);
+    parseVarDeclStmt();
+    parseTernaryExpr();
+    lexer.expect(TokenType.TOK_SEMICOLON);
+    parseAssignExpr();
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+    parseStmtLst();
+    lexer.expect(TokenType.TOK_RBRACE);
 
-      lexer.expect(TokenType.TOK_RBRACE);
+    exitNode(node);
+    return node;
+  }
 
-      exitNode(node);
-      return node;
+  public ASTSwitchCaseStmtNode parseSwitchCaseStmt() {
+    ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_SWITCH);
+    lexer.expect(TokenType.TOK_LPAREN);
+    parseTernaryExpr();
+    lexer.expect(TokenType.TOK_RPAREN);
+    lexer.expect(TokenType.TOK_LBRACE);
+
+    do {
+      parseCaseStmt();
+    } while (lexer.getToken().getType() == TokenType.TOK_CASE);
+
+    if (lexer.getToken().getType() == TokenType.TOK_DEFAULT) {
+      parseDefaultStmt();
     }
 
+    lexer.expect(TokenType.TOK_RBRACE);
 
-    public ASTDoWhileLoopNode parseDoWhileLoop() {
-        ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
-        enterNode(node);
+    exitNode(node);
+    return node;
+  }
 
-        lexer.expect(TokenType.TOK_DO);
-        lexer.expect(TokenType.TOK_LBRACE);
-        ASTStmtLstNode stmtLst = node.getBody();
-        node.addChild(stmtLst);
-        lexer.expect(TokenType.TOK_RBRACE);
-        lexer.expect(TokenType.TOK_WHILE);
-        lexer.expect(TokenType.TOK_LPAREN);
-        ASTTernaryExprNode ternaryExprNode =  node.getCondition();
-        node.addChild(ternaryExprNode);
-        lexer.expect(TokenType.TOK_RPAREN);
-        lexer.expect(TokenType.TOK_SEMICOLON);
+  public ASTCaseStmtNode parseCaseStmt() {
+    ASTCaseStmtNode node = new ASTCaseStmtNode();
+    enterNode(node);
 
-        exitNode(node);
-        return node;
-    }
+    lexer.expect(TokenType.TOK_CASE);
+    parseLiteral();
+    lexer.expect(TokenType.TOK_COLON);
+    parseStmtLst();
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTDefaultStmtNode parseDefaultStmt() {
+    ASTDefaultStmtNode node = new ASTDefaultStmtNode();
+    enterNode(node);
+
+    lexer.expect(TokenType.TOK_DEFAULT);
+    lexer.expect(TokenType.TOK_COLON);
+    parseStmtLst();
+
+    exitNode(node);
+    return node;
+  }
 
   public ASTAnonymousBlockStmtNode parseAnonymousBlockStmt() {
     ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
     enterNode(node);
 
     lexer.expect(TokenType.TOK_LBRACE);
-    ASTStmtLstNode stmtLst = parseStmtLst();
+    parseStmtLst();
     lexer.expect(TokenType.TOK_RBRACE);
-
-    node.addChild(stmtLst);
 
     exitNode(node);
     return node;
@@ -250,20 +396,17 @@ public class Parser implements IParser {
     ASTTernaryExprNode node = new ASTTernaryExprNode();
     enterNode(node);
 
-    ASTEqualityExprNode condition = parseEqualityExpr();
-    node.addChild(condition);
+    parseEqualityExpr();
 
     TokenType tokenType = lexer.getToken().getType();
     if (tokenType == TokenType.TOK_QUESTION_MARK) {
       node.setExpanded(true);
 
       lexer.expect(TokenType.TOK_QUESTION_MARK);
-      ASTEqualityExprNode thenExpr = parseEqualityExpr();
-      node.addChild(thenExpr);
+      parseEqualityExpr();
 
       lexer.expect(TokenType.TOK_COLON);
-      ASTEqualityExprNode elseExpr = parseEqualityExpr();
-      node.addChild(elseExpr);
+      parseEqualityExpr();
     }
 
     exitNode(node);
@@ -274,14 +417,12 @@ public class Parser implements IParser {
     ASTEqualityExprNode node = new ASTEqualityExprNode();
     enterNode(node);
 
-    ASTAdditiveExprNode lhs = parseAdditiveExpr();
-    node.addChild(lhs);
+    parseAdditiveExpr();
 
     TokenType tokenType = lexer.getToken().getType();
     if (tokenType == TokenType.TOK_EQUAL || tokenType == TokenType.TOK_NOT_EQUAL) {
       lexer.expectOneOf(Set.of(TokenType.TOK_EQUAL, TokenType.TOK_NOT_EQUAL));
-      ASTAdditiveExprNode rhs = parseAdditiveExpr();
-      node.addChild(rhs);
+      parseAdditiveExpr();
     }
 
     exitNode(node);
@@ -292,13 +433,11 @@ public class Parser implements IParser {
     ASTAdditiveExprNode node = new ASTAdditiveExprNode();
     enterNode(node);
 
-    ASTMultiplicativeExprNode lhs = parseMultiplicativeExpr();
-    node.addChild(lhs);
+    parseMultiplicativeExpr();
 
     while (Set.of(TokenType.TOK_PLUS, TokenType.TOK_MINUS).contains(lexer.getToken().getType())) {
       lexer.expectOneOf(Set.of(TokenType.TOK_PLUS, TokenType.TOK_MINUS));
-      ASTMultiplicativeExprNode rhs = parseMultiplicativeExpr();
-      node.addChild(rhs);
+      parseMultiplicativeExpr();
     }
 
     exitNode(node);
@@ -309,13 +448,11 @@ public class Parser implements IParser {
     ASTMultiplicativeExprNode node = new ASTMultiplicativeExprNode();
     enterNode(node);
 
-    ASTAtomicExprNode lhs = parseAtomicExpr();
-    node.addChild(lhs);
+    parseAtomicExpr();
 
     while (Set.of(TokenType.TOK_MUL, TokenType.TOK_DIV).contains(lexer.getToken().getType())) {
       lexer.expectOneOf(Set.of(TokenType.TOK_MUL, TokenType.TOK_DIV));
-      ASTAtomicExprNode rhs = parseAtomicExpr();
-      node.addChild(rhs);
+      parseAtomicExpr();
     }
 
     exitNode(node);
@@ -327,21 +464,20 @@ public class Parser implements IParser {
     enterNode(node);
 
     TokenType tokenType = lexer.getToken().getType();
-    ASTNode childNode = null;
     if (ASTLiteralNode.getSelectionSet().contains(tokenType)) {
-      childNode = parseLiteral();
+      parseLiteral();
+    } else if (ASTFunctionCallNode.getSelectionSet().contains(tokenType)) {
+      parseFctCall();
     } else if (ASTPrintBuiltinCallNode.getSelectionSet().contains(tokenType)) {
-      childNode = parsePrintBuiltinCall();
+      parsePrintBuiltinCall();
     } else if (tokenType == TokenType.TOK_IDENTIFIER) {
       node.setVariableName(lexer.getToken().getText());
       lexer.expect(TokenType.TOK_IDENTIFIER);
     } else if (tokenType == TokenType.TOK_LPAREN) {
       lexer.expect(TokenType.TOK_LPAREN);
-      childNode = parseTernaryExpr();
+      parseTernaryExpr();
       lexer.expect(TokenType.TOK_RPAREN);
     }
-    // ToDo(Marc): Add others
-    node.addChild(childNode);
 
     exitNode(node);
     return node;
@@ -423,37 +559,5 @@ public class Parser implements IParser {
     // Remove the node from the stack
     parentStack.pop();
   }
-
-  public ASTForLoopNode parseForLoop() {
-    ASTForLoopNode node = new ASTForLoopNode();
-    enterNode(node);
-
-
-    lexer.expect(TokenType.TOK_FOR);
-    lexer.expect(TokenType.TOK_LPAREN);
-
-    ASTVarDeclNode varNode = parseVarDeclStmt();
-    node.addChild(varNode);
-
-    ASTTernaryExprNode ternaryNode = parseTernaryExpr();
-    node.addChild(ternaryNode);
-
-    lexer.expect(TokenType.TOK_SEMICOLON);
-
-    ASTAssignExprNode assignNode = parseAssignExpr();
-    node.addChild(assignNode);
-
-    lexer.expect(TokenType.TOK_RPAREN);
-    lexer.expect(TokenType.TOK_LBRACE);
-
-    ASTStmtLstNode stmtlNode = parseStmtLst();
-    node.addChild(stmtlNode);
-
-    lexer.expect(TokenType.TOK_RBRACE);
-
-    exitNode(node);
-    return node;
-  }
-
 
 }

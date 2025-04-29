@@ -60,7 +60,7 @@ public class Lexer implements ILexer {
     stateMachines.add(new PunctuationStateMachine("/", TokenType.TOK_DIV));
     stateMachines.add(new PunctuationStateMachine(":", TokenType.TOK_COLON));
     stateMachines.add(new PunctuationStateMachine("?", TokenType.TOK_QUESTION_MARK));
-
+    stateMachines.add(new PunctuationStateMachine(";", TokenType.TOK_SEMICOLON));
 
     stateMachines.add(new DoubleLiteralStateMachine());
     stateMachines.add(new IntegerLiteralStateMachine());
@@ -106,9 +106,10 @@ public class Lexer implements ILexer {
     for (StateMachine stateMachine : stateMachines)
       stateMachine.reset();
 
-    // Skip any whitespaces
-    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar()))
-      getCurrentCharAndCodeLoc();
+    // Skip whitespaces and comments
+    skipWhitespaces();
+    skipComments();
+    skipWhitespaces(); // This is required to eliminate whitespaces after comments
 
     CodeLoc tokenCodeLoc = null;
 
@@ -187,5 +188,19 @@ public class Lexer implements ILexer {
   @Override
   public CodeLoc getCodeLoc() {
     return reader.getCodeLoc();
+  }
+
+  private void skipComments() {
+    if (peekChar() == '#') {
+      do {
+        getCurrentCharAndCodeLoc();
+      } while ((peekChar() != '\n'));
+      getCurrentCharAndCodeLoc();
+    }
+  }
+
+  private void skipWhitespaces() {
+    while (!(reader.isEOF() && inputBuffer.isEmpty()) && Character.isWhitespace(peekChar()))
+      getCurrentCharAndCodeLoc();
   }
 }
