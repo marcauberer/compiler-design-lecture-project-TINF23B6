@@ -195,8 +195,17 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 4
 
-  // Team 5
+  // Team 5 (Das Beste)
+  @Override
+  public ASTNode visitForLoop(TInfParser.ForLoopContext ctx) {
+    ASTForLoopNode node = new ASTForLoopNode();
+    enterNode(node, ctx);
 
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
   // Team 6
 
   // Team 7
