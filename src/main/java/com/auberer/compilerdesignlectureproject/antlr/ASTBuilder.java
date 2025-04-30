@@ -24,6 +24,8 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     return node;
   }
 
+
+
   @Override
   public ASTNode visitStmtLst(TInfParser.StmtLstContext ctx) {
     ASTStmtLstNode node = new ASTStmtLstNode();
@@ -85,6 +87,17 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
   // Team 3
 
   // Team 4
+  @Override
+  public ASTNode visitArgLst(TInfParser.ArgLstContext ctx){
+    ASTArgLstNode node = new ASTArgLstNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
 
   // Team 5
 

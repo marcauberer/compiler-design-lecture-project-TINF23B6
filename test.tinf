@@ -3,6 +3,10 @@ double getDbl := (double x) {
     ret 4.567 + x;
 }
 
+int getTheNumber := () {
+    ret 5;
+}
+
 int main := () {
     int i = 3;
 
