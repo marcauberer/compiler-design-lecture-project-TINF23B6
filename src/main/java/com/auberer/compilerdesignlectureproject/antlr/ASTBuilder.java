@@ -6,8 +6,6 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.reader.CodeLoc;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
