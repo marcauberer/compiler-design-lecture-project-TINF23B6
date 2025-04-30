@@ -98,7 +98,60 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     return node;
   }
 
+  @Override
+  public ASTNode visitFctCall(TInfParser.FctCallContext ctx){
+    ASTFunctionCallNode node = new ASTFunctionCallNode();
+    enterNode(node, ctx);
 
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitFctDef(TInfParser.FctDefContext ctx){
+    ASTFunctionDefNode node = new ASTFunctionDefNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitParamLst(TInfParser.ParamLstContext ctx){
+    ASTParamLstNode node = new ASTParamLstNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitParam(TInfParser.ParamContext ctx){
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitReturnStmt(TInfParser.ReturnStmtContext ctx){
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
   // Team 5
 
   // Team 6
