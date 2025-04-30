@@ -92,6 +92,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 6
 
+  @Override
   public ASTNode visitSwitchCaseStmt (TInfParser.SwitchCaseStmtContext ctx) {
     ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
     enterNode(node, ctx);
@@ -102,6 +103,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     return node;
   }
 
+  @Override
   public ASTNode visitCaseBlockLst (TInfParser.CaseBlockLstContext ctx) {
     ASTCaseStmtNode node = new ASTCaseStmtNode();
     enterNode(node, ctx);
@@ -112,6 +114,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     return node;
   }
 
+  @Override
   public ASTNode visitCaseBlock (TInfParser.CaseBlockContext ctx) {
     ASTCaseStmtNode node = new ASTCaseStmtNode();
     enterNode(node, ctx);
@@ -122,6 +125,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     return node;
   }
 
+  @Override
   public ASTNode visitDefaultBlock (TInfParser.DefaultBlockContext ctx) {
     ASTDefaultStmtNode node = new ASTDefaultStmtNode();
     enterNode(node, ctx);
