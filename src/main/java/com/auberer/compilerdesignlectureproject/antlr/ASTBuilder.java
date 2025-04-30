@@ -91,6 +91,16 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
   // Team 6
 
   // Team 7
+  @Override
+  public ASTNode visitAnonymousBlockStmt(TInfParser.AnonymousBlockStmtContext ctx) {
+    ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
 
   private void enterNode(ASTNode node, ParserRuleContext ctx) {
     // Attach CodeLoc to AST node
