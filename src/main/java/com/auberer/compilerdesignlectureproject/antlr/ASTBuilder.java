@@ -6,6 +6,8 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.reader.CodeLoc;
 import org.antlr.v4.runtime.ParserRuleContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
@@ -89,6 +91,46 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
   // Team 5
 
   // Team 6
+
+  public ASTNode visitSwitchCaseStmt (TInfParser.SwitchCaseStmtContext ctx) {
+    ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTNode visitCaseBlockLst (TInfParser.CaseBlockLstContext ctx) {
+    ASTCaseStmtNode node = new ASTCaseStmtNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTNode visitCaseBlock (TInfParser.CaseBlockContext ctx) {
+    ASTCaseStmtNode node = new ASTCaseStmtNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  public ASTNode visitDefaultBlock (TInfParser.DefaultBlockContext ctx) {
+    ASTDefaultStmtNode node = new ASTDefaultStmtNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
 
   // Team 7
 
