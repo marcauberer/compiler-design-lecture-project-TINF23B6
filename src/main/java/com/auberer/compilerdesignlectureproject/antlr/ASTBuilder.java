@@ -80,6 +80,36 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 1
 
+    public ASTNode visitIfStmt(TInfParser.IfStmtContext ctx) {
+      ASTIfStmtNode node = new ASTIfStmtNode();
+      enterNode(node, ctx);
+
+      visitChildren(ctx);
+
+      exitNode(node);
+      return node;
+    }
+
+    public ASTNode visitIfBody(TInfParser.IfBodyContext ctx) {
+      ASTIfBodyNode node = new ASTIfBodyNode();
+      enterNode(node, ctx);
+
+      visitChildren(ctx);
+
+      exitNode(node);
+      return node;
+    }
+
+    public ASTNode visitElseStmt(TInfParser.ElseStmtContext ctx) {
+      ASTElseStmtNode node = new ASTElseStmtNode();
+      enterNode(node, ctx);
+
+      visitChildren(ctx);
+
+      exitNode(node);
+      return node;
+    }
+
   // Team 2
 
   // Team 3
