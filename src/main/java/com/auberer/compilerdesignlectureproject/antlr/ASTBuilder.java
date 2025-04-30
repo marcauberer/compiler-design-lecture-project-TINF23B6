@@ -193,15 +193,6 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 3
 
-//    lexer.expect(TokenType.TOK_DO);
-//    lexer.expect(TokenType.TOK_LBRACE);
-//  parseStmtLst();
-//    lexer.expect(TokenType.TOK_RBRACE);
-//    lexer.expect(TokenType.TOK_WHILE);
-//    lexer.expect(TokenType.TOK_LPAREN);
-//  parseTernaryExpr();
-//    lexer.expect(TokenType.TOK_RPAREN);
-//    lexer.expect(TokenType.TOK_SEMICOLON);
 @Override
 public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
   ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
