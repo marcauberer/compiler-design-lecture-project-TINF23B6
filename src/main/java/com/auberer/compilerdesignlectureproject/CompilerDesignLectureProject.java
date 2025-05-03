@@ -1,10 +1,16 @@
 package com.auberer.compilerdesignlectureproject;
 
+import com.auberer.compilerdesignlectureproject.antlr.ASTBuilder;
+import com.auberer.compilerdesignlectureproject.antlr.gen.TInfLexer;
+import com.auberer.compilerdesignlectureproject.antlr.gen.TInfParser;
 import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTVisualizer;
 import com.auberer.compilerdesignlectureproject.lexer.Lexer;
 import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
+import org.antlr.v4.runtime.ANTLRFileStream;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +25,7 @@ public class CompilerDesignLectureProject {
   public static void main(String[] args) {
     Options cliOptions = new Options()
         .addOption("h", "help", false, "Print this help text")
+        .addOption("antlr", "use-antlr-parser", false, "Use ANTLR generated parser")
         .addOption("tokens", "dump-tokens", false, "Dump the lexed tokens")
         .addOption("ast", "dump-ast", false, "Dump the AST as dot file");
 
@@ -82,6 +89,19 @@ public class CompilerDesignLectureProject {
   }
 
   static ASTEntryNode parseWithANTLRParser(Path path) throws IOException {
-    return null;
+    // Setup ANTLR
+    ANTLRInputStream input = new ANTLRFileStream(path.toString());
+
+    // Lex
+    TInfLexer lexer = new TInfLexer(input);
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+    // Parse
+    TInfParser parser = new TInfParser(tokens);
+    TInfParser.EntryContext entryContext = parser.entry();
+
+    // Transform parsetree to AST
+    ASTBuilder astBuilder = new ASTBuilder();
+    return (ASTEntryNode) astBuilder.visitEntry(entryContext);
   }
 }
