@@ -61,6 +61,7 @@ public class Parser implements IParser {
     }else{
       throw new RuntimeException("Unexpected token type: " + token.getType());
     }
+    lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_COLON);
     lexer.expect(TokenType.TOK_ASSIGN);
     lexer.expect(TokenType.TOK_LPAREN);
@@ -88,6 +89,7 @@ public class Parser implements IParser {
     }else{
       throw new RuntimeException("Unexpected token type: " + token.getType());
     }
+    lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_LPAREN);
     Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
     if (selectionSet.contains(lexer.getToken().getType())) {
