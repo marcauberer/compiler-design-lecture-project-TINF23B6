@@ -4,14 +4,13 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 public class ASTLiteralNode extends ASTNode {
 
-  enum LiteralType {
+  public enum LiteralType {
     INT,
     DOUBLE,
     STRING,

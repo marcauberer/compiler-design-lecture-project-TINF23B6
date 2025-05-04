@@ -1,4 +1,5 @@
 usage: tinf-compiler args...
- -ast,--dump-ast         Dump the AST as dot file
- -h,--help               Print this help text
- -tokens,--dump-tokens   Dump the lexed tokens
+ -antlr,--use-antlr-parser   Use ANTLR generated parser
+ -ast,--dump-ast             Dump the AST as dot file
+ -h,--help                   Print this help text
+ -tokens,--dump-tokens       Dump the lexed tokens
