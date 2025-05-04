@@ -103,7 +103,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTFunctionCallNode node = new ASTFunctionCallNode();
     enterNode(node, ctx);
 
-    node.setIdentifier(ctx.getText());
+    node.setIdentifier(ctx.IDENTIFIER().getText());
     visitChildren(ctx);
 
     exitNode(node);
@@ -115,7 +115,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTFunctionDefNode node = new ASTFunctionDefNode();
     enterNode(node, ctx);
 
-    node.setIdentifier(ctx.getText());
+    node.setIdentifier(ctx.IDENTIFIER().getText());
     visitChildren(ctx);
 
     exitNode(node);
