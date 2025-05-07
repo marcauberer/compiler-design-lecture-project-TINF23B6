@@ -14,4 +14,6 @@ public class ASTReturnStmtNode extends ASTNode {
   public static Set<TokenType> getSelectionSet() {
     return Set.of(TokenType.TOK_RET);
   }
+
+  public ASTTernaryExprNode getReturnExpr() { return getChild(ASTTernaryExprNode.class,0);}
 }
