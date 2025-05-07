@@ -13,4 +13,8 @@ public class ASTIfBodyNode extends ASTNode {
   public static Set<TokenType> getSelectionSet() {
     return Set.of(TokenType.TOK_RBRACE);
   }
+
+  public ASTStmtLstNode getStmtLst() {
+    return getChild(ASTStmtLstNode.class, 0);
+  }
 }
