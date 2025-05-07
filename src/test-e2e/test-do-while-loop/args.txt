@@ -1,0 +1,1 @@
+--dump-ast ./src/test-e2e/test-do-while-loop/source.tinf

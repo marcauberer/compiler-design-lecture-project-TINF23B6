@@ -1,0 +1,57 @@
+Compiling with ANTLR parser...
+Dumping AST ...
+digraph AST {
+ L1C0_ASTEntryNode [label="ASTEntryNode"];
+ L1C0_ASTFunctionDefNode [label="ASTFunctionDefNode"];
+ L1C0_ASTEntryNode -> L1C0_ASTFunctionDefNode;
+ L1C0_ASTTypeNode [label="ASTTypeNode"];
+ L1C0_ASTFunctionDefNode -> L1C0_ASTTypeNode;
+ L2C0_ASTStmtLstNode [label="ASTStmtLstNode"];
+ L1C0_ASTFunctionDefNode -> L2C0_ASTStmtLstNode;
+ L2C0_ASTStmtNode [label="ASTStmtNode"];
+ L2C0_ASTStmtLstNode -> L2C0_ASTStmtNode;
+ L2C0_ASTDoWhileLoopNode [label="ASTDoWhileLoopNode"];
+ L2C0_ASTStmtNode -> L2C0_ASTDoWhileLoopNode;
+ L3C8_ASTStmtLstNode [label="ASTStmtLstNode"];
+ L2C0_ASTDoWhileLoopNode -> L3C8_ASTStmtLstNode;
+ L3C8_ASTStmtNode [label="ASTStmtNode"];
+ L3C8_ASTStmtLstNode -> L3C8_ASTStmtNode;
+ L3C8_ASTAssignStmtNode [label="ASTAssignStmtNode"];
+ L3C8_ASTStmtNode -> L3C8_ASTAssignStmtNode;
+ L3C8_ASTAssignExprNode [label="ASTAssignExprNode"];
+ L3C8_ASTAssignStmtNode -> L3C8_ASTAssignExprNode;
+ L3C12_ASTTernaryExprNode [label="ASTTernaryExprNode"];
+ L3C8_ASTAssignExprNode -> L3C12_ASTTernaryExprNode;
+ L3C12_ASTEqualityExprNode [label="ASTEqualityExprNode"];
+ L3C12_ASTTernaryExprNode -> L3C12_ASTEqualityExprNode;
+ L3C12_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L3C12_ASTEqualityExprNode -> L3C12_ASTAdditiveExprNode;
+ L3C12_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L3C12_ASTAdditiveExprNode -> L3C12_ASTMultiplicativeExprNode;
+ L3C12_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L3C12_ASTMultiplicativeExprNode -> L3C12_ASTAtomicExprNode;
+ L3C16_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L3C12_ASTMultiplicativeExprNode -> L3C16_ASTAtomicExprNode;
+ L3C16_ASTLiteralNode [label="ASTLiteralNode"];
+ L3C16_ASTAtomicExprNode -> L3C16_ASTLiteralNode;
+ L4C13_ASTTernaryExprNode [label="ASTTernaryExprNode"];
+ L2C0_ASTDoWhileLoopNode -> L4C13_ASTTernaryExprNode;
+ L4C13_ASTEqualityExprNode [label="ASTEqualityExprNode"];
+ L4C13_ASTTernaryExprNode -> L4C13_ASTEqualityExprNode;
+ L4C13_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L4C13_ASTEqualityExprNode -> L4C13_ASTAdditiveExprNode;
+ L4C13_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L4C13_ASTAdditiveExprNode -> L4C13_ASTMultiplicativeExprNode;
+ L4C13_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L4C13_ASTMultiplicativeExprNode -> L4C13_ASTAtomicExprNode;
+ L4C18_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L4C13_ASTEqualityExprNode -> L4C18_ASTAdditiveExprNode;
+ L4C18_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L4C18_ASTAdditiveExprNode -> L4C18_ASTMultiplicativeExprNode;
+ L4C18_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L4C18_ASTMultiplicativeExprNode -> L4C18_ASTAtomicExprNode;
+ L4C18_ASTLiteralNode [label="ASTLiteralNode"];
+ L4C18_ASTAtomicExprNode -> L4C18_ASTLiteralNode;
+}
+
+Compilation successful!
