@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,4 +15,6 @@ public class ASTArgLstNode extends ASTNode {
     public static Set<TokenType> getSelectionSet() {
         return ASTAtomicExprNode.getSelectionSet();
     }
+
+    public ArrayList<ASTAtomicExprNode> getAtomicExp() { return getChildren(ASTAtomicExprNode.class);}
 }
