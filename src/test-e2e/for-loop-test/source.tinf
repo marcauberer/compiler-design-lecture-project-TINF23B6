@@ -1,0 +1,21 @@
+# Function def
+double getDbl := (double x) {
+    ret 4.567 + x;
+}
+
+int main := () {
+    int i = 3;
+
+
+    # For loop
+    for (int j = 0; i != 10; i = i + 1) {
+        i = i + 1;
+    }
+
+
+    # Function call
+    double d = call getDbl(5.42);
+    print(d);
+
+    ret 0;
+}
