@@ -17,4 +17,8 @@ public class ASTSwitchCaseStmtNode extends ASTNode {
         selectionSet.add(TokenType.TOK_SWITCH);
         return selectionSet;
     }
+
+    public ASTSwitchCaseStmtNode getStmntLst() {
+        return getChild(ASTSwitchCaseStmtNode.class, 0);
+    }
 }
