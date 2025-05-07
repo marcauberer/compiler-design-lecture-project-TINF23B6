@@ -1,0 +1,10 @@
+int main := () {
+
+   {
+      int a = 2;
+      double b = 3.0;
+   }
+
+   int c = 4;
+
+}
