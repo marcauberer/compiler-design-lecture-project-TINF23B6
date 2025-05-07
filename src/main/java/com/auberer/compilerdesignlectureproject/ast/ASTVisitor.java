@@ -111,4 +111,8 @@ public class ASTVisitor<T> {
   public T visitDefaultStmt(ASTDefaultStmtNode node) {
     return visitChildren(node);
   }
+
+  public T visitReturnStmt(ASTReturnStmtNode node) {
+    return visitChildren(node);
+  }
 }
