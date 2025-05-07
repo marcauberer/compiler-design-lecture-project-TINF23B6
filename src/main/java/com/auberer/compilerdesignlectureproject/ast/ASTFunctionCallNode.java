@@ -11,6 +11,7 @@ import java.util.Set;
 public class ASTFunctionCallNode extends ASTNode{
 
     private String identifier;
+    private boolean hasArguments;
 
     @Override
     public <T> T accept(ASTVisitor<T> visitor) {
@@ -21,5 +22,6 @@ public class ASTFunctionCallNode extends ASTNode{
         return Set.of(TokenType.TOK_CALL);
     }
 
+    public ASTArgLstNode getArguments() {return getChild(ASTArgLstNode.class,0);}
 
 }
