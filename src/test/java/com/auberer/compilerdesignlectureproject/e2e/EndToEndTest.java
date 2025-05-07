@@ -51,7 +51,9 @@ public class EndToEndTest {
 
     try {
       String args = Files.readString(argsFile.toPath());
-      String expectedOutput = Files.readString(expectedOutputFile.toPath()).trim();
+      String expectedOutput = Files.readString(expectedOutputFile.toPath())
+          .trim()
+          .replaceAll("\r", "");
 
       List<String> command = new ArrayList<>();
       command.add(System.getProperty("java.home") + "/bin/java");
@@ -64,7 +66,9 @@ public class EndToEndTest {
       pb.redirectErrorStream(true);
       Process process = pb.start();
 
-      String actualOutput = new String(process.getInputStream().readAllBytes()).trim();
+      String actualOutput = new String(process.getInputStream().readAllBytes())
+          .trim()
+          .replaceAll("\r", "");
       process.waitFor();
 
       assertEquals(expectedOutput, actualOutput, "Mismatch in " + testDir.getName());

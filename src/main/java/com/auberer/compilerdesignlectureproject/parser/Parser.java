@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.parser;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.ILexer;
+import com.auberer.compilerdesignlectureproject.lexer.Token;
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +55,12 @@ public class Parser implements IParser {
     enterNode(node);
 
     parseType();
+    Token token = lexer.getToken();
+    if (token.getType() == TokenType.TOK_IDENTIFIER) {
+      node.setIdentifier(token.getText());
+    }else{
+      throw new RuntimeException("Unexpected token type: " + token.getType());
+    }
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_COLON);
     lexer.expect(TokenType.TOK_ASSIGN);
@@ -76,6 +83,12 @@ public class Parser implements IParser {
     enterNode(node);
 
     lexer.expect(TokenType.TOK_CALL);
+    Token token = lexer.getToken();
+    if (token.getType() == TokenType.TOK_IDENTIFIER) {
+      node.setIdentifier(token.getText());
+    }else{
+      throw new RuntimeException("Unexpected token type: " + token.getType());
+    }
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_LPAREN);
     Set<TokenType> selectionSet = ASTArgLstNode.getSelectionSet();
@@ -83,7 +96,6 @@ public class Parser implements IParser {
       parseArgLst();
     }
     lexer.expect(TokenType.TOK_RPAREN);
-
     exitNode(node);
     return node;
   }

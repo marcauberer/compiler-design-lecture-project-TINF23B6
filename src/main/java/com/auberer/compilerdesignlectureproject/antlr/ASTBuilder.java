@@ -3,7 +3,6 @@ package com.auberer.compilerdesignlectureproject.antlr;
 import com.auberer.compilerdesignlectureproject.antlr.gen.TInfBaseVisitor;
 import com.auberer.compilerdesignlectureproject.antlr.gen.TInfParser;
 import com.auberer.compilerdesignlectureproject.ast.*;
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import com.auberer.compilerdesignlectureproject.reader.CodeLoc;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -151,35 +150,35 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 1
 
-    public ASTNode visitIfStmt(TInfParser.IfStmtContext ctx) {
-      ASTIfStmtNode node = new ASTIfStmtNode();
-      enterNode(node, ctx);
+  public ASTNode visitIfStmt(TInfParser.IfStmtContext ctx) {
+    ASTIfStmtNode node = new ASTIfStmtNode();
+    enterNode(node, ctx);
 
-      visitChildren(ctx);
+    visitChildren(ctx);
 
-      exitNode(node);
-      return node;
-    }
+    exitNode(node);
+    return node;
+  }
 
-    public ASTNode visitIfBody(TInfParser.IfBodyContext ctx) {
-      ASTIfBodyNode node = new ASTIfBodyNode();
-      enterNode(node, ctx);
+  public ASTNode visitIfBody(TInfParser.IfBodyContext ctx) {
+    ASTIfBodyNode node = new ASTIfBodyNode();
+    enterNode(node, ctx);
 
-      visitChildren(ctx);
+    visitChildren(ctx);
 
-      exitNode(node);
-      return node;
-    }
+    exitNode(node);
+    return node;
+  }
 
-    public ASTNode visitElseStmt(TInfParser.ElseStmtContext ctx) {
-      ASTElseStmtNode node = new ASTElseStmtNode();
-      enterNode(node, ctx);
+  public ASTNode visitElseStmt(TInfParser.ElseStmtContext ctx) {
+    ASTElseStmtNode node = new ASTElseStmtNode();
+    enterNode(node, ctx);
 
-      visitChildren(ctx);
+    visitChildren(ctx);
 
-      exitNode(node);
-      return node;
-    }
+    exitNode(node);
+    return node;
+  }
 
   // Team 2
   @Override
@@ -193,22 +192,89 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   // Team 3
 
-@Override
-public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
-  ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
+  @Override
+  public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
+    ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
 
-  enterNode(node, ctx);
+    enterNode(node, ctx);
 
-  visitChildren(ctx);
+    visitChildren(ctx);
 
-  exitNode(node);
-  return node;
-}
-
+    exitNode(node);
+    return node;
+  }
 
   // Team 4
 
-  // Team 5 (Das Beste)
+  @Override
+  public ASTNode visitArgLst(TInfParser.ArgLstContext ctx) {
+    ASTArgLstNode node = new ASTArgLstNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitFctCall(TInfParser.FctCallContext ctx) {
+    ASTFunctionCallNode node = new ASTFunctionCallNode();
+    enterNode(node, ctx);
+
+    node.setIdentifier(ctx.IDENTIFIER().getText());
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitFctDef(TInfParser.FctDefContext ctx) {
+    ASTFunctionDefNode node = new ASTFunctionDefNode();
+    enterNode(node, ctx);
+
+    node.setIdentifier(ctx.IDENTIFIER().getText());
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitParamLst(TInfParser.ParamLstContext ctx) {
+    ASTParamLstNode node = new ASTParamLstNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitParam(TInfParser.ParamContext ctx) {
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  @Override
+  public ASTNode visitReturnStmt(TInfParser.ReturnStmtContext ctx) {
+    ASTParamNode node = new ASTParamNode();
+    enterNode(node, ctx);
+
+    visitChildren(ctx);
+
+    exitNode(node);
+    return node;
+  }
+
+  // Team 5
   @Override
   public ASTNode visitForLoop(TInfParser.ForLoopContext ctx) {
     ASTForLoopNode node = new ASTForLoopNode();
@@ -219,10 +285,11 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
     exitNode(node);
     return node;
   }
+
   // Team 6
 
   @Override
-  public ASTNode visitSwitchCaseStmt (TInfParser.SwitchCaseStmtContext ctx) {
+  public ASTNode visitSwitchCaseStmt(TInfParser.SwitchCaseStmtContext ctx) {
     ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
     enterNode(node, ctx);
 
@@ -233,7 +300,7 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
   }
 
   @Override
-  public ASTNode visitCaseBlockLst (TInfParser.CaseBlockLstContext ctx) {
+  public ASTNode visitCaseBlockLst(TInfParser.CaseBlockLstContext ctx) {
     ASTCaseStmtNode node = new ASTCaseStmtNode();
     enterNode(node, ctx);
 
@@ -244,7 +311,7 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
   }
 
   @Override
-  public ASTNode visitCaseBlock (TInfParser.CaseBlockContext ctx) {
+  public ASTNode visitCaseBlock(TInfParser.CaseBlockContext ctx) {
     ASTCaseStmtNode node = new ASTCaseStmtNode();
     enterNode(node, ctx);
 
@@ -255,7 +322,7 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
   }
 
   @Override
-  public ASTNode visitDefaultBlock (TInfParser.DefaultBlockContext ctx) {
+  public ASTNode visitDefaultBlock(TInfParser.DefaultBlockContext ctx) {
     ASTDefaultStmtNode node = new ASTDefaultStmtNode();
     enterNode(node, ctx);
 
@@ -266,6 +333,7 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
   }
 
   // Team 7
+
   @Override
   public ASTNode visitAnonymousBlockStmt(TInfParser.AnonymousBlockStmtContext ctx) {
     ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
@@ -385,7 +453,7 @@ public ASTNode visitDoWhileLoop(TInfParser.DoWhileLoopContext ctx) {
     if (!parentStack.isEmpty()) {
       // Make sure the node is not pushed twice
       assert parentStack.peek() != node;
-      // Link parent and chlid nodes, so we can traverse the tree
+      // Link parent and child nodes, so we can traverse the tree
       ASTNode parent = parentStack.peek();
       parent.addChild(node);
       node.setParent(parent);
