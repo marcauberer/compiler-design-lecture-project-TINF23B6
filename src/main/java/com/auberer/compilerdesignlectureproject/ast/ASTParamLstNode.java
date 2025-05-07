@@ -15,5 +15,5 @@ public class ASTParamLstNode extends ASTNode {
     return ASTTypeNode.getSelectionSet();
   }
 
-  public ArrayList<ASTParamNode> getParams() {return getChildren(ASTParamNode.class);}
+  public ArrayList<ASTParamNode> getParam() {return getChildren(ASTParamNode.class);}
 }
