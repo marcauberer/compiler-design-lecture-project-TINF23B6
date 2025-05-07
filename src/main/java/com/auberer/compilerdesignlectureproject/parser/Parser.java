@@ -323,8 +323,10 @@ public class Parser implements IParser {
 
     TokenType tokenType = lexer.getToken().getType();
     if (ASTIfStmtNode.getSelectionSet().contains(tokenType)) {
+      node.setContainsIfStmt(true);
       parseIfStmt();
     } else if (ASTIfBodyNode.getSelectionSet().contains(tokenType)) {
+      node.setContainsIfStmt(false);
       parseIfBody();
     }
 

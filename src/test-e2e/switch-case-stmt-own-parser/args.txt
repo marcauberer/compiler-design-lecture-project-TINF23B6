@@ -1,0 +1,1 @@
+--dump-ast ./src/test-e2e/switch-case-stmt-own-parser/source.tinf

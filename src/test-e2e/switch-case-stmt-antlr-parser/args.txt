@@ -1,0 +1,1 @@
+-antlr --dump-ast ./src/test-e2e/switch-case-stmt-antlr-parser/source.tinf

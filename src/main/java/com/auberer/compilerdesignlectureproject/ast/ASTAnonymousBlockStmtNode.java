@@ -17,4 +17,8 @@ public class ASTAnonymousBlockStmtNode extends ASTNode {
         selectionSet.add(TokenType.TOK_LBRACE);
         return selectionSet;
     }
+
+    public ASTStmtLstNode getStmntLst() {
+        return getChild(ASTStmtLstNode.class, 0);
+    }
 }

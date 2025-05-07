@@ -1,9 +1,9 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
 public class ASTSwitchCaseStmtNode extends ASTNode {
 
@@ -16,5 +16,9 @@ public class ASTSwitchCaseStmtNode extends ASTNode {
         Set<TokenType> selectionSet = new HashSet<>();
         selectionSet.add(TokenType.TOK_SWITCH);
         return selectionSet;
+    }
+
+    public ASTSwitchCaseStmtNode getStmtLst() {
+        return getChild(ASTSwitchCaseStmtNode.class, 0);
     }
 }

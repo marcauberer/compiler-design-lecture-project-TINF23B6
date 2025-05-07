@@ -1,9 +1,9 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
 public class ASTDefaultStmtNode extends ASTNode {
 
@@ -16,5 +16,9 @@ public class ASTDefaultStmtNode extends ASTNode {
         Set<TokenType> selectionSet = new HashSet<>();
         selectionSet.add(TokenType.TOK_DEFAULT);
         return selectionSet;
+    }
+
+    public ASTDefaultStmtNode getStmtLst() {
+        return getChild(ASTDefaultStmtNode.class, 0);
     }
 }
