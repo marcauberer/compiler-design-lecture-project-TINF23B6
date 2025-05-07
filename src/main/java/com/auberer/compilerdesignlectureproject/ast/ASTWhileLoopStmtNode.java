@@ -18,4 +18,11 @@ public class ASTWhileLoopStmtNode extends ASTNode {
         return selectionSet;
     }
 
+    public ASTStmtLstNode getBody() {
+        return getChild(ASTStmtLstNode.class, 0);
+    }
+    public ASTTernaryExprNode getCondition() {
+        return getChild(ASTTernaryExprNode.class, 1);
+    }
+
 }
