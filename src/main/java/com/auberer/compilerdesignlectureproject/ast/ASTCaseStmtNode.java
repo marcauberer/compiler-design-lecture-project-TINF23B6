@@ -17,4 +17,8 @@ public class ASTCaseStmtNode extends ASTNode {
         selectionSet.add(TokenType.TOK_CASE);
         return selectionSet;
     }
+
+    public ASTCaseStmtNode getStmntLst() {
+        return getChild(ASTCaseStmtNode.class, 0);
+    }
 }
