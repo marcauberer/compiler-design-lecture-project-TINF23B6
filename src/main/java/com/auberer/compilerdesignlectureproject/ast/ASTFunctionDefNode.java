@@ -12,6 +12,7 @@ import java.util.Set;
 public class ASTFunctionDefNode extends ASTNode {
 
   private String identifier;
+  private boolean haveParams;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
@@ -21,4 +22,7 @@ public class ASTFunctionDefNode extends ASTNode {
   public static Set<TokenType> getSelectionSet() {
     return ASTParamLstNode.getSelectionSet();
   }
+
+  public ASTParamLstNode getParamBranch() {return haveParams ? getChild(ASTParamLstNode.class,0) : null;}
+  public ASTStmtLstNode getStmtBranch() {return getChild(ASTStmtLstNode.class,0);}
 }
