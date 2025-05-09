@@ -16,5 +16,5 @@ public class ASTArgLstNode extends ASTNode {
         return ASTAtomicExprNode.getSelectionSet();
     }
 
-    public ArrayList<ASTAtomicExprNode> getAtomicExp() { return getChildren(ASTAtomicExprNode.class);}
+    public ArrayList<ASTAtomicExprNode> getAtomicExpBranches() { return getChildren(ASTAtomicExprNode.class);}
 }
