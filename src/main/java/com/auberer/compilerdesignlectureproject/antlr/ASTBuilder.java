@@ -257,6 +257,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTParamNode node = new ASTParamNode();
     enterNode(node, ctx);
 
+    node.setIdentifier(ctx.IDENTIFIER().getText());
     visitChildren(ctx);
 
     exitNode(node);
