@@ -3,7 +3,7 @@ package com.auberer.compilerdesignlectureproject.parser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class OwnParserFunctionDefTest {
+public class ParserFunctionDefTest {
 
     @Test
     @DisplayName("OwnParserTest")
