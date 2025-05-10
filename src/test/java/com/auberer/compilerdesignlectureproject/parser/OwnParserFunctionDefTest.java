@@ -3,16 +3,17 @@ package com.auberer.compilerdesignlectureproject.parser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ParserFunctionCallTest {
+public class OwnParserFunctionDefTest {
+
     @Test
     @DisplayName("OwnParserTest")
-    public void ownFuncCallParserTest() {
+    public void ownFuncDefParserTest() {
 
     }
 
     @Test
     @DisplayName("ANTLRParserTest")
-    public void antlrFuncCallParserTest() {
+    public void antlrFuncDefParserTest() {
 
     }
 }
