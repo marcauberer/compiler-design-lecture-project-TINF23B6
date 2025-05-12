@@ -1,0 +1,1 @@
+--dump-ast --use-antlr-parser ./src/test-e2e/antlr-funcdef-parser-test/source.tinf
