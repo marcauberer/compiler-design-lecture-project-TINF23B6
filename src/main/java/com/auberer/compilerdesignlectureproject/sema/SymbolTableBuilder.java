@@ -66,6 +66,44 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 5
 
   // Team 6
+  public Void visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  public Void visitCaseStmt(ASTCaseStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 7
 

@@ -1,12 +1,22 @@
 int main := () {
+  int x = 2;
+  int y = 3;
+
   switch (x) {
-      case 1:
-          print("x is 1");
-      case 2:
-          print("x is 2");
-      case "hello":
-          print("x is a greeting");
-      default:
-          print("x is something else");
+    case 1:
+      print("x is 1");
+    case 2:
+      print("test");
+    case "hello":
+      print("x is a greeting");
+    default:
+      print("x is something else");
+  }
+
+  switch (y) {
+    case 3:
+      print("y is 3");
+    default:
+      print("y is something else");
   }
 }
