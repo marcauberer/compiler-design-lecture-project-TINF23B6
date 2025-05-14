@@ -52,11 +52,14 @@ public class CompilerDesignLectureProject {
       if (cli.hasOption("antlr")) {
         System.out.println("Compiling with ANTLR parser...");
         ast = parseWithANTLRParser(path);
+
       } else {
         System.out.println("Compiling with own parser...");
 
         boolean dumpTokens = cli.hasOption("tokens");
         ast = parseWithOwnParser(path, dumpTokens);
+
+        if(dumpTokens) return;
       }
       assert ast != null;
 
