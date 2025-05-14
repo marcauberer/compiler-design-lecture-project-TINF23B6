@@ -1,5 +1,0 @@
-int main := () {
-do {
-        i = i * 2;
-    } while (i != 8);
-}
