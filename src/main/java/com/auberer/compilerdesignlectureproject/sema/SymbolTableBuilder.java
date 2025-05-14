@@ -60,6 +60,19 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 2
 
   // Team 3
+  @Override
+  public Void visitDoWhileLoop(ASTDoWhileLoopNode node) {
+
+    Scope doWhileScope = currentScope.peek().createChildScope();
+    currentScope.push(doWhileScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == doWhileScope;
+    currentScope.pop();
+
+    return null; // Überschreibt T Rückgabewert
+  }
 
   // Team 4
 
