@@ -79,5 +79,3 @@ digraph AST {
  L5C8_ASTLiteralNode [label="ASTLiteralNode"];
  L5C8_ASTAtomicExprNode -> L5C8_ASTLiteralNode;
 }
-
-Compilation successful!

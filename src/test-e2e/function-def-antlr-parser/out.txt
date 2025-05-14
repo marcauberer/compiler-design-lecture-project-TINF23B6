@@ -25,5 +25,3 @@ digraph AST {
  L2C4_ASTLiteralNode [label="ASTLiteralNode"];
  L2C4_ASTAtomicExprNode -> L2C4_ASTLiteralNode;
 }
-
-Compilation successful!

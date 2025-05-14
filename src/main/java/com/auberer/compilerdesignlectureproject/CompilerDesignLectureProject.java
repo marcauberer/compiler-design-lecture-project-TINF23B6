@@ -66,6 +66,7 @@ public class CompilerDesignLectureProject {
         ASTVisualizer visualizer = new ASTVisualizer();
         String dot = visualizer.visitEntry(ast);
         System.out.println(dot);
+        return;
       }
 
       SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();

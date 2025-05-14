@@ -167,5 +167,3 @@ digraph AST {
  L10C16_ASTLiteralNode [label="ASTLiteralNode"];
  L10C16_ASTAtomicExprNode -> L10C16_ASTLiteralNode;
 }
-
-Compilation successful!
