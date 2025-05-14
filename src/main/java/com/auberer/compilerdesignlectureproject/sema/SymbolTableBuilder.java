@@ -54,6 +54,17 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   }
 
   // Team 1
+  // visitIfStmt()
+  public Void visitIfBody(ASTIfBodyNode node) {
+    Scope current = currentScope.peek();
+    Scope ifScope = current.createChildScope();
+
+    currentScope.push(ifScope);
+    visitChildren(node);
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 2
 
