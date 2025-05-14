@@ -70,6 +70,20 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 7
 
   @Override
+  public Void visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  @Override
   public Void visitAtomicExpr(ASTAtomicExprNode node) {
     visitChildren(node);
 
