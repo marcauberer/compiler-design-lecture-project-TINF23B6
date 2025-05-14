@@ -4,6 +4,7 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,5 +25,9 @@ public class ASTEqualityExprNode extends ASTNode {
 
   public static Set<TokenType> getSelectionSet() {
     return ASTAdditiveExprNode.getSelectionSet();
+  }
+
+  public List<ASTAdditiveExprNode> getOperands() {
+    return getChildren(ASTAdditiveExprNode.class);
   }
 }

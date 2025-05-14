@@ -30,4 +30,8 @@ public class ASTAdditiveExprNode extends ASTNode {
   public List<AdditiveOp> getOpList() {
     return opList;
   }
+
+  public List<ASTMultiplicativeExprNode> getOperands() {
+    return getChildren(ASTMultiplicativeExprNode.class);
+  }
 }

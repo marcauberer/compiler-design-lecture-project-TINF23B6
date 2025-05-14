@@ -1,0 +1,53 @@
+Compiling with own parser...
+Dumping AST ...
+digraph AST {
+ L1C1_ASTEntryNode [label="ASTEntryNode"];
+ L1C1_ASTFunctionDefNode [label="ASTFunctionDefNode"];
+ L1C1_ASTEntryNode -> L1C1_ASTFunctionDefNode;
+ L1C1_ASTTypeNode [label="ASTTypeNode"];
+ L1C1_ASTFunctionDefNode -> L1C1_ASTTypeNode;
+ L2C1_ASTStmtLstNode [label="ASTStmtLstNode"];
+ L1C1_ASTFunctionDefNode -> L2C1_ASTStmtLstNode;
+ L2C1_ASTStmtNode [label="ASTStmtNode"];
+ L2C1_ASTStmtLstNode -> L2C1_ASTStmtNode;
+ L2C1_ASTAssignStmtNode [label="ASTAssignStmtNode"];
+ L2C1_ASTStmtNode -> L2C1_ASTAssignStmtNode;
+ L2C1_ASTAssignExprNode [label="ASTAssignExprNode"];
+ L2C1_ASTAssignStmtNode -> L2C1_ASTAssignExprNode;
+ L2C1_ASTTernaryExprNode [label="ASTTernaryExprNode"];
+ L2C1_ASTAssignExprNode -> L2C1_ASTTernaryExprNode;
+ L2C1_ASTEqualityExprNode [label="ASTEqualityExprNode"];
+ L2C1_ASTTernaryExprNode -> L2C1_ASTEqualityExprNode;
+ L2C1_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L2C1_ASTEqualityExprNode -> L2C1_ASTAdditiveExprNode;
+ L2C1_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L2C1_ASTAdditiveExprNode -> L2C1_ASTMultiplicativeExprNode;
+ L2C1_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L2C1_ASTMultiplicativeExprNode -> L2C1_ASTAtomicExprNode;
+ L2C1_ASTFunctionCallNode [label="ASTFunctionCallNode"];
+ L2C1_ASTAtomicExprNode -> L2C1_ASTFunctionCallNode;
+ L5C1_ASTFunctionDefNode [label="ASTFunctionDefNode"];
+ L1C1_ASTEntryNode -> L5C1_ASTFunctionDefNode;
+ L5C1_ASTTypeNode [label="ASTTypeNode"];
+ L5C1_ASTFunctionDefNode -> L5C1_ASTTypeNode;
+ L6C1_ASTStmtLstNode [label="ASTStmtLstNode"];
+ L5C1_ASTFunctionDefNode -> L6C1_ASTStmtLstNode;
+ L6C1_ASTStmtNode [label="ASTStmtNode"];
+ L6C1_ASTStmtLstNode -> L6C1_ASTStmtNode;
+ L6C1_ASTReturnStmtNode [label="ASTReturnStmtNode"];
+ L6C1_ASTStmtNode -> L6C1_ASTReturnStmtNode;
+ L6C5_ASTTernaryExprNode [label="ASTTernaryExprNode"];
+ L6C1_ASTReturnStmtNode -> L6C5_ASTTernaryExprNode;
+ L6C5_ASTEqualityExprNode [label="ASTEqualityExprNode"];
+ L6C5_ASTTernaryExprNode -> L6C5_ASTEqualityExprNode;
+ L6C5_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L6C5_ASTEqualityExprNode -> L6C5_ASTAdditiveExprNode;
+ L6C5_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L6C5_ASTAdditiveExprNode -> L6C5_ASTMultiplicativeExprNode;
+ L6C5_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L6C5_ASTMultiplicativeExprNode -> L6C5_ASTAtomicExprNode;
+ L6C5_ASTLiteralNode [label="ASTLiteralNode"];
+ L6C5_ASTAtomicExprNode -> L6C5_ASTLiteralNode;
+}
+
+Compilation successful!

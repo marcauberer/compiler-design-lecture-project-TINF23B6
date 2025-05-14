@@ -1,0 +1,1 @@
+--dump-ast ./src/test-e2e/for-loop-own-parser/source.tinf

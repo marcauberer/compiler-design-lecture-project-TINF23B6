@@ -13,4 +13,16 @@ public class ASTIfStmtNode extends ASTNode {
   public static Set<TokenType> getSelectionSet() {
     return Set.of(TokenType.TOK_IF);
   }
+
+  public ASTParamLstNode getParamLst() {
+    return getChild(ASTParamLstNode.class, 0);
+  }
+
+  public ASTIfBodyNode getIfBody() {
+    return getChild(ASTIfBodyNode.class, 0);
+  }
+
+  public ASTElseStmtNode getElseBody() {
+    return getChild(ASTElseStmtNode.class, 0);
+  }
 }

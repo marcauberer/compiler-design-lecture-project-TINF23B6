@@ -2,7 +2,6 @@ package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class ASTAssignStmtNode extends ASTNode {
@@ -13,5 +12,9 @@ public class ASTAssignStmtNode extends ASTNode {
 
   public static Set<TokenType> getSelectionSet() {
     return ASTAssignExprNode.getSelectionSet();
+  }
+
+  public ASTAssignExprNode getAssignExpr() {
+    return getChild(ASTAssignExprNode.class, 0);
   }
 }

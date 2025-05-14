@@ -1,0 +1,1 @@
+-antlr --dump-ast ./src/test-e2e/anonymous-block-stmt-antlr-parser/source.tinf

@@ -1,0 +1,7 @@
+int main := () {
+call hello();
+}
+
+string hello := (){
+ret "hello world";
+}

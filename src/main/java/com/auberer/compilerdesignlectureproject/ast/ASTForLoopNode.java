@@ -15,4 +15,19 @@ public class ASTForLoopNode extends ASTNode {
     return Set.of(TokenType.TOK_FOR);
   }
 
+  public ASTVarDeclNode getInitialization() {
+    return getChild(ASTVarDeclNode.class, 0);
+  }
+
+  public ASTTernaryExprNode getCondition() {
+    return getChild(ASTTernaryExprNode.class, 0);
+  }
+
+  public ASTAssignExprNode getIncrement() {
+    return getChild(ASTAssignExprNode.class, 0);
+  }
+
+  public ASTStmtLstNode getBody() {
+    return getChild(ASTStmtLstNode.class, 0);
+  }
 }

@@ -8,6 +8,7 @@ import com.auberer.compilerdesignlectureproject.ast.ASTVisualizer;
 import com.auberer.compilerdesignlectureproject.lexer.Lexer;
 import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
+import com.auberer.compilerdesignlectureproject.sema.SymbolTableBuilder;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -27,7 +28,8 @@ public class CompilerDesignLectureProject {
         .addOption("h", "help", false, "Print this help text")
         .addOption("antlr", "use-antlr-parser", false, "Use ANTLR generated parser")
         .addOption("tokens", "dump-tokens", false, "Dump the lexed tokens")
-        .addOption("ast", "dump-ast", false, "Dump the AST as dot file");
+        .addOption("ast", "dump-ast", false, "Dump the AST as dot file")
+        .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table");
 
     DefaultParser cliParser = new DefaultParser();
     try {
@@ -64,6 +66,16 @@ public class CompilerDesignLectureProject {
         ASTVisualizer visualizer = new ASTVisualizer();
         String dot = visualizer.visitEntry(ast);
         System.out.println(dot);
+      }
+
+      SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();
+      symbolTableBuilder.visitEntry(ast);
+
+      // Dump symbol table
+      if (cli.hasOption("symtab")) {
+        System.out.println("Dumping symbol table ...");
+        String serializedSymbolTable = ast.getRootScope().serialize();
+        System.out.println(serializedSymbolTable);
       }
 
       // ToDo(Marc): Implement

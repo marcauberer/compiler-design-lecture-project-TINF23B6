@@ -1,0 +1,1 @@
+--dump-ast ./src/test-e2e/anonymous-block-stmt-own-parser/source.tinf

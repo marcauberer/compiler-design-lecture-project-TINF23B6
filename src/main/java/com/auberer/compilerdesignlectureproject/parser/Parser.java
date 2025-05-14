@@ -58,7 +58,7 @@ public class Parser implements IParser {
     Token token = lexer.getToken();
     if (token.getType() == TokenType.TOK_IDENTIFIER) {
       node.setIdentifier(token.getText());
-    }else{
+    } else {
       throw new RuntimeException("Unexpected token type: " + token.getType());
     }
     lexer.expect(TokenType.TOK_IDENTIFIER);
@@ -86,7 +86,7 @@ public class Parser implements IParser {
     Token token = lexer.getToken();
     if (token.getType() == TokenType.TOK_IDENTIFIER) {
       node.setIdentifier(token.getText());
-    }else{
+    } else {
       throw new RuntimeException("Unexpected token type: " + token.getType());
     }
     lexer.expect(TokenType.TOK_IDENTIFIER);
@@ -119,6 +119,12 @@ public class Parser implements IParser {
     enterNode(node);
 
     parseType();
+    Token token = lexer.getToken();
+    if (token.getType().equals(TokenType.TOK_IDENTIFIER)) {
+      node.setIdentifier(token.getText());
+    } else {
+      throw new RuntimeException("Unexpected token type: " + token.getType());
+    }
     lexer.expect(TokenType.TOK_IDENTIFIER);
     if (lexer.getToken().getType() == TokenType.TOK_ASSIGN) {
       lexer.expect(TokenType.TOK_ASSIGN);
@@ -181,7 +187,7 @@ public class Parser implements IParser {
       parseReturnStmt();
     } else if (ASTIfStmtNode.getSelectionSet().contains(tokenType)) {
       parseIfStmt();
-    } else if (ASTWhileLoopStmtNode.getSelectionSet().contains(tokenType)) {
+    } else if (ASTWhileLoopNode.getSelectionSet().contains(tokenType)) {
       parseWhileLoopStmt();
     } else if (ASTDoWhileLoopNode.getSelectionSet().contains(tokenType)) {
       parseDoWhileLoop();
@@ -204,6 +210,7 @@ public class Parser implements IParser {
     enterNode(node);
 
     parseType();
+    node.setVariableName(lexer.getToken().getText());
     lexer.expect(TokenType.TOK_IDENTIFIER);
     lexer.expect(TokenType.TOK_ASSIGN);
     parseTernaryExpr();
@@ -323,8 +330,10 @@ public class Parser implements IParser {
 
     TokenType tokenType = lexer.getToken().getType();
     if (ASTIfStmtNode.getSelectionSet().contains(tokenType)) {
+      node.setContainsIfStmt(true);
       parseIfStmt();
     } else if (ASTIfBodyNode.getSelectionSet().contains(tokenType)) {
+      node.setContainsIfStmt(false);
       parseIfBody();
     }
 
@@ -338,9 +347,9 @@ public class Parser implements IParser {
    * @return the AST node representing the while loop statement
    * Rule: whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
    */
-  public ASTWhileLoopStmtNode parseWhileLoopStmt() {
+  public ASTWhileLoopNode parseWhileLoopStmt() {
 
-    ASTWhileLoopStmtNode node = new ASTWhileLoopStmtNode();
+    ASTWhileLoopNode node = new ASTWhileLoopNode();
     enterNode(node);
     lexer.expect(TokenType.TOK_WHILE);
     lexer.expect(TokenType.TOK_LPAREN);

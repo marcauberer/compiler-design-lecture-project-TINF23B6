@@ -34,4 +34,8 @@ public class ASTMultiplicativeExprNode extends ASTNode {
   public List<MultiplicativeOp> getOpList() {
     return opList;
   }
+
+  public List<ASTAtomicExprNode> getOperands() {
+    return getChildren(ASTAtomicExprNode.class);
+  }
 }

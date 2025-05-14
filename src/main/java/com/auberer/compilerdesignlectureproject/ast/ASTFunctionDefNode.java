@@ -4,7 +4,6 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -12,13 +11,22 @@ import java.util.Set;
 public class ASTFunctionDefNode extends ASTNode {
 
   private String identifier;
+  private boolean haveParams;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
-    return visitor.visit(this);
+    return visitor.visitFunctionDef(this);
   }
 
   public static Set<TokenType> getSelectionSet() {
     return ASTParamLstNode.getSelectionSet();
+  }
+
+  public ASTParamLstNode getParams() {
+    return haveParams ? getChild(ASTParamLstNode.class, 0) : null;
+  }
+
+  public ASTStmtLstNode getBody() {
+    return getChild(ASTStmtLstNode.class, 0);
   }
 }
