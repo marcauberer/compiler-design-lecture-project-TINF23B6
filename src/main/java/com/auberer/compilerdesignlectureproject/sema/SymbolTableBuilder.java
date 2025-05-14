@@ -45,10 +45,12 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   public Void visitAssignExpr(ASTAssignExprNode node) {
     visitChildren(node);
 
-    String variableName = node.getVariableName();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(variableName, node);
-    if (entry == null)
-      throw new SemaError(node, "Variable " + variableName + " not declared");
+    if (node.isAssignment()) {
+      String variableName = node.getVariableName();
+      SymbolTableEntry entry = currentScope.peek().lookupSymbol(variableName, node);
+      if (entry == null)
+        throw new SemaError(node, "Variable " + variableName + " not declared");
+    }
 
     return null;
   }

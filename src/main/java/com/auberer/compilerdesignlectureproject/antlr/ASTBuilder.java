@@ -82,6 +82,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     enterNode(node, ctx);
 
     if (ctx.IDENTIFIER() != null) {
+      node.setAssignment(true);
       String identifierName = ctx.IDENTIFIER().getText();
       node.setVariableName(identifierName);
     }

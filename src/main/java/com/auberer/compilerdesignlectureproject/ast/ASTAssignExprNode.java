@@ -14,6 +14,7 @@ public class ASTAssignExprNode extends ASTNode {
 
   private String variableName;
   private SymbolTableEntry currentSymbol;
+  private boolean isAssignment = false;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {

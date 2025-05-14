@@ -9,5 +9,3 @@ digraph AST {
  L1C17_ASTStmtLstNode [label="ASTStmtLstNode"];
  L1C1_ASTFunctionDefNode -> L1C17_ASTStmtLstNode;
 }
-
-Compilation successful!

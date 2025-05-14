@@ -52,11 +52,14 @@ public class CompilerDesignLectureProject {
       if (cli.hasOption("antlr")) {
         System.out.println("Compiling with ANTLR parser...");
         ast = parseWithANTLRParser(path);
+
       } else {
         System.out.println("Compiling with own parser...");
 
         boolean dumpTokens = cli.hasOption("tokens");
         ast = parseWithOwnParser(path, dumpTokens);
+
+        if(dumpTokens) return;
       }
       assert ast != null;
 
@@ -66,6 +69,7 @@ public class CompilerDesignLectureProject {
         ASTVisualizer visualizer = new ASTVisualizer();
         String dot = visualizer.visitEntry(ast);
         System.out.println(dot);
+        return;
       }
 
       SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();
