@@ -6,7 +6,7 @@ int main := () {
     case 1:
       print("x is 1");
     case 2:
-      print("test");
+      print("x is 2");
     case "hello":
       print("x is a greeting");
     default:
