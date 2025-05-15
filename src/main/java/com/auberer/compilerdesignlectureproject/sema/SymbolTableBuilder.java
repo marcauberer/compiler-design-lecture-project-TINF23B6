@@ -1,8 +1,14 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
-import com.auberer.compilerdesignlectureproject.ast.*;
-
 import java.util.Stack;
+
+import com.auberer.compilerdesignlectureproject.ast.ASTAssignExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTAtomicExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTDefaultStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTVarDeclNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTVisitor;
 
 public class SymbolTableBuilder extends ASTVisitor<Void> {
 
@@ -66,19 +72,6 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 5
 
   // Team 6
-  public Void visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
-    Scope current = currentScope.peek();
-    Scope newScope = current.createChildScope();
-    currentScope.push(newScope);
-
-    visitChildren(node);
-
-    assert currentScope.peek() == newScope;
-    currentScope.pop();
-
-    return null;
-  }
-
   public Void visitCaseStmt(ASTCaseStmtNode node) {
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();

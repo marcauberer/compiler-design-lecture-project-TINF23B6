@@ -1,12 +1,14 @@
 int main := () {
   int x = 2;
   int y = 3;
-
+  
   switch (x) {
     case 1:
-      print("x is 1");
+      int scopedVar = 10;
+      print(scopedVar);
     case 2:
-      print("x is 2");
+      int scopedVar = 20;
+      print(scopedVar);
     case "hello":
       print("x is a greeting");
     default:
@@ -15,8 +17,10 @@ int main := () {
 
   switch (y) {
     case 3:
-      print("y is 3");
+      int scopedVar = 30;
+      print(scopedVar);
     default:
-      print("y is something else");
+      int scopedVar = 100;
+      print(scopedVar);
   }
 }
