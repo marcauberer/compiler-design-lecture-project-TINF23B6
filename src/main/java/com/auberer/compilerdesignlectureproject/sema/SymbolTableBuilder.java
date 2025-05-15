@@ -2,13 +2,7 @@ package com.auberer.compilerdesignlectureproject.sema;
 
 import java.util.Stack;
 
-import com.auberer.compilerdesignlectureproject.ast.ASTAssignExprNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTAtomicExprNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTDefaultStmtNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTVarDeclNode;
-import com.auberer.compilerdesignlectureproject.ast.ASTVisitor;
+import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTVisitor<Void> {
 
