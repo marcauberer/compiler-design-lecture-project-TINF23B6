@@ -62,6 +62,8 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
 
     currentScope.push(ifScope);
     visitChildren(node);
+
+    assert currentScope.peek() == ifScope;
     currentScope.pop();
 
     return null;
