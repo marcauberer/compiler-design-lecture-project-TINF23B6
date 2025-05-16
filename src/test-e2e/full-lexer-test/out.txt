@@ -144,4 +144,3 @@ Token(type=TOK_RET, text=ret, codeLoc=L44C5)
 Token(type=TOK_INT_LIT, text=0, codeLoc=L44C9)
 Token(type=TOK_SEMICOLON, text=;, codeLoc=L44C10)
 Token(type=TOK_RBRACE, text=}, codeLoc=L45C1)
-Compilation successful!

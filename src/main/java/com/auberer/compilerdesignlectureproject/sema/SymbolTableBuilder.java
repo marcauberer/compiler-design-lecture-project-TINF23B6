@@ -1,8 +1,8 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
-import com.auberer.compilerdesignlectureproject.ast.*;
-
 import java.util.Stack;
+
+import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTVisitor<Void> {
 
@@ -45,10 +45,12 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   public Void visitAssignExpr(ASTAssignExprNode node) {
     visitChildren(node);
 
-    String variableName = node.getVariableName();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(variableName, node);
-    if (entry == null)
-      throw new SemaError(node, "Variable " + variableName + " not declared");
+    if (node.isAssignment()) {
+      String variableName = node.getVariableName();
+      SymbolTableEntry entry = currentScope.peek().lookupSymbol(variableName, node);
+      if (entry == null)
+        throw new SemaError(node, "Variable " + variableName + " not declared");
+    }
 
     return null;
   }
@@ -69,14 +71,66 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 2
 
   // Team 3
+  @Override
+  public Void visitDoWhileLoop(ASTDoWhileLoopNode node) {
+
+    Scope doWhileScope = currentScope.peek().createChildScope();
+    currentScope.push(doWhileScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == doWhileScope;
+    currentScope.pop();
+
+    return null; // Überschreibt T Rückgabewert
+  }
 
   // Team 4
 
   // Team 5
 
   // Team 6
+  public Void visitCaseStmt(ASTCaseStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 7
+
+  @Override
+  public Void visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
 
   @Override
   public Void visitAtomicExpr(ASTAtomicExprNode node) {
