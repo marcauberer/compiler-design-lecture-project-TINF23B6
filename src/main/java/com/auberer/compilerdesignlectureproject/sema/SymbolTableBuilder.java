@@ -89,6 +89,16 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 4
 
   // Team 5
+  @Override
+  public Void visitForLoop(ASTForLoopNode node) {
+    Scope scope = currentScope.peek().createChildScope();
+    currentScope.push(scope);
+    visitChildren(node);
+    assert currentScope.peek() == scope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 6
   public Void visitCaseStmt(ASTCaseStmtNode node) {
