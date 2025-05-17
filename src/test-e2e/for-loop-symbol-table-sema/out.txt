@@ -1,0 +1,14 @@
+Compiling with own parser...
+Dumping symbol table ...
+Scope: 0
+Symbol name: i, DeclNode: L2C5, IsUsed: true, IsParam: false
+
+
+Scope: 1
+Symbol name: j, DeclNode: L5C10, IsUsed: false, IsParam: false
+
+
+
+
+
+Compilation successful!
