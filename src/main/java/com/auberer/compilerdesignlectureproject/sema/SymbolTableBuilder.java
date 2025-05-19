@@ -103,7 +103,13 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
+    // may create problems due to Type (?)
+    Scope scopeFct = currentScope.peek().createChildScope();
+    currentScope.push(scopeFct);
     visitChildren(node);
+    assert currentScope.peek() == scopeFct;
+    currentScope.pop();
+
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
     if(entry == null) {
       entry = currentScope.peek().insertSymbol(node.getIdentifier(), node);
@@ -116,10 +122,35 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
 
   @Override
   public Void visitParamLst(ASTParamLstNode node) {
+
     visitChildren(node);
 
     return null;
   }
+
+  @Override
+  public Void visitParam(ASTParamNode node) {
+    visitChildren(node);
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
+    if(entry == null) {
+      entry = currentScope.peek().insertSymbol(node.getIdentifier(), node);
+      node.setCurrentSymbol(entry);
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitFunctionCall(ASTFunctionCallNode node) {
+    visitChildren(node);
+    SymbolTableEntry entry = currentScope.peek().lookupSymbol(node.getIdentifier(),node);
+    if(entry == null) {
+      throw new SemaError(node, "Function " + node.getIdentifier() + " not declared");
+    }
+    return null;
+  }
+
+
+
 
   // Team 5
   @Override

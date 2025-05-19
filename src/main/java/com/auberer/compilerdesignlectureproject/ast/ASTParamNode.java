@@ -1,6 +1,7 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.sema.SymbolTableEntry;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ public class ASTParamNode extends ASTNode {
 
   private Boolean hasAssignStmt;
   private String identifier;
+  private SymbolTableEntry currentSymbol;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
