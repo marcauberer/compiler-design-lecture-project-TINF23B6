@@ -121,14 +121,6 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   }
 
   @Override
-  public Void visitParamLst(ASTParamLstNode node) {
-
-    visitChildren(node);
-
-    return null;
-  }
-
-  @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
