@@ -1,17 +1,23 @@
 Compiling with own parser...
 Dumping symbol table ...
 Scope: 0
-Symbol name: x, DeclNode: L2C5, IsUsed: true, IsParam: false
+Symbol name: main, DeclNode: L1C1, IsUsed: false, IsParam: false
 
 
 Scope: 1
+Symbol name: x, DeclNode: L2C5, IsUsed: true, IsParam: false
+
+
+Scope: 2
 Symbol name: i, DeclNode: L4C9, IsUsed: false, IsParam: false
 
 
 
 
-Scope: 1
+Scope: 2
 Symbol name: i, DeclNode: L6C9, IsUsed: true, IsParam: false
+
+
 
 
 
