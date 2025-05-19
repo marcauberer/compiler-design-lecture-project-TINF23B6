@@ -101,6 +101,19 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   }
 
   // Team 4
+  public Void visitFunctionDef(ASTFunctionDefNode node) {
+    visitChildren(node);
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
+    if(entry == null) {
+      entry = currentScope.peek().insertSymbol(node.getIdentifier(), node);
+
+    }else{
+      throw new SemaError(node, "Function " + node.getIdentifier() + " already declared");
+
+    }
+
+    return null;
+  }
 
   // Team 5
   @Override
