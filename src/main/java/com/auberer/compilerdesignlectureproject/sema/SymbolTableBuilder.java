@@ -109,13 +109,13 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
     visitChildren(node);
     assert currentScope.peek() == scopeFct;
     currentScope.pop();
-
-    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
+    String functionName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName,node);
     if(entry == null) {
-      entry = currentScope.peek().insertSymbol(node.getIdentifier(), node);
+      entry = currentScope.peek().insertSymbol(functionName, node);
       node.setCurrentSymbol(entry);
     }else{
-      throw new SemaError(node, "Function " + node.getIdentifier() + " already declared");
+      throw new SemaError(node, "Function " + functionName + " already declared");
     }
     return null;
   }
@@ -123,10 +123,13 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
-    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(node.getIdentifier(),node);
+    String paramName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
     if(entry == null) {
-      entry = currentScope.peek().insertSymbol(node.getIdentifier(), node);
+      entry = currentScope.peek().insertSymbol(paramName, node);
       node.setCurrentSymbol(entry);
+    }else{
+      throw new SemaError(node, "Parameter identifier" + paramName + " already used");
     }
     return null;
   }
@@ -134,9 +137,10 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   @Override
   public Void visitFunctionCall(ASTFunctionCallNode node) {
     visitChildren(node);
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(node.getIdentifier(),node);
+    String functionName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbol(functionName,node);
     if(entry == null) {
-      throw new SemaError(node, "Function " + node.getIdentifier() + " not declared");
+      throw new SemaError(node, "Function " + functionName + " not declared");
     }
     return null;
   }
