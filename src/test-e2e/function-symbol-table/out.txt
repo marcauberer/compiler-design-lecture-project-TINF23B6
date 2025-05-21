@@ -1,0 +1,22 @@
+Compiling with own parser...
+Dumping symbol table ...
+Scope: 0
+Symbol name: lorem, DeclNode: L1C1, IsUsed: true, IsParam: false
+Symbol name: main, DeclNode: L7C1, IsUsed: false, IsParam: false
+
+
+Scope: 1
+Symbol name: a, DeclNode: L2C5, IsUsed: true, IsParam: false
+Symbol name: r, DeclNode: L1C15, IsUsed: true, IsParam: false
+
+
+
+
+Scope: 1
+Symbol name: a, DeclNode: L8C5, IsUsed: true, IsParam: false
+
+
+
+
+
+Compilation successful!

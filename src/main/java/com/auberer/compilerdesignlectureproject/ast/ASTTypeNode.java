@@ -4,21 +4,20 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 public class ASTTypeNode extends ASTNode {
 
-  public enum Type {
+  public enum DataType {
     INT,
     DOUBLE,
     STRING,
     BOOL
   }
 
-  private Type type;
+  private DataType dataType;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {

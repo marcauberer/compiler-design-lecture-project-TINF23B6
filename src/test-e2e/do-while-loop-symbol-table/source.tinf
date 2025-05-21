@@ -2,5 +2,6 @@ int main := () {
 int i=0;
 do {
         i = i * 2;
+        int a = 3;
     } while (i != 8);
 }

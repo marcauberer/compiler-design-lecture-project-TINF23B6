@@ -1,5 +1,5 @@
 int main := () {
-do {
+    do {
         i = i * 2;
     } while (i != 8);
 }

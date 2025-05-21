@@ -1,0 +1,1 @@
+-symtab ./src/test-e2e/while-loop-symbol-table/source.tinf

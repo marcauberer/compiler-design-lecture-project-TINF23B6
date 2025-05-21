@@ -109,16 +109,16 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     enterNode(node, ctx);
 
     if (ctx.INT_LIT() != null) {
-      node.setType(ASTLiteralNode.LiteralType.INT);
+      node.setLiteralType(ASTLiteralNode.LiteralType.INT);
       node.setValue(ctx.INT_LIT().getText());
     } else if (ctx.DOUBLE_LIT() != null) {
-      node.setType(ASTLiteralNode.LiteralType.DOUBLE);
+      node.setLiteralType(ASTLiteralNode.LiteralType.DOUBLE);
       node.setValue(ctx.DOUBLE_LIT().getText());
     } else if (ctx.STRING_LIT() != null) {
-      node.setType(ASTLiteralNode.LiteralType.STRING);
+      node.setLiteralType(ASTLiteralNode.LiteralType.STRING);
       node.setValue(ctx.STRING_LIT().getText().substring(1, ctx.STRING_LIT().getText().length() - 1));
     } else if (ctx.TRUE() != null || ctx.FALSE() != null) {
-      node.setType(ASTLiteralNode.LiteralType.BOOL);
+      node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
       node.setValue(ctx.getText().toLowerCase());
     } else {
       throw new RuntimeException("Unexpected token type");
@@ -134,13 +134,13 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     enterNode(node, ctx);
 
     if (ctx.TYPE_INT() != null) {
-      node.setType(ASTTypeNode.Type.INT);
+      node.setDataType(ASTTypeNode.DataType.INT);
     } else if (ctx.TYPE_DOUBLE() != null) {
-      node.setType(ASTTypeNode.Type.DOUBLE);
+      node.setDataType(ASTTypeNode.DataType.DOUBLE);
     } else if (ctx.TYPE_STRING() != null) {
-      node.setType(ASTTypeNode.Type.STRING);
+      node.setDataType(ASTTypeNode.DataType.STRING);
     } else if (ctx.TYPE_BOOL() != null) {
-      node.setType(ASTTypeNode.Type.BOOL);
+      node.setDataType(ASTTypeNode.DataType.BOOL);
     } else {
       throw new RuntimeException("Unexpected token type");
     }

@@ -1,0 +1,11 @@
+int lorem := (int r) {
+    int a = 3;
+    a = r;
+    ret a;
+}
+
+int main := () {
+    int a = 2;
+    call lorem(a);
+}
+

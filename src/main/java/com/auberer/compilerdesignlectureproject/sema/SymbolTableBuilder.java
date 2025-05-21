@@ -2,11 +2,7 @@ package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 
-import java.util.Stack;
-
-public class SymbolTableBuilder extends ASTVisitor<Void> {
-
-  private Stack<Scope> currentScope = new Stack<>();
+public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitEntry(ASTEntryNode node) {
@@ -50,14 +46,41 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
       SymbolTableEntry entry = currentScope.peek().lookupSymbol(variableName, node);
       if (entry == null)
         throw new SemaError(node, "Variable " + variableName + " not declared");
+      node.setCurrentSymbol(entry);
     }
 
     return null;
   }
 
   // Team 1
+  public Void visitIfBody(ASTIfBodyNode node) {
+    Scope current = currentScope.peek();
+    Scope ifScope = current.createChildScope();
+
+    currentScope.push(ifScope);
+    visitChildren(node);
+
+    assert currentScope.peek() == ifScope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 2
+  @Override
+  public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
+
+    Scope whileScope = currentScope.peek().createChildScope();
+    currentScope.push(whileScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == whileScope;
+    currentScope.pop();
+
+    return null;
+  }
+
 
   // Team 3
   @Override
@@ -75,10 +98,91 @@ public class SymbolTableBuilder extends ASTVisitor<Void> {
   }
 
   // Team 4
+  @Override
+  public Void visitFunctionDef(ASTFunctionDefNode node) {
+    // may create problems due to Type (?)
+    Scope scopeFct = currentScope.peek().createChildScope();
+    currentScope.push(scopeFct);
+    visitChildren(node);
+    assert currentScope.peek() == scopeFct;
+    currentScope.pop();
+    String functionName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName,node);
+    if(entry == null) {
+      entry = currentScope.peek().insertSymbol(functionName, node);
+      node.setCurrentSymbol(entry);
+    }else{
+      throw new SemaError(node, "Function " + functionName + " already declared");
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitParam(ASTParamNode node) {
+    visitChildren(node);
+    String paramName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
+    if(entry == null) {
+      entry = currentScope.peek().insertSymbol(paramName, node);
+      node.setCurrentSymbol(entry);
+    }else{
+      throw new SemaError(node, "Parameter identifier" + paramName + " already used");
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitFunctionCall(ASTFunctionCallNode node) {
+    visitChildren(node);
+    String functionName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbol(functionName,node);
+    if(entry == null) {
+      throw new SemaError(node, "Function " + functionName + " not declared");
+    }
+    return null;
+  }
+
+
+
 
   // Team 5
+  @Override
+  public Void visitForLoop(ASTForLoopNode node) {
+    Scope scope = currentScope.peek().createChildScope();
+    currentScope.push(scope);
+    visitChildren(node);
+    assert currentScope.peek() == scope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 6
+  public Void visitCaseStmt(ASTCaseStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
 
   // Team 7
 

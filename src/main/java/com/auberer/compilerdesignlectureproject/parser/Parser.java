@@ -264,8 +264,21 @@ public class Parser implements IParser {
     ASTLiteralNode node = new ASTLiteralNode();
     enterNode(node);
 
-    lexer.expectOneOf(Set.of(TokenType.TOK_INT_LIT, TokenType.TOK_DOUBLE_LIT, TokenType.TOK_STRING_LIT, TokenType.TOK_TRUE, TokenType.TOK_FALSE));
-    node.setValue(lexer.getToken().getText());
+    TokenType tokenType = lexer.getToken().getType();
+    if (tokenType == TokenType.TOK_INT_LIT) {
+      node.setLiteralType(ASTLiteralNode.LiteralType.INT);
+    } else if (tokenType == TokenType.TOK_DOUBLE_LIT) {
+      node.setLiteralType(ASTLiteralNode.LiteralType.DOUBLE);
+    } else if (tokenType == TokenType.TOK_STRING_LIT) {
+      node.setLiteralType(ASTLiteralNode.LiteralType.STRING);
+    } else if (tokenType == TokenType.TOK_TRUE) {
+      node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
+      node.setValue("true");
+    } else if (tokenType == TokenType.TOK_FALSE) {
+      node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
+      node.setValue("false");
+    }
+    lexer.advance();
 
     exitNode(node);
     return node;
@@ -277,13 +290,13 @@ public class Parser implements IParser {
 
     TokenType tokenType = lexer.getToken().getType();
     if (tokenType == TokenType.TOK_TYPE_INT) {
-      node.setType(ASTTypeNode.Type.INT);
+      node.setDataType(ASTTypeNode.DataType.INT);
     } else if (tokenType == TokenType.TOK_TYPE_DOUBLE) {
-      node.setType(ASTTypeNode.Type.DOUBLE);
+      node.setDataType(ASTTypeNode.DataType.DOUBLE);
     } else if (tokenType == TokenType.TOK_TYPE_STRING) {
-      node.setType(ASTTypeNode.Type.STRING);
+      node.setDataType(ASTTypeNode.DataType.STRING);
     } else if (tokenType == TokenType.TOK_TYPE_BOOL) {
-      node.setType(ASTTypeNode.Type.BOOL);
+      node.setDataType(ASTTypeNode.DataType.BOOL);
     } else {
       throw new RuntimeException("Unexpected token type: " + tokenType);
     }

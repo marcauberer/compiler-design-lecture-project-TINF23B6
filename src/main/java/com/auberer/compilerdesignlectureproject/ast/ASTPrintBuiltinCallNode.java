@@ -17,4 +17,8 @@ public class ASTPrintBuiltinCallNode extends ASTNode {
     selectionSet.add(TokenType.TOK_PRINT);
     return selectionSet;
   }
+
+  public ASTTernaryExprNode getExpr() {
+    return getChild(ASTTernaryExprNode.class, 0);
+  }
 }

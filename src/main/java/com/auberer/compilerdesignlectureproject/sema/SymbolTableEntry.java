@@ -19,6 +19,9 @@ public class SymbolTableEntry {
   @Setter
   private boolean isParam = false;
 
+  @Setter
+  private Type type = new Type(SuperType.TYPE_INVALID);
+
   // ToDo(Marc): Insert type member
 
   public SymbolTableEntry(String name, ASTNode declNode, Scope scope) {
@@ -26,8 +29,6 @@ public class SymbolTableEntry {
     this.declNode = declNode;
     this.scope = scope;
   }
-
-  // ToDo(Marc): Insert setter for type
 
   public String serialize() {
     StringBuilder builder = new StringBuilder();
