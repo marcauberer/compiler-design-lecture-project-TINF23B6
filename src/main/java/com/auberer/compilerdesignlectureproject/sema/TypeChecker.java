@@ -214,4 +214,21 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     return new ExprResult(node.setEvaluatedSymbolType(resultType));
   }
+
+
+  @Override
+  public ExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    Scope current = currentScope.peek();
+    Scope newScope = current.createChildScope();
+    currentScope.push(newScope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == newScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+
 }
