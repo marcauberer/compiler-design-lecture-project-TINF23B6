@@ -3,6 +3,7 @@
     <option name="MAIN_CLASS_NAME" value="com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject" />
     <module name="compiler-design-lecture-project" />
     <option name="PROGRAM_PARAMETERS" value="-symtab ./test.tinf" />
+    <option name="VM_PARAMETERS" value="-ea" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.auberer.compilerdesignlectureproject.lexer.*" />
