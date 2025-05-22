@@ -208,4 +208,48 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     return new ExprResult(node.setEvaluatedSymbolType(rhs.getType()));
   }
+
+  @Override
+  public ExprResult visitParam(ASTParamNode node) {
+    SymbolTableEntry entry = node.getCurrentSymbol();
+    assert entry != null;
+
+    ExprResult lhs = visit(node.getDataType());
+    entry.setType(lhs.getType());
+
+    if(node.getHasAssignStmt() ){
+      ExprResult rhs = visit(node.getDefaultValue());
+      if(!rhs.getType().is(rhs.getType().getSuperType()))
+        throw new SemaError(node, "Type mismatch in default Type");
+    }
+
+    return null;
+
+  }
+
+  @Override
+  public ExprResult visitFunctionDef(ASTFunctionDefNode node) {
+
+    return null;
+  }
+
+  @Override
+  public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
+
+    return null;
+  }
+
+  @Override
+  public ExprResult visitArgLst(ASTArgLstNode node) {
+
+    return null;
+  }
+
+  @Override
+  public ExprResult visitReturnStmt(ASTReturnStmtNode node) {
+
+    return null;
+  }
+
+
 }

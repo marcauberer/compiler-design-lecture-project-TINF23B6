@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 public class ASTParamNode extends ASTNode {
 
-  private Boolean hasAssignStmt;
+  private Boolean hasAssignStmt = false;
   private String identifier;
   private SymbolTableEntry currentSymbol;
 

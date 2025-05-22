@@ -4,9 +4,12 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
+  // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
+  private Scope rootScope;
+
   @Override
   public Void visitEntry(ASTEntryNode node) {
-    Scope rootScope = new Scope();
+    rootScope = new Scope();
     node.setRootScope(rootScope);
 
     assert currentScope.isEmpty();
@@ -117,11 +120,12 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
+  //ToDO Set is Parm in Symboltable
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
     String paramName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
+    SymbolTableEntry entry = rootScope.lookupSymbolStrict(paramName,node);
     if(entry == null) {
       entry = currentScope.peek().insertSymbol(paramName, node);
       node.setCurrentSymbol(entry);
@@ -135,7 +139,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitFunctionCall(ASTFunctionCallNode node) {
     visitChildren(node);
     String functionName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(functionName,node);
+    SymbolTableEntry entry = rootScope.lookupSymbol(functionName,node);
     if(entry == null) {
       throw new SemaError(node, "Function " + functionName + " not declared");
     }
