@@ -220,7 +220,8 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
       Scope dowhileLoopScope = currentScope.peek().createChildScope();
       currentScope.push(dowhileLoopScope);
 
-      visitChildren(node);
+      ASTStmtLstNode stmtLstNode = node.getBody();
+      visit(stmtLstNode);
 
       ASTTernaryExprNode ternaryExprNode = node.getCondition();
       ExprResult exprResult = visit(ternaryExprNode);
