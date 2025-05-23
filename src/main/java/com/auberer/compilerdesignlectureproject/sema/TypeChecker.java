@@ -216,16 +216,19 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   }
 
   @Override
-  public ExprResult visitDoWhileLoop(ASTDoWhileLoopNode node){
-    ASTTernaryExprNode ternaryExprNode = node.getCondition();
+  public ExprResult visitDoWhileLoop(ASTDoWhileLoopNode node) {
+      Scope dowhileLoopScope = currentScope.peek().createChildScope();
+      currentScope.push(dowhileLoopScope);
 
+      visitChildren(node);
 
-    ExprResult exprResult = visit(ternaryExprNode);
-    if(!exprResult.getType().is(SuperType.TYPE_BOOL)) {
-      throw new SemaError(node, "Type is not bool");
-    }
+      ASTTernaryExprNode ternaryExprNode = node.getCondition();
+      ExprResult exprResult = visit(ternaryExprNode);
+      if (!exprResult.getType().is(SuperType.TYPE_BOOL)) {
+          throw new SemaError(node, "Wrong type: "+exprResult.getType().toString()+ ". Type musst be bool");
+      }
 
-    Type resultType = new Type(SuperType.TYPE_INVALID);
-    return new ExprResult(node.setEvaluatedSymbolType(resultType));
+      Type resultType = new Type(SuperType.TYPE_INVALID);
+      return new ExprResult(node.setEvaluatedSymbolType(resultType));
   }
 }
