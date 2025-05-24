@@ -192,6 +192,8 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
 
+    node.setScope(newScope);
+
     visitChildren(node);
 
     assert currentScope.peek() == newScope;

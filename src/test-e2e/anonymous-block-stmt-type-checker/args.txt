@@ -1,0 +1,1 @@
+./src/test-e2e/anonymous-block-stmt-type-checker/source.tinf
