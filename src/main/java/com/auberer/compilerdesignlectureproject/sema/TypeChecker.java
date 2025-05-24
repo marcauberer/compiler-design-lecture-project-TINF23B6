@@ -218,13 +218,12 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   @Override
   public ExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
-    Scope current = currentScope.peek();
-    Scope newScope = current.createChildScope();
-    currentScope.push(newScope);
+    Scope scope = node.getScope();
+    currentScope.push(scope);
 
     visitChildren(node);
 
-    assert currentScope.peek() == newScope;
+    assert currentScope.peek() == scope;
     currentScope.pop();
 
     return null;
