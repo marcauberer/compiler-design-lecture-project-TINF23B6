@@ -1,0 +1,73 @@
+Compiling with own parser...
+Dumping scopes with symbol tables ...
+{
+  "level": 0,
+  "children": [
+    {
+      "level": 1,
+      "children": [
+        {
+          "level": 2,
+          "children": [ ],
+          "symbolTable": {
+            "symbols": {
+              "i": {
+                "name": "i",
+                "isUsed": false,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              }
+            }
+          }
+        },
+        {
+          "level": 2,
+          "children": [ ],
+          "symbolTable": {
+            "symbols": {
+              "i": {
+                "name": "i",
+                "isUsed": true,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              }
+            }
+          }
+        }
+      ],
+      "symbolTable": {
+        "symbols": {
+          "x": {
+            "name": "x",
+            "isUsed": true,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "symbolTable": {
+    "symbols": {
+      "main": {
+        "name": "main",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      }
+    }
+  }
+}
+Compilation successful!

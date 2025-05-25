@@ -214,4 +214,16 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     return new ExprResult(node.setEvaluatedSymbolType(resultType));
   }
+
+  @Override
+  public ExprResult visitIfStmt(ASTIfStmtNode node) {
+    visitChildren(node);
+
+    ASTTernaryExprNode condition = node.getCondition();
+      if (!condition.getType().is(SuperType.TYPE_BOOL)) {
+        throw new SemaError(node, "If condition must be of type bool");
+    }
+      visit(node.getIfBody());
+      return null;
+  }
 }

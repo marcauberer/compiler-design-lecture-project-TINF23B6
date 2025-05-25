@@ -1,0 +1,1 @@
+-symtab ./src/test-e2e/if-stmt-type-checker/source.tinf
