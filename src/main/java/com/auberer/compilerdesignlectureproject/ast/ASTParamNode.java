@@ -28,8 +28,7 @@ public class ASTParamNode extends ASTNode {
     return getChild(ASTTypeNode.class, 0);
   }
 
-  public ASTAtomicExprNode getDefaultValue() {
-    return hasAssignStmt ? getChild(ASTAtomicExprNode.class, 0) : null;
+  public ASTAtomicExprNode getDefaultValue() {return getChild(ASTAtomicExprNode.class, 0);
   }
 
 }

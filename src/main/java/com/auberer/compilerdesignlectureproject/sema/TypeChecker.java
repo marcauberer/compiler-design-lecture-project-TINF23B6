@@ -239,7 +239,7 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     entry.setType(lhs.getType());
 
-    if(node.getHasAssignStmt() ){
+    if(node.getDefaultValue() != null ){
       ExprResult rhs = visit(node.getDefaultValue());
       if(!rhs.getType().is(rhs.getType().getSuperType()))
         throw new SemaError(node, "Type mismatch in default Type");

@@ -6,7 +6,7 @@ int lorem := (int r; double l; int ipsum = 2) {
 
 int main := () {
     int a = 2;
-    int r = call lorem(a; 2.0);
+    int r = call lorem(a; 2.0; 3);
     ret 0;
 }
 
