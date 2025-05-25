@@ -2,6 +2,8 @@ package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 
+import java.util.ArrayList;
+
 /**
  * Typ-Kompatibilität prüfen
  * Overload resolution (Team 4)
@@ -284,17 +286,48 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     return null;
   }
 
- /* @Override
+
+  //INFO: Importent need to be change the evaluation of fct calls without assign
+  @Override
   public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
+    String identifier = node.getIdentifier();
+    Type retType =  functionTable.getTypeByIdentifier(identifier);
+    //ToDo Justus: ugly solution should be changed
+    functionTable.setPointer(functionTable.getPointerByIdentifier(identifier));
+    visitChildren(node);
+    //ToDo Justus: ugly solution should be changed
+    functionTable.resetPointer();
+    return new ExprResult(retType);
+  }
 
-    return null;
-  }*/
-
-  /*@Override
+  @Override
   public ExprResult visitArgLst(ASTArgLstNode node) {
-
+    ArrayList<ASTAtomicExprNode> arguments = node.getArgs();
+    //ToDo Justus: search for more effective method
+    int intArgs = 0;
+    int doubleArgs = 0;
+    int stringArgs = 0;
+    int boolArgs = 0;
+    for (ASTAtomicExprNode arg : arguments) {
+      ExprResult result = visit(arg);
+      switch (result.getType().getSuperType()){
+        case SuperType.TYPE_INT:
+          intArgs++;
+          break;
+          case SuperType.TYPE_DOUBLE:
+            doubleArgs++;
+            break;
+            case SuperType.TYPE_STRING:
+              stringArgs++;
+              break;
+              case SuperType.TYPE_BOOL:
+                boolArgs++;
+                break;
+      }
+    }
+    functionTable.getActiveEntry().validateArgs(intArgs, doubleArgs, stringArgs, boolArgs);
     return null;
-  }*/
+  }
 
   @Override
   public ExprResult visitReturnStmt(ASTReturnStmtNode node) {

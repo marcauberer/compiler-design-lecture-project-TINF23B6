@@ -35,6 +35,22 @@ public class FunctionTableEntry {
                 '}';
     }
 
+    public void validateArgs(int intArgs, int doubleArgs, int stringArgs, int booleanArgs){
+
+        if (intArgs > amountIntParams || intArgs < (amountIntParams - amountIntParamsDefaults)) {
+            throw new RuntimeException("Other Amount of Arguments Expected INT");
+        }
+        if (doubleArgs > amountDoubleParams || doubleArgs < (amountDoubleParams - amountDoubleParamsDefaults)) {
+            throw new RuntimeException("Other Amount of Arguments Expected DOUBLE");
+        }
+        if (stringArgs > amountStringParams || stringArgs < (amountStringParams - amountStringParamsDefaults)) {
+            throw new RuntimeException("Other Amount of Arguments Expected STRING");
+        }
+        if (booleanArgs > amountBooleanParams || booleanArgs < (amountBooleanParams - amountBooleanParamsDefaults)) {
+            throw new RuntimeException("Other Amount of Arguments Expected BOOL");
+        }
+    }
+
 
     //ToDo Justus: Rewrite this ugly quick and dirty solution
     public void incrementAmountIntParams() {

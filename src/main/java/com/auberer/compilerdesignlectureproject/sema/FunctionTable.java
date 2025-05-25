@@ -35,6 +35,17 @@ public class FunctionTable {
         return false;
     }
 
+    public Type getTypeByIdentifier(String identifier){
+        FunctionTableEntry entrie = null;
+        for(FunctionTableEntry entry : entries){
+            if (entry.getFunctionIdentifier().equals(identifier)){
+                entrie = entry;
+            }
+        }
+        if(entrie == null){ return null; }
+        return entrie.getReturnType();
+    }
+
     public FunctionTableEntry getActiveEntry(){
         return entries.get(pointer);
     }
@@ -51,6 +62,25 @@ public class FunctionTable {
         }
         return out;
     }
+
+    //ToDo Justus: badly engineered but quick and dirty sollution
+    public int getPointerByIdentifier(String identifier){
+        for(int i = 0; i < entries.size(); i++){
+            if (entries.get(i).getFunctionIdentifier().equals(identifier)){
+                return i;
+            }
+        }
+        throw new RuntimeException("No entry with identifier " + identifier + " exists");
+    }
+
+    public void setPointer(int pointer){
+        this.pointer = pointer;
+    }
+
+    public void resetPointer(){
+        this.pointer = entries.size() - 1;
+    }
+
 
     //ToDo Justus: Rewrite this ugly quick and dirty solution
     public void incDoubleParamCount(){
