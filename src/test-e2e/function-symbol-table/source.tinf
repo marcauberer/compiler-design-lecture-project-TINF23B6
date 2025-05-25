@@ -1,4 +1,4 @@
-int lorem := (int r) {
+int lorem := (int r; double l; int ipsum) {
     int a = 3;
     a = r;
     ret a;
@@ -6,6 +6,6 @@ int lorem := (int r) {
 
 int main := () {
     int a = 2;
-    call lorem(a);
+    call lorem();
 }
 

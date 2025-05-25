@@ -13,6 +13,9 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   final ASTEntryNode entryNode;
 
+  final FunctionTable functionTable = new FunctionTable( );
+
+  //TODO Justus: Implement FunctionTab creation from entry node
   public TypeChecker(ASTEntryNode entryNode) {
     this.entryNode = entryNode;
   }
@@ -211,16 +214,50 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   @Override
   public ExprResult visitParam(ASTParamNode node) {
+
     SymbolTableEntry entry = node.getCurrentSymbol();
     assert entry != null;
 
     ExprResult lhs = visit(node.getDataType());
+    //ToDo Justus: ugly and doubled rewrite
+    switch (lhs.getType().getSuperType()){
+      case SuperType.TYPE_BOOL:
+          functionTable.incBooleanParamCount();
+        break;
+      case SuperType.TYPE_DOUBLE:
+        functionTable.incDoubleParamCount();
+        break;
+      case SuperType.TYPE_INT:
+        functionTable.incIntParamCount();
+        break;
+      case SuperType.TYPE_STRING:
+        functionTable.incStringParamCount();
+        break;
+    }
+
     entry.setType(lhs.getType());
 
     if(node.getHasAssignStmt() ){
       ExprResult rhs = visit(node.getDefaultValue());
       if(!rhs.getType().is(rhs.getType().getSuperType()))
         throw new SemaError(node, "Type mismatch in default Type");
+      else{
+        //ToDo Justus: ugly and doubled rewrite
+        switch (lhs.getType().getSuperType()){
+          case SuperType.TYPE_BOOL:
+            functionTable.incrementAmountBooleanParamsDefaults();
+            break;
+          case SuperType.TYPE_DOUBLE:
+            functionTable.incrementAmountDoubleParamsDefaults();
+            break;
+          case SuperType.TYPE_INT:
+            functionTable.incrementAmountIntParamsDefaults();
+            break;
+          case SuperType.TYPE_STRING:
+            functionTable.incrementAmountStringParamsDefaults();
+            break;
+        }
+      }
     }
 
     return null;
@@ -229,21 +266,35 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   @Override
   public ExprResult visitFunctionDef(ASTFunctionDefNode node) {
+    functionTable.createEntry(node);
+    Type retType = visitType(node.getReturnType()).getType();
+    functionTable.setCurrentReturnType(retType);
+    SymbolTableEntry entry = node.getCurrentSymbol();
 
+    assert entry != null;
+    entry.setType(retType);
+
+    if(node.getParams() != null){
+      visitParamLst(node.getParams());
+
+    }
+
+    visit(node.getBody());
+    System.out.println(functionTable.getActiveEntry().toString());
     return null;
   }
 
-  @Override
+ /* @Override
   public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
 
     return null;
-  }
+  }*/
 
-  @Override
+  /*@Override
   public ExprResult visitArgLst(ASTArgLstNode node) {
 
     return null;
-  }
+  }*/
 
   @Override
   public ExprResult visitReturnStmt(ASTReturnStmtNode node) {
