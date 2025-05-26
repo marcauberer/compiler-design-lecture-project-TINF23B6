@@ -214,4 +214,17 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     return new ExprResult(node.setEvaluatedSymbolType(resultType));
   }
+
+  @Override
+  public ExprResult visitForLoop(ASTForLoopNode node) {
+      ASTTernaryExprNode cond = node.getCondition();
+      if (cond != null) {
+          ExprResult condResult = visit(cond);
+          if (!condResult.getType().is(SuperType.TYPE_BOOL)) {
+              throw new SemaError(cond, "Type must be a boolean type");
+          }
+          return condResult;
+      }
+      return new ExprResult(new Type(SuperType.TYPE_INVALID));
+  }
 }
