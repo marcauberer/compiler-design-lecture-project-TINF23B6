@@ -1,6 +1,9 @@
 usage: tinf-compiler args...
- -antlr,--use-antlr-parser     Use ANTLR generated parser
- -ast,--dump-ast               Dump the AST as dot file
- -h,--help                     Print this help text
- -symtab,--dump-symbol-table   Dump the symbol table along with the scopes
- -tokens,--dump-tokens         Dump the lexed tokens
+ -antlr,--use-antlr-parser              Use ANTLR generated parser
+ -ast,--dump-ast                        Dump the AST as dot file
+ -h,--help                              Print this help text
+ -symtab,--dump-symbol-table            Dump the symbol table along with
+                                        the scopes
+ -symtyptab,--dump-symbol-table-types   Dump the symbol table along with
+                                        the scopes and the types
+ -tokens,--dump-tokens                  Dump the lexed tokens
