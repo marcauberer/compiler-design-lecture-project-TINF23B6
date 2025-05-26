@@ -1,11 +1,10 @@
 int main := () {
   int x = 2;
-  string str = "string";
   
   switch (x) {
     case 1:
       print("this is 1");
-    case str:
+    case "string":
       print("this is 2");
     case 3:
       print("this is 3");
