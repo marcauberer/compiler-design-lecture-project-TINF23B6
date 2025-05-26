@@ -278,11 +278,8 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     if(node.getParams() != null){
       visitParamLst(node.getParams());
-
     }
-
     visit(node.getBody());
-    System.out.println(functionTable.getActiveEntry().toString());
     return null;
   }
 
@@ -332,8 +329,8 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   @Override
   public ExprResult visitReturnStmt(ASTReturnStmtNode node) {
     ExprResult result = visit(node.getReturnExpr());
-    //ToDo Justus: ugly and bad readable improve with better structured code
-    if(!result.getType().getSuperType().equals(functionTable.getActiveEntry().getReturnType().getSuperType())){
+    SuperType returnType = functionTable.getActiveEntry().getReturnType().getSuperType();
+    if(!result.getType().getSuperType().equals(returnType)){
       throw new RuntimeException("Return type mismatch");
     }
     return null;

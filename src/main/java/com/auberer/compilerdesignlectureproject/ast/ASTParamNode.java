@@ -10,8 +10,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class ASTParamNode extends ASTNode {
-
-  private Boolean hasAssignStmt = false;
   private String identifier;
   private SymbolTableEntry currentSymbol;
 
