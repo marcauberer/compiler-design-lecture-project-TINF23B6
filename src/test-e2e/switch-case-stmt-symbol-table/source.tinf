@@ -9,7 +9,7 @@ int main := () {
     case 2:
       int scopedVar = 20;
       print(scopedVar);
-    case "hello":
+    case 5:
       print("x is a greeting");
     default:
       print("x is something else");
