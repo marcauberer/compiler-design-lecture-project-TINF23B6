@@ -3,6 +3,7 @@ package com.auberer.compilerdesignlectureproject.sema;
 import com.auberer.compilerdesignlectureproject.ast.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Typ-Kompatibilität prüfen
@@ -96,6 +97,48 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
       node.setEvaluatedSymbolType(result.getType());
       return result;
     }
+  }
+
+  // Team 6
+  @Override
+  public ExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    ExprResult conditionResult = visit(node.getCondition());
+    List<ASTCaseStmtNode> caseBlocks = node.getCaseBlocks();
+
+    for (ASTCaseStmtNode caseBlock : caseBlocks) {
+      caseBlock.setConditionResult(conditionResult);
+      visitCaseStmt(caseBlock);
+    }
+
+    ASTDefaultStmtNode defaultBlock = node.getDefaultBlock();
+    if (defaultBlock != null) {
+      visit(defaultBlock);
+    }
+
+    Type resultType = new Type(SuperType.TYPE_INVALID);
+    return new ExprResult(node.setEvaluatedSymbolType(resultType));
+  }
+
+  @Override
+  public ExprResult visitCaseStmt(ASTCaseStmtNode caseBlock) {
+    Scope scope = caseBlock.getScope();
+    currentScope.push(scope);
+
+    ASTLiteralNode literal = caseBlock.getLiteral();
+    if (literal != null) {
+      ExprResult caseResult = visit(literal);
+      if (!caseResult.getType().is(caseBlock.getConditionResult().getType().getSuperType())) {
+        throw new SemaError(literal, "Case value must be of type " + caseBlock.getConditionResult().getType().getSuperType());
+      }
+    }
+
+    visit(caseBlock.getStmtLst());
+
+    assert currentScope.peek() == scope;
+    currentScope.pop();
+
+    Type resultType = new Type(SuperType.TYPE_INVALID);
+    return new ExprResult(caseBlock.setEvaluatedSymbolType(resultType));
   }
 
   @Override
@@ -202,6 +245,11 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   }
 
   @Override
+  public ExprResult visitAssignStmt(ASTAssignStmtNode node) {
+    return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
+  }
+
+  @Override
   public ExprResult visitAssignExpr(ASTAssignExprNode node) {
     Type resultType = new Type(SuperType.TYPE_INVALID);
 
@@ -217,6 +265,33 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     }
 
     return new ExprResult(node.setEvaluatedSymbolType(resultType));
+  }
+
+  @Override
+  public ExprResult visitForLoop(ASTForLoopNode node) {
+    ASTVarDeclNode varDeclNode = node.getInitialization();
+    ExprResult varDeclResult = visit(varDeclNode);
+    if (!varDeclResult.getType().is(SuperType.TYPE_INT)) {
+      throw new SemaError(node, "Please initialize an Integer.");
+    }
+
+    ASTTernaryExprNode ternaryExprNode = node.getCondition();
+    ExprResult condResult = visit(ternaryExprNode);
+    if (!condResult.getType().is(SuperType.TYPE_BOOL)) {
+      throw new SemaError(ternaryExprNode, "The loop condition must be of type bool.");
+    }
+
+    ASTAssignExprNode assignExprNode = node.getIncrement();
+    visit(assignExprNode);
+
+    Scope bodyScope = node.getScope();
+    currentScope.push(bodyScope);
+    ASTStmtLstNode stmtLstNode = node.getBody();
+    visit(stmtLstNode);
+    currentScope.pop();
+
+    return new ExprResult(new Type(SuperType.TYPE_INVALID));
+
   }
 
   @Override
@@ -321,8 +396,7 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     return null;
   }
 
-
-
+  //INFO: Importent need to be change the evaluation of fct calls without assign
   @Override
   public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
     String identifier = node.getIdentifier();
@@ -371,6 +445,5 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     }
     return null;
   }
-
-
+  
 }
