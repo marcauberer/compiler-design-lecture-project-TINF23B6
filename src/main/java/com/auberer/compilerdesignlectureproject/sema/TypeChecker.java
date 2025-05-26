@@ -17,7 +17,6 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   final FunctionTable functionTable = new FunctionTable( );
 
-  //TODO Justus: Implement FunctionTab creation from entry node
   public TypeChecker(ASTEntryNode entryNode) {
     this.entryNode = entryNode;
   }
@@ -290,15 +289,13 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   }
 
 
-  //INFO: Importent need to be change the evaluation of fct calls without assign
+
   @Override
   public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
     String identifier = node.getIdentifier();
     Type retType =  functionTable.getTypeByIdentifier(identifier);
-    //ToDo Justus: ugly solution should be changed
     functionTable.setPointer(functionTable.getPointerByIdentifier(identifier));
     visitChildren(node);
-    //ToDo Justus: ugly solution should be changed
     functionTable.resetPointer();
     return new ExprResult(retType);
   }
@@ -317,15 +314,15 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
         case SuperType.TYPE_INT:
           intArgs++;
           break;
-          case SuperType.TYPE_DOUBLE:
-            doubleArgs++;
-            break;
-            case SuperType.TYPE_STRING:
-              stringArgs++;
-              break;
-              case SuperType.TYPE_BOOL:
-                boolArgs++;
-                break;
+        case SuperType.TYPE_DOUBLE:
+          doubleArgs++;
+          break;
+        case SuperType.TYPE_STRING:
+          stringArgs++;
+          break;
+        case SuperType.TYPE_BOOL:
+          boolArgs++;
+          break;
       }
     }
     functionTable.getActiveEntry().validateArgs(intArgs, doubleArgs, stringArgs, boolArgs);
