@@ -217,9 +217,6 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
     @Override
     public ExprResult visitForLoop(ASTForLoopNode node) {
-        if (node == null) {
-            System.out.println("Node is null");
-        }
         ASTVarDeclNode varDeclNode = node.getInitialization();
         ExprResult varDeclResult = visit(varDeclNode);
         if (!varDeclResult.getType().is(SuperType.TYPE_INT)) {
