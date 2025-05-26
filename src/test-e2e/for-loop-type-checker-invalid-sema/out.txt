@@ -1,45 +1,18 @@
 Compiling with own parser...
-Dumping scopes with symbol tables ...
-{
-  "level": 0,
-  "children": [
-    {
-      "level": 1,
-      "children": [
-        {
-          "level": 2,
-          "children": [ ],
-          "symbolTable": {
-            "symbols": {
-              "i": {
-                "name": "i",
-                "isUsed": true,
-                "isParam": false,
-                "type": {
-                  "superType": "TYPE_INVALID",
-                  "subType": null
-                }
-              }
-            }
-          }
-        }
-      ],
-      "symbolTable": {
-        "symbols": { }
-      }
-    }
-  ],
-  "symbolTable": {
-    "symbols": {
-      "main": {
-        "name": "main",
-        "isUsed": false,
-        "isParam": false,
-        "type": {
-          "superType": "TYPE_INVALID",
-          "subType": null
-        }
-      }
-    }
-  }
-}
+[main] ERROR com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject - An error occurred
+com.auberer.compilerdesignlectureproject.sema.SemaError: L3C21: The loop condition must be of type bool.
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitForLoop(TypeChecker.java:234)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitForLoop(TypeChecker.java:12)
+	at com.auberer.compilerdesignlectureproject.ast.ASTForLoopNode.accept(ASTForLoopNode.java:15)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java:13)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmt(ASTVisitor.java:32)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtNode.accept(ASTStmtNode.java:11)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java:13)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmtLst(ASTVisitor.java:28)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtLstNode.accept(ASTStmtLstNode.java:12)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java:13)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitFunctionDef(ASTVisitor.java:120)
+	at com.auberer.compilerdesignlectureproject.ast.ASTFunctionDefNode.accept(ASTFunctionDefNode.java:20)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java:13)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitEntry(TypeChecker.java:29)
+	at com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject.main(CompilerDesignLectureProject.java:90)
