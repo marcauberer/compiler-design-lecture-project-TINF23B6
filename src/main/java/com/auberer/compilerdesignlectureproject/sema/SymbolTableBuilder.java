@@ -74,6 +74,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
 
     Scope whileScope = currentScope.peek().createChildScope();
+    node.setScope(whileScope);
     currentScope.push(whileScope);
 
     visitChildren(node);
