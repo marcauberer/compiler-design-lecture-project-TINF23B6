@@ -8,12 +8,15 @@ Symbol name: main, DeclNode: L7C1, IsUsed: false, IsParam: false
 Scope: 1
 Symbol name: a, DeclNode: L2C5, IsUsed: true, IsParam: false
 Symbol name: r, DeclNode: L1C15, IsUsed: true, IsParam: false
+Symbol name: ipsum, DeclNode: L1C32, IsUsed: false, IsParam: false
+Symbol name: l, DeclNode: L1C22, IsUsed: false, IsParam: false
 
 
 
 
 Scope: 1
 Symbol name: a, DeclNode: L8C5, IsUsed: true, IsParam: false
+Symbol name: r, DeclNode: L9C5, IsUsed: false, IsParam: false
 
 
 
