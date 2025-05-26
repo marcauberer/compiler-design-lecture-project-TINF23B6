@@ -103,12 +103,6 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
-    // may create problems due to Type (?)
-    Scope scopeFct = currentScope.peek().createChildScope();
-    currentScope.push(scopeFct);
-    visitChildren(node);
-    assert currentScope.peek() == scopeFct;
-    currentScope.pop();
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName,node);
     if(entry == null) {
@@ -117,6 +111,13 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     }else{
       throw new SemaError(node, "Function " + functionName + " already declared");
     }
+    // may create problems due to Type (?)
+    Scope scopeFct = currentScope.peek().createChildScope();
+    currentScope.push(scopeFct);
+    visitChildren(node);
+    assert currentScope.peek() == scopeFct;
+    currentScope.pop();
+
     return null;
   }
 

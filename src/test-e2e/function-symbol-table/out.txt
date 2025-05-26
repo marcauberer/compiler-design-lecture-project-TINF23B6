@@ -1,33 +1,126 @@
 Compiling with own parser...
-Dumping symbol table ...
-Scope: 0
-Symbol name: lorem, DeclNode: L1C1, IsUsed: true, IsParam: false
-Symbol name: dolor, DeclNode: L7C1, IsUsed: false, IsParam: false
-Symbol name: main, DeclNode: L12C1, IsUsed: false, IsParam: false
-
-
-Scope: 1
-Symbol name: a, DeclNode: L2C5, IsUsed: true, IsParam: false
-Symbol name: r, DeclNode: L1C15, IsUsed: true, IsParam: true
-Symbol name: ipsum, DeclNode: L1C32, IsUsed: false, IsParam: true
-Symbol name: l, DeclNode: L1C22, IsUsed: false, IsParam: true
-
-
-
-
-Scope: 1
-Symbol name: ipsum, DeclNode: L7C14, IsUsed: true, IsParam: true
-
-
-
-
-Scope: 1
-Symbol name: a, DeclNode: L13C5, IsUsed: true, IsParam: false
-Symbol name: r, DeclNode: L14C5, IsUsed: false, IsParam: false
-
-
-
-
-
-
+Dumping scopes with symbol tables ...
+{
+  "level": 0,
+  "children": [
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "a": {
+            "name": "a",
+            "isUsed": true,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "r": {
+            "name": "r",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "ipsum": {
+            "name": "ipsum",
+            "isUsed": false,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "l": {
+            "name": "l",
+            "isUsed": false,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "ipsum": {
+            "name": "ipsum",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "a": {
+            "name": "a",
+            "isUsed": true,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "r": {
+            "name": "r",
+            "isUsed": false,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "symbolTable": {
+    "symbols": {
+      "lorem": {
+        "name": "lorem",
+        "isUsed": true,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      },
+      "dolor": {
+        "name": "dolor",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      },
+      "main": {
+        "name": "main",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      }
+    }
+  }
+}
 Compilation successful!
