@@ -150,6 +150,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitForLoop(ASTForLoopNode node) {
     Scope scope = currentScope.peek().createChildScope();
     currentScope.push(scope);
+    node.setScope(scope);
     visitChildren(node);
     assert currentScope.peek() == scope;
     currentScope.pop();
