@@ -113,7 +113,7 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
       var right = operands.get(1);
       if (!left.getType().is(right.getType().getSuperType()))
         throw new SemaError(node, "Equality expressions must have the same type");
-      return new ExprResult(node.setEvaluatedSymbolType(left.getType()));
+      return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_BOOL)));
     }
   }
 
@@ -204,14 +204,20 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   @Override
   public ExprResult visitAssignExpr(ASTAssignExprNode node) {
-    SymbolTableEntry entry = node.getCurrentSymbol();
-    assert entry != null;
+    Type resultType = new Type(SuperType.TYPE_INVALID);
 
-    ExprResult rhs = visit(node.getRhs());
-    if (!entry.getType().is(rhs.getType().getSuperType()))
-      throw new SemaError(node, "Type mismatch in assignment");
+    if (node.isAssignment()) {
+      SymbolTableEntry entry = node.getCurrentSymbol();
+      assert entry != null;
 
-    return new ExprResult(node.setEvaluatedSymbolType(rhs.getType()));
+      ExprResult rhs = visit(node.getRhs());
+      if (!entry.getType().is(rhs.getType().getSuperType()))
+        throw new SemaError(node, "Type mismatch in assignment");
+
+      resultType = rhs.getType();
+    }
+
+    return new ExprResult(node.setEvaluatedSymbolType(resultType));
   }
 
   @Override

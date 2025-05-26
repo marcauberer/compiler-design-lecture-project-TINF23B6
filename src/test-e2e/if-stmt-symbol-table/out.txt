@@ -1,26 +1,73 @@
 Compiling with own parser...
-Dumping symbol table ...
-Scope: 0
-Symbol name: main, DeclNode: L1C1, IsUsed: false, IsParam: false
-
-
-Scope: 1
-Symbol name: x, DeclNode: L2C5, IsUsed: true, IsParam: false
-
-
-Scope: 2
-Symbol name: i, DeclNode: L4C9, IsUsed: false, IsParam: false
-
-
-
-
-Scope: 2
-Symbol name: i, DeclNode: L6C9, IsUsed: true, IsParam: false
-
-
-
-
-
-
-
+Dumping scopes with symbol tables ...
+{
+  "level": 0,
+  "children": [
+    {
+      "level": 1,
+      "children": [
+        {
+          "level": 2,
+          "children": [ ],
+          "symbolTable": {
+            "symbols": {
+              "i": {
+                "name": "i",
+                "isUsed": false,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              }
+            }
+          }
+        },
+        {
+          "level": 2,
+          "children": [ ],
+          "symbolTable": {
+            "symbols": {
+              "i": {
+                "name": "i",
+                "isUsed": true,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              }
+            }
+          }
+        }
+      ],
+      "symbolTable": {
+        "symbols": {
+          "x": {
+            "name": "x",
+            "isUsed": true,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "symbolTable": {
+    "symbols": {
+      "main": {
+        "name": "main",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      }
+    }
+  }
+}
 Compilation successful!
