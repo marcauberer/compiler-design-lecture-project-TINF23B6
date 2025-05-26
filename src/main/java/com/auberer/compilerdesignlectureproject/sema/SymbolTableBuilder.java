@@ -120,14 +120,15 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
-  //ToDO Set is Parm in Symboltable
+
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
     String paramName = node.getIdentifier();
-    SymbolTableEntry entry = rootScope.lookupSymbolStrict(paramName,node);
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
     if(entry == null) {
       entry = currentScope.peek().insertSymbol(paramName, node);
+      entry.setParam(true);
       node.setCurrentSymbol(entry);
     }else{
       throw new SemaError(node, "Parameter identifier" + paramName + " already used");

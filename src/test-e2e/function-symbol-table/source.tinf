@@ -4,6 +4,11 @@ int lorem := (int r; double l; int ipsum = 2) {
     ret a;
 }
 
+int dolor :=(int ipsum = 3) {
+    ipsum = 4;
+    ret 0;
+}
+
 int main := () {
     int a = 2;
     int r = call lorem(a; 2.0; 3);
