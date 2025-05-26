@@ -1,11 +1,17 @@
-int lorem := (int r) {
+int lorem := (int r; double l; int ipsum = 2) {
     int a = 3;
     a = r;
     ret a;
 }
 
+int dolor :=(int ipsum = 3) {
+    ipsum = 4;
+    ret 0;
+}
+
 int main := () {
     int a = 2;
-    call lorem(a);
+    int r = call lorem(a; 2.0; 3);
+    ret 0;
 }
 

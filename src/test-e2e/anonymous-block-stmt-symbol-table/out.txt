@@ -1,28 +1,92 @@
 Compiling with own parser...
-Dumping symbol table ...
-Scope: 0
-Symbol name: main, DeclNode: L1C1, IsUsed: false, IsParam: false
-
-
-Scope: 1
-Symbol name: c, DeclNode: L14C4, IsUsed: false, IsParam: false
-
-
-Scope: 2
-Symbol name: a, DeclNode: L4C7, IsUsed: false, IsParam: false
-Symbol name: b, DeclNode: L5C7, IsUsed: false, IsParam: false
-
-
-Scope: 3
-Symbol name: x, DeclNode: L8C9, IsUsed: false, IsParam: false
-Symbol name: y, DeclNode: L9C9, IsUsed: false, IsParam: false
-
-
-
-
-
-
-
-
-
+Dumping scopes with symbol tables ...
+{
+  "level": 0,
+  "children": [
+    {
+      "level": 1,
+      "children": [
+        {
+          "level": 2,
+          "children": [
+            {
+              "level": 3,
+              "children": [ ],
+              "symbolTable": {
+                "symbols": {
+                  "x": {
+                    "name": "x",
+                    "isUsed": false,
+                    "isParam": false,
+                    "type": {
+                      "superType": "TYPE_INVALID",
+                      "subType": null
+                    }
+                  },
+                  "y": {
+                    "name": "y",
+                    "isUsed": false,
+                    "isParam": false,
+                    "type": {
+                      "superType": "TYPE_INVALID",
+                      "subType": null
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "symbolTable": {
+            "symbols": {
+              "a": {
+                "name": "a",
+                "isUsed": false,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              },
+              "b": {
+                "name": "b",
+                "isUsed": false,
+                "isParam": false,
+                "type": {
+                  "superType": "TYPE_INVALID",
+                  "subType": null
+                }
+              }
+            }
+          }
+        }
+      ],
+      "symbolTable": {
+        "symbols": {
+          "c": {
+            "name": "c",
+            "isUsed": false,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "symbolTable": {
+    "symbols": {
+      "main": {
+        "name": "main",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      }
+    }
+  }
+}
 Compilation successful!
