@@ -1,11 +1,21 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.sema.ExprResult;
+import com.auberer.compilerdesignlectureproject.sema.Scope;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ASTCaseStmtNode extends ASTNode {
+
+  private ExprResult conditionResult;
+  private Scope scope;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
@@ -18,7 +28,11 @@ public class ASTCaseStmtNode extends ASTNode {
     return selectionSet;
   }
 
-  public ASTCaseStmtNode getBody() {
-    return getChild(ASTCaseStmtNode.class, 0);
+  public ASTLiteralNode getLiteral() {
+    return getChild(ASTLiteralNode.class, 0);
+  }
+
+  public ASTStmtLstNode getStmtLst() {
+    return getChild(ASTStmtLstNode.class, 0);
   }
 }

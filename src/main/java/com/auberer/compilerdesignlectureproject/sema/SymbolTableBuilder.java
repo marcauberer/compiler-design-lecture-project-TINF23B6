@@ -4,9 +4,12 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
+  // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
+  private Scope rootScope;
+
   @Override
   public Void visitEntry(ASTEntryNode node) {
-    Scope rootScope = new Scope();
+    rootScope = new Scope();
     node.setRootScope(rootScope);
 
     assert currentScope.isEmpty();
@@ -89,6 +92,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     Scope doWhileScope = currentScope.peek().createChildScope();
     currentScope.push(doWhileScope);
 
+    node.setScope(doWhileScope);
     visitChildren(node);
 
     assert currentScope.peek() == doWhileScope;
@@ -117,6 +121,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
+
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
@@ -124,6 +129,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
     if(entry == null) {
       entry = currentScope.peek().insertSymbol(paramName, node);
+      entry.setParam(true);
       node.setCurrentSymbol(entry);
     }else{
       throw new SemaError(node, "Parameter identifier" + paramName + " already used");
@@ -135,7 +141,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitFunctionCall(ASTFunctionCallNode node) {
     visitChildren(node);
     String functionName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(functionName,node);
+    SymbolTableEntry entry = rootScope.lookupSymbol(functionName,node);
     if(entry == null) {
       throw new SemaError(node, "Function " + functionName + " not declared");
     }
@@ -192,6 +198,8 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
+
+    node.setScope(newScope);
 
     visitChildren(node);
 
