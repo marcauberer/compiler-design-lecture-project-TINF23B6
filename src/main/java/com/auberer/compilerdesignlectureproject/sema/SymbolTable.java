@@ -1,13 +1,18 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolTable {
 
+  @JsonIgnore
   Scope scope;
+
+  @JsonProperty("symbols")
   Map<String, SymbolTableEntry> symbols = new HashMap<>(); // Mapping from symbol name to symbol entry
 
   public SymbolTable(Scope scope) {
@@ -34,12 +39,4 @@ public class SymbolTable {
     return entry != null && entry.getDeclNode().getCodeLoc().compareTo(lookupNode.getCodeLoc()) <= 0 ? entry : null;
   }
 
-  public String serialize() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("Scope: ").append(scope.level).append("\n");
-    for (SymbolTableEntry entry : symbols.values()) {
-      builder.append(entry.serialize()).append("\n");
-    }
-    return builder.toString();
-  }
 }

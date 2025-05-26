@@ -10,6 +10,8 @@ import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
 import com.auberer.compilerdesignlectureproject.sema.SymbolTableBuilder;
 import com.auberer.compilerdesignlectureproject.sema.TypeChecker;
+import com.auberer.compilerdesignlectureproject.util.CustomJSONPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -30,7 +32,7 @@ public class CompilerDesignLectureProject {
         .addOption("antlr", "use-antlr-parser", false, "Use ANTLR generated parser")
         .addOption("tokens", "dump-tokens", false, "Dump the lexed tokens")
         .addOption("ast", "dump-ast", false, "Dump the AST as dot file")
-        .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table");
+        .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table along with the scopes");
 
     DefaultParser cliParser = new DefaultParser();
     try {
@@ -78,9 +80,10 @@ public class CompilerDesignLectureProject {
 
       // Dump symbol table
       if (cli.hasOption("symtab")) {
-        System.out.println("Dumping symbol table ...");
-        String serializedSymbolTable = ast.getRootScope().serialize();
-        System.out.println(serializedSymbolTable);
+        System.out.println("Dumping scopes with symbol tables ...");
+        ObjectMapper mapper = new ObjectMapper();
+        CustomJSONPrettyPrinter pp = new CustomJSONPrettyPrinter();
+        System.out.println(mapper.writer(pp).writeValueAsString(ast.getRootScope()));
       }
 
       TypeChecker typeChecker = new TypeChecker();
