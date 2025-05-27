@@ -12,7 +12,7 @@ import java.util.Set;
 public class ASTFunctionDefNode extends ASTNode {
 
   private String identifier;
-  private boolean haveParams;
+
   private SymbolTableEntry currentSymbol;
 
   @Override
@@ -24,8 +24,8 @@ public class ASTFunctionDefNode extends ASTNode {
     return ASTParamLstNode.getSelectionSet();
   }
 
-  public ASTParamLstNode getParams() {
-    return haveParams ? getChild(ASTParamLstNode.class, 0) : null;
+  public ASTTypeNode getReturnType() { return getChild(ASTTypeNode.class, 0);}
+  public ASTParamLstNode getParams() { return getChild(ASTParamLstNode.class, 0) ;
   }
 
   public ASTStmtLstNode getBody() {

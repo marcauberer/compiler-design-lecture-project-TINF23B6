@@ -50,7 +50,7 @@ public class EndToEndTest {
     assertTrue(expectedOutputFile.exists(), "Missing out.txt in " + testDir.getName());
 
     try {
-      String args = Files.readString(argsFile.toPath());
+      String argsString = "-c " + Files.readString(argsFile.toPath());
       String expectedOutput = Files.readString(expectedOutputFile.toPath())
           .trim()
           .replaceAll("\r", "");
@@ -60,7 +60,7 @@ public class EndToEndTest {
       command.add("-cp");
       command.add(System.getProperty("java.class.path"));
       command.add(CompilerDesignLectureProject.class.getCanonicalName());
-      command.addAll(List.of(args.split(" ")));
+      command.addAll(List.of(argsString.split(" ")));
 
       ProcessBuilder pb = new ProcessBuilder(command);
       pb.redirectErrorStream(true);

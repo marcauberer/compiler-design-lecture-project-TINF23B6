@@ -1,5 +1,7 @@
 package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
-public interface IInstruction {
+import com.auberer.compilerdesignlectureproject.codegen.IDumpable;
+
+public interface IInstruction extends IDumpable {
   void trace(StringBuilder sb);
 }

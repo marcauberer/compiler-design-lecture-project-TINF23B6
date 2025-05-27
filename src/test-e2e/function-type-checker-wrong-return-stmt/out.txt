@@ -1,0 +1,18 @@
+Compiling with own parser...
+[main] java.lang.RuntimeException: Return type mismatch
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitReturnStmt(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitReturnStmt(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTReturnStmtNode.accept(ASTReturnStmtNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmt(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtNode.accept(ASTStmtNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmtLst(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtLstNode.accept(ASTStmtLstNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visit(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitFunctionDef(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitFunctionDef(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTFunctionDefNode.accept(ASTFunctionDefNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitEntry(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject.main(CompilerDesignLectureProject.java)

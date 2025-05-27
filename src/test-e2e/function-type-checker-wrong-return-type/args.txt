@@ -1,0 +1,1 @@
+./src/test-e2e/function-type-checker-wrong-return-type/source.tinf

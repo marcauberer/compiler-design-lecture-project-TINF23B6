@@ -1,11 +1,14 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.sema.Scope;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ASTWhileLoopNode extends ASTNode {
+
+  private Scope scope;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
@@ -26,4 +29,10 @@ public class ASTWhileLoopNode extends ASTNode {
     return getChild(ASTTernaryExprNode.class, 0);
   }
 
+    public Scope getScope() {
+        return scope;
+    }
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
 }

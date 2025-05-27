@@ -20,7 +20,42 @@ Dumping scopes with symbol tables ...
           "r": {
             "name": "r",
             "isUsed": true,
-            "isParam": false,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "ipsum": {
+            "name": "ipsum",
+            "isUsed": false,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          },
+          "l": {
+            "name": "l",
+            "isUsed": false,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "ipsum": {
+            "name": "ipsum",
+            "isUsed": true,
+            "isParam": true,
             "type": {
               "superType": "TYPE_INVALID",
               "subType": null
@@ -42,6 +77,15 @@ Dumping scopes with symbol tables ...
               "superType": "TYPE_INVALID",
               "subType": null
             }
+          },
+          "r": {
+            "name": "r",
+            "isUsed": false,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INVALID",
+              "subType": null
+            }
           }
         }
       }
@@ -52,6 +96,15 @@ Dumping scopes with symbol tables ...
       "lorem": {
         "name": "lorem",
         "isUsed": true,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INVALID",
+          "subType": null
+        }
+      },
+      "dolor": {
+        "name": "dolor",
+        "isUsed": false,
         "isParam": false,
         "type": {
           "superType": "TYPE_INVALID",
