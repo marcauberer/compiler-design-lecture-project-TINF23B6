@@ -223,7 +223,15 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
       if (!condition.getType().is(SuperType.TYPE_BOOL)) {
         throw new SemaError(node, "If condition must be of type bool");
     }
-      visit(node.getIfBody());
+
+      ASTIfBodyNode bodyNode = node.getIfBody();
+      Scope bodyScope = bodyNode.getScope();
+      currentScope.push(bodyScope);
+      visit(bodyNode);
+
+      assert currentScope.peek() == bodyScope;
+      currentScope.pop();
+
       return null;
   }
 }

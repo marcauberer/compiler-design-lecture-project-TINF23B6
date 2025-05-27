@@ -56,6 +56,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitIfBody(ASTIfBodyNode node) {
     Scope current = currentScope.peek();
     Scope ifScope = current.createChildScope();
+    node.setScope(ifScope);
 
     currentScope.push(ifScope);
     visitChildren(node);
