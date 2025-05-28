@@ -36,7 +36,8 @@ public class CompilerDesignLectureProject {
         .addOption("tokens", "dump-tokens", false, "Dump the lexed tokens")
         .addOption("ast", "dump-ast", false, "Dump the AST as dot file")
         .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table along with the scopes")
-        .addOption("types", "dump-typed-symbol-table", false, "Dump the symbol table along with the scopes and the types");
+        .addOption("types", "dump-typed-symbol-table", false, "Dump the symbol table along with the scopes and the types")
+        .addOption("ir", "dump-ir", false, "Dump the intermediate representation");
 
     DefaultParser cliParser = new DefaultParser();
     try {
@@ -104,6 +105,20 @@ public class CompilerDesignLectureProject {
         CustomJSONPrettyPrinter pp = new CustomJSONPrettyPrinter();
         System.out.println(mapper.writer(pp).writeValueAsString(ast.getRootScope()));
       }
+
+      // Generate IR
+      /*String moduleName = path.getFileName().toString();
+      CodeGenerator codeGenerator = new CodeGenerator(moduleName);
+      codeGenerator.visit(ast);
+      Module irModule = codeGenerator.getModule();
+
+      // Dump IR
+      if (cli.hasOption("ir")) {
+        System.out.println("Dumping IR ...");
+        StringBuilder sb = new StringBuilder();
+        irModule.dumpIR(sb);
+        System.out.println(sb);
+      }*/
 
       // ToDo(Marc): Implement
 
