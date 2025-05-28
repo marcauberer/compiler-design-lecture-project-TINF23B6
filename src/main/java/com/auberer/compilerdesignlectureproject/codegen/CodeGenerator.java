@@ -9,6 +9,7 @@ import java.util.List;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
+  @Getter
   private final Module module; // IR module, which represents the whole program
 
   @Getter
@@ -109,6 +110,24 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   // Team 6
 
   // Team 7
+
+  @Override
+  public IRExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    BasicBlock newBlock = new BasicBlock("anonymous_block_" + node.getCodeLoc().getLine());
+    JumpInstruction jumpInAnonymousBlockInstruction = new JumpInstruction(node, newBlock);
+    pushToCurrentBlock(jumpInAnonymousBlockInstruction);
+
+    switchToBlock(newBlock);
+
+    visitChildren(node);
+
+    BasicBlock afterBlock = new BasicBlock("after_" + newBlock.getLabel());
+    JumpInstruction jumpOutInstruction = new JumpInstruction(node, afterBlock);
+    pushToCurrentBlock(jumpOutInstruction);
+
+    switchToBlock(afterBlock);
+    return new IRExprResult(null, node, null);
+  }
 
   @Override
   public IRExprResult visitTernaryExpr(ASTTernaryExprNode node) {
