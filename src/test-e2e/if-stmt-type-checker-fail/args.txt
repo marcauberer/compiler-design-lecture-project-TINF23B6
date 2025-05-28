@@ -1,0 +1,1 @@
+./src/test-e2e/if-stmt-type-checker-fail/source.tinf

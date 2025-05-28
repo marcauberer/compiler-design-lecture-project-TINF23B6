@@ -1,0 +1,18 @@
+Compiling with own parser...
+[main] com.auberer.compilerdesignlectureproject.sema.SemaError: L3C5: If condition must be of type bool
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitIfStmt(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitIfStmt(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTIfStmtNode.accept(ASTIfStmtNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmt(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtNode.accept(ASTStmtNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmtLst(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTStmtLstNode.accept(ASTStmtLstNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visit(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitFunctionDef(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitFunctionDef(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTFunctionDefNode.accept(ASTFunctionDefNode.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitEntry(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject.main(CompilerDesignLectureProject.java)
