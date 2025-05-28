@@ -1,6 +1,7 @@
 package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTSwitchCaseStmtNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
 import com.auberer.compilerdesignlectureproject.interpreter.Value;
 
@@ -13,7 +14,7 @@ public class SwitchInstruction extends Instruction {
   private final List<ASTCaseStmtNode> cases;
   private final BasicBlock defaultBlock;
 
-  public SwitchInstruction(ASTCaseStmtNode node, Value value, List<BasicBlock> caseBlocks, List<ASTCaseStmtNode> cases, BasicBlock defaultBlock) {
+  public SwitchInstruction(ASTSwitchCaseStmtNode node, Value value, List<BasicBlock> caseBlocks, List<ASTCaseStmtNode> cases, BasicBlock defaultBlock) {
     super(node);
     assert cases.size() == caseBlocks.size();
     this.value = value;

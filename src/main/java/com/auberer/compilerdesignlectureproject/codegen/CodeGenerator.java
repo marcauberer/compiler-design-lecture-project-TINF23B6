@@ -2,9 +2,11 @@ package com.auberer.compilerdesignlectureproject.codegen;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.*;
+import com.auberer.compilerdesignlectureproject.interpreter.Value;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
@@ -79,6 +81,36 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   // Team 5
 
   // Team 6
+  @Override
+  public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    Value value = node.getCondition().getValue();
+    List<BasicBlock> caseBlocks = new ArrayList<>();
+    List<ASTCaseStmtNode> cases = node.getCaseBlocks();
+    BasicBlock defaultBlock = node.getDefaultBlock() != null ?
+            new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine()) :
+            new BasicBlock("default_block_null");
+
+    for (int i = 0; i < cases.size(); i++) {
+      BasicBlock caseBlock = new BasicBlock("case_block_" + i + "_" + cases.get(i).getCodeLoc().getLine());
+      caseBlocks.add(caseBlock);
+    }
+
+    SwitchInstruction switchInstruction = new SwitchInstruction(node, value, caseBlocks, cases, defaultBlock);
+
+    pushToCurrentBlock(switchInstruction);
+
+    for (int i = 0; i < cases.size(); i++) {
+      switchToBlock(caseBlocks.get(i));
+      visitChildren(cases.get(i));
+    }
+
+    if (node.getDefaultBlock() != null) {
+      switchToBlock(defaultBlock);
+      visitChildren(node.getDefaultBlock());
+    }
+
+    return new IRExprResult(node.getValue(), node, null);
+  }
 
   // Team 7
 
