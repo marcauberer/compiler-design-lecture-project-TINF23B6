@@ -77,7 +77,35 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   // Team 4
 
   // Team 5
+  @Override
+  public IRExprResult visitForLoop(ASTForLoopNode node) {
+    visit(node.getInitialization());
+    BasicBlock condBlock = new BasicBlock("for_cond");
+    BasicBlock bodyBlock = new BasicBlock("for_body");
+    BasicBlock incrementBlock = new BasicBlock("for_increment");
+    BasicBlock afterLoopBlock = new BasicBlock("after_for");
 
+
+    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+
+
+    switchToBlock(condBlock);
+    IRExprResult condResult = visit(node.getCondition());
+    pushToCurrentBlock(new CondJumpInstruction(node, condResult.getValue().getNode(), bodyBlock, afterLoopBlock));
+
+
+    switchToBlock(bodyBlock);
+    visit(node.getBody());
+    pushToCurrentBlock(new JumpInstruction(node, incrementBlock));
+
+
+    switchToBlock(incrementBlock);
+    visit(node.getIncrement());
+    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+
+
+    return new IRExprResult(null, node, null);
+  }
   // Team 6
 
   // Team 7
