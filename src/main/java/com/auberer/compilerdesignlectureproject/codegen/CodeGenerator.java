@@ -88,7 +88,8 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     List<ASTCaseStmtNode> cases = node.getCaseBlocks();
     BasicBlock defaultBlock = node.getDefaultBlock() != null ?
             new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine()) :
-            new BasicBlock("default_block_null");
+            null;
+    BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
 
     for (int i = 0; i < cases.size(); i++) {
       BasicBlock caseBlock = new BasicBlock("case_block_" + i + "_" + cases.get(i).getCodeLoc().getLine());
@@ -102,12 +103,16 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     for (int i = 0; i < cases.size(); i++) {
       switchToBlock(caseBlocks.get(i));
       visitChildren(cases.get(i));
+      pushToCurrentBlock(new JumpInstruction(node, caseBlocks.get(i)));
     }
 
     if (node.getDefaultBlock() != null) {
       switchToBlock(defaultBlock);
       visitChildren(node.getDefaultBlock());
+      pushToCurrentBlock(new JumpInstruction(node, defaultBlock));
     }
+
+    switchToBlock(endBlock);
 
     return new IRExprResult(node.getValue(), node, null);
   }
