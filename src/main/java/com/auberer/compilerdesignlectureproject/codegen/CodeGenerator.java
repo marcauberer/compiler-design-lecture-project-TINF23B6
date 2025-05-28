@@ -101,7 +101,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
     switchToBlock(incrementBlock);
     visit(node.getIncrement());
-    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+    pushToCurrentBlock(new JumpInstruction(node, afterLoopBlock));
 
 
     return new IRExprResult(null, node, null);
