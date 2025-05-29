@@ -103,13 +103,11 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     for (int i = 0; i < cases.size(); i++) {
       switchToBlock(caseBlocks.get(i));
       visitChildren(cases.get(i));
-      pushToCurrentBlock(new JumpInstruction(node, caseBlocks.get(i)));
     }
 
     if (node.getDefaultBlock() != null) {
       switchToBlock(defaultBlock);
       visitChildren(node.getDefaultBlock());
-      pushToCurrentBlock(new JumpInstruction(node, defaultBlock));
     }
 
     switchToBlock(endBlock);
