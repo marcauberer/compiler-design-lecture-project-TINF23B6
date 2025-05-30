@@ -84,7 +84,8 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
       pushToCurrentBlock(entryJump);
       switchToBlock(bodyBlock);
 
-      visitChildren(node);
+      visitChildren(node.getBody());
+      visitChildren(node.getCondition());
 
       CondJumpInstruction condJumpInstruction = new CondJumpInstruction(node,node.getCondition(), bodyBlock, endBlock);
       pushToCurrentBlock(condJumpInstruction);
