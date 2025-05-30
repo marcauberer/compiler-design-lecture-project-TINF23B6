@@ -75,6 +75,24 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   // Team 3
 
+    @Override
+    public IRExprResult visitDoWhileLoop(ASTDoWhileLoopNode node){
+      BasicBlock bodyBlock = new BasicBlock("do_while_body");
+      BasicBlock endBlock = new BasicBlock("do_while_end");
+
+      JumpInstruction entryJump = new JumpInstruction(node, bodyBlock);
+      pushToCurrentBlock(entryJump);
+      switchToBlock(bodyBlock);
+
+      visitChildren(node);
+
+      CondJumpInstruction condJumpInstruction = new CondJumpInstruction(node,node.getCondition(), bodyBlock, endBlock);
+      pushToCurrentBlock(condJumpInstruction);
+
+      switchToBlock(endBlock);
+      return new IRExprResult(null, node, null);
+    }
+
   // Team 4
 
   // Team 5
