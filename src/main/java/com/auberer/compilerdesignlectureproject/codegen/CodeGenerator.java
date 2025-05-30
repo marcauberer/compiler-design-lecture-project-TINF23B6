@@ -1,13 +1,35 @@
 package com.auberer.compilerdesignlectureproject.codegen;
 
-import com.auberer.compilerdesignlectureproject.ast.*;
-import com.auberer.compilerdesignlectureproject.codegen.instructions.*;
-import com.auberer.compilerdesignlectureproject.interpreter.Value;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.auberer.compilerdesignlectureproject.ast.ASTAdditiveExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTAssignExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTAtomicExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTEqualityExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTMultiplicativeExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTPrintBuiltinCallNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTSwitchCaseStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTTernaryExprNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTVarDeclNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTVisitor;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.AllocaInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.DivInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.Instruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.LoadInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.MinusInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.MulInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.PlusInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.PrintInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.StoreInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.SwitchInstruction;
+import com.auberer.compilerdesignlectureproject.interpreter.Value;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
@@ -101,18 +123,21 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     pushToCurrentBlock(switchInstruction);
 
     for (int i = 0; i < cases.size(); i++) {
+      pushToCurrentBlock( new JumpInstruction(node, caseBlocks.get(i)));
       switchToBlock(caseBlocks.get(i));
       visitChildren(cases.get(i));
     }
 
     if (node.getDefaultBlock() != null) {
-      switchToBlock(defaultBlock);
+      pushToCurrentBlock( new JumpInstruction(node, defaultBlock));
+      switchToBlock(defaultBlock);      
       visitChildren(node.getDefaultBlock());
     }
 
+    pushToCurrentBlock(new JumpInstruction(node, endBlock));
     switchToBlock(endBlock);
 
-    return new IRExprResult(node.getValue(), node, null);
+    return new IRExprResult(null, node, null);
   }
 
   // Team 7
