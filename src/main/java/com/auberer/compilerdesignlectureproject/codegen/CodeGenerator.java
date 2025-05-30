@@ -33,6 +33,7 @@ import lombok.Setter;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
+  @Getter
   private final Module module; // IR module, which represents the whole program
 
   @Getter
@@ -98,10 +99,58 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   // Team 3
 
+    @Override
+    public IRExprResult visitDoWhileLoop(ASTDoWhileLoopNode node){
+      BasicBlock bodyBlock = new BasicBlock("do_while_body");
+      BasicBlock endBlock = new BasicBlock("do_while_end");
+
+      JumpInstruction entryJump = new JumpInstruction(node, bodyBlock);
+      pushToCurrentBlock(entryJump);
+      switchToBlock(bodyBlock);
+
+      visit(node.getBody());
+      visit(node.getCondition());
+
+      CondJumpInstruction condJumpInstruction = new CondJumpInstruction(node,node.getCondition(), bodyBlock, endBlock);
+      pushToCurrentBlock(condJumpInstruction);
+
+      switchToBlock(endBlock);
+      return new IRExprResult(null, node, null);
+    }
+
   // Team 4
 
   // Team 5
+  @Override
+  public IRExprResult visitForLoop(ASTForLoopNode node) {
+    visit(node.getInitialization());
+    BasicBlock condBlock = new BasicBlock("for_cond");
+    BasicBlock bodyBlock = new BasicBlock("for_body");
+    BasicBlock incrementBlock = new BasicBlock("for_increment");
+    BasicBlock afterLoopBlock = new BasicBlock("after_for");
 
+
+    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+
+
+    switchToBlock(condBlock);
+    IRExprResult condResult = visit(node.getCondition());
+    pushToCurrentBlock(new CondJumpInstruction(node, condResult.getValue().getNode(), bodyBlock, afterLoopBlock));
+
+
+    switchToBlock(bodyBlock);
+    visit(node.getBody());
+    pushToCurrentBlock(new JumpInstruction(node, incrementBlock));
+
+
+    switchToBlock(incrementBlock);
+    visit(node.getIncrement());
+    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+
+    switchToBlock(afterLoopBlock);
+
+    return new IRExprResult(null, node, null);
+  }
   // Team 6
   @Override
   public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
@@ -141,6 +190,24 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   }
 
   // Team 7
+
+  @Override
+  public IRExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    BasicBlock newBlock = new BasicBlock("anonymous_block_" + node.getCodeLoc().getLine());
+    JumpInstruction jumpInAnonymousBlockInstruction = new JumpInstruction(node, newBlock);
+    pushToCurrentBlock(jumpInAnonymousBlockInstruction);
+
+    switchToBlock(newBlock);
+
+    visitChildren(node);
+
+    BasicBlock afterBlock = new BasicBlock("after_" + newBlock.getLabel());
+    JumpInstruction jumpOutInstruction = new JumpInstruction(node, afterBlock);
+    pushToCurrentBlock(jumpOutInstruction);
+
+    switchToBlock(afterBlock);
+    return new IRExprResult(null, node, null);
+  }
 
   @Override
   public IRExprResult visitTernaryExpr(ASTTernaryExprNode node) {

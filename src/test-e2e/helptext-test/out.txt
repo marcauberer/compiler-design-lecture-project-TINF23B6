@@ -5,6 +5,7 @@ usage: tinf-compiler args...
                                     no line numbers in exception stack
                                     traces, etc.)
  -h,--help                          Print this help text
+ -ir,--dump-ir                      Dump the intermediate representation
  -symtab,--dump-symbol-table        Dump the symbol table along with the
                                     scopes
  -tokens,--dump-tokens              Dump the lexed tokens
