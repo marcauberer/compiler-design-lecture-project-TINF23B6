@@ -1,5 +1,6 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
+import com.auberer.compilerdesignlectureproject.interpreter.Value;
 import com.auberer.compilerdesignlectureproject.reader.CodeLoc;
 import com.auberer.compilerdesignlectureproject.sema.SuperType;
 import com.auberer.compilerdesignlectureproject.sema.Type;
@@ -43,4 +44,5 @@ public abstract class ASTNode implements IVisitable {
   ArrayList<ASTNode> children = new ArrayList<>();
   CodeLoc codeLoc;
   Type type = new Type(SuperType.TYPE_INVALID);
+  Value value = new Value(this);
 }

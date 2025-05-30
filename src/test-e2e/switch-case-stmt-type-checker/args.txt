@@ -1,0 +1,1 @@
+./src/test-e2e/switch-case-stmt-type-checker/source.tinf

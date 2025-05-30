@@ -1,0 +1,9 @@
+int main := () {
+  int i = 3;
+  while (i != 24) {
+    i = i * 2;
+    int a = i + 1;
+  }
+
+  ret i;
+}

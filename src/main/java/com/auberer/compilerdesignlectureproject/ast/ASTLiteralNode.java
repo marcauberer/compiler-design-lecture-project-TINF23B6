@@ -18,7 +18,7 @@ public class ASTLiteralNode extends ASTNode {
   }
 
   private LiteralType literalType;
-  private String value;
+  private String literalValue;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
@@ -37,21 +37,21 @@ public class ASTLiteralNode extends ASTNode {
 
   int getValueAsInt() {
     assert literalType == LiteralType.INT;
-    return Integer.parseInt(value);
+    return Integer.parseInt(literalValue);
   }
 
   double getValueAsDouble() {
     assert literalType == LiteralType.DOUBLE;
-    return Double.parseDouble(value);
+    return Double.parseDouble(literalValue);
   }
 
   String getValueAsString() {
     assert literalType == LiteralType.STRING;
-    return value;
+    return literalValue;
   }
 
   boolean getValueAsBool() {
     assert literalType == LiteralType.BOOL;
-    return Boolean.parseBoolean(value);
+    return Boolean.parseBoolean(literalValue);
   }
 }

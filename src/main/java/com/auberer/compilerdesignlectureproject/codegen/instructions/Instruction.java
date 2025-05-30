@@ -4,7 +4,7 @@ import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 
 public abstract class Instruction implements IInstruction {
 
-  protected final ASTNode node;
+  protected ASTNode node;
 
   public Instruction(ASTNode node) {
     this.node = node;

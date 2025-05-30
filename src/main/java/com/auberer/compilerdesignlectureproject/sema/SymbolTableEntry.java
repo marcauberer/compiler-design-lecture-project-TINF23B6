@@ -1,28 +1,39 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
+import com.auberer.compilerdesignlectureproject.interpreter.Value;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 public class SymbolTableEntry {
 
-  private String name;
+  @JsonProperty("name")
+  private final String name;
 
-  private ASTNode declNode;
+  @JsonIgnore
+  private final ASTNode declNode;
 
-  private Scope scope;
+  @JsonIgnore
+  private final Scope scope;
 
   @Setter
+  @JsonProperty("isUsed")
   private boolean isUsed = false;
 
   @Setter
+  @JsonProperty("isParam")
   private boolean isParam = false;
 
   @Setter
+  @JsonProperty("type")
   private Type type = new Type(SuperType.TYPE_INVALID);
 
-  // ToDo(Marc): Insert type member
+  @Setter
+  @JsonIgnore
+  private Value value = null;
 
   public SymbolTableEntry(String name, ASTNode declNode, Scope scope) {
     this.name = name;
@@ -30,13 +41,9 @@ public class SymbolTableEntry {
     this.scope = scope;
   }
 
-  public String serialize() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("Symbol name: ").append(name).append(", ");
-    builder.append("DeclNode: ").append(declNode.getCodeLoc().toString()).append(", ");
-    builder.append("IsUsed: ").append(isUsed).append(", ");
-    builder.append("IsParam: ").append(isParam);
-    return builder.toString();
+  public Value getValue() {
+    assert value != null : "Value not set for symbol table entry " + name + ". Missing alloca?";
+    return value;
   }
 
 }

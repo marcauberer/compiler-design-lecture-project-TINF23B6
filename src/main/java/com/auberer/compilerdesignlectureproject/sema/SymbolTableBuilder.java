@@ -4,9 +4,12 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
+  // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
+  private Scope rootScope;
+
   @Override
   public Void visitEntry(ASTEntryNode node) {
-    Scope rootScope = new Scope();
+    rootScope = new Scope();
     node.setRootScope(rootScope);
 
     assert currentScope.isEmpty();
@@ -56,6 +59,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitIfBody(ASTIfBodyNode node) {
     Scope current = currentScope.peek();
     Scope ifScope = current.createChildScope();
+    node.setScope(ifScope);
 
     currentScope.push(ifScope);
     visitChildren(node);
@@ -71,6 +75,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
 
     Scope whileScope = currentScope.peek().createChildScope();
+    node.setScope(whileScope);
     currentScope.push(whileScope);
 
     visitChildren(node);
@@ -89,6 +94,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     Scope doWhileScope = currentScope.peek().createChildScope();
     currentScope.push(doWhileScope);
 
+    node.setScope(doWhileScope);
     visitChildren(node);
 
     assert currentScope.peek() == doWhileScope;
@@ -100,32 +106,35 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
+    String functionName = node.getIdentifier();
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName, node);
+    if (entry == null) {
+      entry = currentScope.peek().insertSymbol(functionName, node);
+      node.setCurrentSymbol(entry);
+    } else {
+      throw new SemaError(node, "Function " + functionName + " already declared");
+    }
     // may create problems due to Type (?)
     Scope scopeFct = currentScope.peek().createChildScope();
     currentScope.push(scopeFct);
     visitChildren(node);
     assert currentScope.peek() == scopeFct;
     currentScope.pop();
-    String functionName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName,node);
-    if(entry == null) {
-      entry = currentScope.peek().insertSymbol(functionName, node);
-      node.setCurrentSymbol(entry);
-    }else{
-      throw new SemaError(node, "Function " + functionName + " already declared");
-    }
+
     return null;
   }
+
 
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
     String paramName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName,node);
-    if(entry == null) {
+    SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName, node);
+    if (entry == null) {
       entry = currentScope.peek().insertSymbol(paramName, node);
+      entry.setParam(true);
       node.setCurrentSymbol(entry);
-    }else{
+    } else {
       throw new SemaError(node, "Parameter identifier" + paramName + " already used");
     }
     return null;
@@ -135,14 +144,12 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitFunctionCall(ASTFunctionCallNode node) {
     visitChildren(node);
     String functionName = node.getIdentifier();
-    SymbolTableEntry entry = currentScope.peek().lookupSymbol(functionName,node);
-    if(entry == null) {
+    SymbolTableEntry entry = rootScope.lookupSymbol(functionName, node);
+    if (entry == null) {
       throw new SemaError(node, "Function " + functionName + " not declared");
     }
     return null;
   }
-
-
 
 
   // Team 5
@@ -150,6 +157,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   public Void visitForLoop(ASTForLoopNode node) {
     Scope scope = currentScope.peek().createChildScope();
     currentScope.push(scope);
+    node.setScope(scope);
     visitChildren(node);
     assert currentScope.peek() == scope;
     currentScope.pop();
@@ -191,6 +199,8 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
+
+    node.setScope(newScope);
 
     visitChildren(node);
 

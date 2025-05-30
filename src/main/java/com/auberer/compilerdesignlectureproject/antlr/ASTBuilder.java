@@ -110,16 +110,16 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
     if (ctx.INT_LIT() != null) {
       node.setLiteralType(ASTLiteralNode.LiteralType.INT);
-      node.setValue(ctx.INT_LIT().getText());
+      node.setLiteralValue(ctx.INT_LIT().getText());
     } else if (ctx.DOUBLE_LIT() != null) {
       node.setLiteralType(ASTLiteralNode.LiteralType.DOUBLE);
-      node.setValue(ctx.DOUBLE_LIT().getText());
+      node.setLiteralValue(ctx.DOUBLE_LIT().getText());
     } else if (ctx.STRING_LIT() != null) {
       node.setLiteralType(ASTLiteralNode.LiteralType.STRING);
-      node.setValue(ctx.STRING_LIT().getText().substring(1, ctx.STRING_LIT().getText().length() - 1));
+      node.setLiteralValue(ctx.STRING_LIT().getText().substring(1, ctx.STRING_LIT().getText().length() - 1));
     } else if (ctx.TRUE() != null || ctx.FALSE() != null) {
       node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
-      node.setValue(ctx.getText().toLowerCase());
+      node.setLiteralValue(ctx.getText().toLowerCase());
     } else {
       throw new RuntimeException("Unexpected token type");
     }

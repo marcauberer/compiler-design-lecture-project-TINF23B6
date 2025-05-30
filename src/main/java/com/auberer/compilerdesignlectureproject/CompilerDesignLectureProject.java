@@ -10,6 +10,10 @@ import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
 import com.auberer.compilerdesignlectureproject.sema.SymbolTableBuilder;
 import com.auberer.compilerdesignlectureproject.sema.TypeChecker;
+import com.auberer.compilerdesignlectureproject.util.CustomJSONPrettyPrinter;
+import com.auberer.compilerdesignlectureproject.util.CustomUncaughtExceptionHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -27,10 +31,13 @@ public class CompilerDesignLectureProject {
   public static void main(String[] args) {
     Options cliOptions = new Options()
         .addOption("h", "help", false, "Print this help text")
+        .addOption("c", "comparable-output", false, "Only produce comparable output (e.g. no line numbers in exception stack traces, etc.)")
         .addOption("antlr", "use-antlr-parser", false, "Use ANTLR generated parser")
         .addOption("tokens", "dump-tokens", false, "Dump the lexed tokens")
         .addOption("ast", "dump-ast", false, "Dump the AST as dot file")
-        .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table");
+        .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table along with the scopes")
+        .addOption("types", "dump-typed-symbol-table", false, "Dump the symbol table along with the scopes and the types")
+        .addOption("ir", "dump-ir", false, "Dump the intermediate representation");
 
     DefaultParser cliParser = new DefaultParser();
     try {
@@ -38,6 +45,10 @@ public class CompilerDesignLectureProject {
       if (cli.hasOption('h')) {
         new HelpFormatter().printHelp("tinf-compiler args...", cliOptions);
         System.exit(0);
+      }
+
+      if (cli.hasOption('c')) {
+        Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
       }
 
       if (args.length == 0) {
@@ -78,21 +89,46 @@ public class CompilerDesignLectureProject {
 
       // Dump symbol table
       if (cli.hasOption("symtab")) {
-        System.out.println("Dumping symbol table ...");
-        String serializedSymbolTable = ast.getRootScope().serialize();
-        System.out.println(serializedSymbolTable);
+        System.out.println("Dumping scopes with symbol tables ...");
+        ObjectMapper mapper = new ObjectMapper();
+        CustomJSONPrettyPrinter pp = new CustomJSONPrettyPrinter();
+        System.out.println(mapper.writer(pp).writeValueAsString(ast.getRootScope()));
       }
 
       TypeChecker typeChecker = new TypeChecker();
       typeChecker.visitEntry(ast);
+
+      // Dump symbol table after type implemented
+      if (cli.hasOption("types")) {
+        System.out.println("Dumping scopes with symbol tables with type ...");
+        ObjectMapper mapper = new ObjectMapper();
+        CustomJSONPrettyPrinter pp = new CustomJSONPrettyPrinter();
+        System.out.println(mapper.writer(pp).writeValueAsString(ast.getRootScope()));
+      }
+
+      // Generate IR
+      /*String moduleName = path.getFileName().toString();
+      CodeGenerator codeGenerator = new CodeGenerator(moduleName);
+      codeGenerator.visit(ast);
+      Module irModule = codeGenerator.getModule();
+
+      // Dump IR
+      if (cli.hasOption("ir")) {
+        System.out.println("Dumping IR ...");
+        StringBuilder sb = new StringBuilder();
+        irModule.dumpIR(sb);
+        System.out.println(sb);
+      }*/
 
       // ToDo(Marc): Implement
 
       System.out.println("Compilation successful!");
     } catch (ParseException e) {
       new HelpFormatter().printHelp("tinf-compiler args...", cliOptions);
-    } catch (Exception e) {
+    } catch (JsonProcessingException e) {
       log.error("An error occurred", e);
+    } catch (IOException e) {
+      log.error("An IO error occurred", e);
     }
   }
 

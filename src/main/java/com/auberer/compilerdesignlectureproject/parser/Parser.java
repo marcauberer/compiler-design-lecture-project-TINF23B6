@@ -273,10 +273,10 @@ public class Parser implements IParser {
       node.setLiteralType(ASTLiteralNode.LiteralType.STRING);
     } else if (tokenType == TokenType.TOK_TRUE) {
       node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
-      node.setValue("true");
+      node.setLiteralValue("true");
     } else if (tokenType == TokenType.TOK_FALSE) {
       node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
-      node.setValue("false");
+      node.setLiteralValue("false");
     }
     lexer.advance();
 

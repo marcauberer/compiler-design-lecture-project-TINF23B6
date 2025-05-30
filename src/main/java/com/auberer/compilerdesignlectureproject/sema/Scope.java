@@ -1,16 +1,25 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scope {
 
+  @JsonIgnore
   Scope parent = null;
-  List<Scope> children = new ArrayList<>();
-  SymbolTable symbolTable = new SymbolTable(this);
+
+  @JsonProperty("level")
   int level = 0;
+
+  @JsonProperty("children")
+  List<Scope> children = new ArrayList<>();
+
+  @JsonProperty("symbolTable")
+  SymbolTable symbolTable = new SymbolTable(this);
 
   public Scope createChildScope() {
     Scope child = new Scope();
@@ -33,12 +42,4 @@ public class Scope {
     return symbolTable.lookupStrict(name, lookupNode);
   }
 
-  public String serialize() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(symbolTable.serialize()).append("\n\n");
-    for (Scope child : children) {
-      builder.append(child.serialize()).append("\n\n");
-    }
-    return builder.toString();
-  }
 }

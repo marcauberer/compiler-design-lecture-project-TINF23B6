@@ -1,0 +1,9 @@
+int hanoi := (int steps; string from = "A"; string aux= "B"; string to= "C") {
+    int res = call hanoi(steps; from; to; aux);
+
+    ret 0;
+}
+
+int main :=() {
+    int res = call hanoi(3);
+}

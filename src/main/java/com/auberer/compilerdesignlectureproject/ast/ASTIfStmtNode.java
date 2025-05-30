@@ -25,4 +25,8 @@ public class ASTIfStmtNode extends ASTNode {
   public ASTElseStmtNode getElseBody() {
     return getChild(ASTElseStmtNode.class, 0);
   }
+
+  public ASTTernaryExprNode getCondition() {
+    return getChild(ASTTernaryExprNode.class, 0);
+  }
 }
