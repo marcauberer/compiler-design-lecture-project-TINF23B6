@@ -139,6 +139,24 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   // Team 4
 
+
+  @Override
+  public IRExprResult visitFunctionCall(ASTFunctionCallNode node) {
+
+    return null;
+  }
+
+  @Override
+  public IRExprResult visitFunctionDef(ASTFunctionDefNode node) {
+    return null;
+  }
+
+  @Override
+  public IRExprResult visitReturnStmt(ASTReturnStmtNode node) {
+
+    return null;
+  }
+
   // Team 5
   @Override
   public IRExprResult visitForLoop(ASTForLoopNode node) {
