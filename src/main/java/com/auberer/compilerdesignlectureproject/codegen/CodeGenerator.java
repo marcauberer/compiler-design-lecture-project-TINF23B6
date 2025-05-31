@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
@@ -148,6 +149,16 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   @Override
   public IRExprResult visitFunctionDef(ASTFunctionDefNode node) {
+    List<Function.Parameter> paramList = node.getParams().getParams().stream().map(param -> new Function.Parameter(param.getIdentifier(), param.getType() )).toList();
+    Function newFunction =  new Function(node.getIdentifier(), paramList);
+    BasicBlock entryBlock = new BasicBlock(newFunction.getName());
+    currentBlock = entryBlock;
+
+    visit(node.getBody());
+
+    newFunction.setEntryBlock(currentBlock);
+    currentBlock = null;
+    module.addFunction(newFunction);
     return null;
   }
 
