@@ -71,6 +71,29 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   // Team 1
 
+  public IRExprResult visitIfStmt(ASTIfStmtNode node) {
+    BasicBlock ifBodyBlock = new BasicBlock("if_body");
+    BasicBlock elseBlock = new BasicBlock("if_else");
+    BasicBlock afterIfBlock = new BasicBlock("after_if");
+
+    CondJumpInstruction ifJumpInstruction = new CondJumpInstruction(node, node.getCondition(), ifBodyBlock, elseBlock);
+    pushToCurrentBlock(ifJumpInstruction);
+
+    switchToBlock(ifBodyBlock);
+    visit(node.getIfBody());
+    pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+
+    switchToBlock(elseBlock);
+    if (node.getElseBody() != null) {
+      visit(node.getElseBody());
+      pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+    }
+
+    switchToBlock(afterIfBlock);
+
+    return new IRExprResult(null, node, null);
+  }
+
   // Team 2
 
   // Team 3
