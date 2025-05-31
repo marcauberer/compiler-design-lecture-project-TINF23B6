@@ -46,7 +46,7 @@ public class BasicBlock implements IDumpable {
 
     // Dump the IR of this block
     dumpIR(sb);
-
+    
     // Dump the IR of the successor blocks
     Instruction lastInstruction = instructions.getLast();
     if (lastInstruction instanceof CondJumpInstruction condJumpInstruction) {

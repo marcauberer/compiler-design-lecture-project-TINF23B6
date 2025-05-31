@@ -146,8 +146,11 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = rootScope.lookupSymbol(functionName, node);
     if (entry == null) {
-      throw new SemaError(node, "Function " + functionName + " not declared");
+      throw new SemaError(node,"function " + functionName + " not declared");
+    }else {
+      node.setCorrespondingSymbol(entry);
     }
+
     return null;
   }
 

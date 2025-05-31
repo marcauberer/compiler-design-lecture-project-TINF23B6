@@ -2,9 +2,13 @@ package com.auberer.compilerdesignlectureproject.codegen;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.*;
+import com.auberer.compilerdesignlectureproject.interpreter.Value;
+import com.auberer.compilerdesignlectureproject.sema.ExprResult;
+import com.auberer.compilerdesignlectureproject.sema.Type;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -144,19 +148,33 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitFunctionCall(ASTFunctionCallNode node) {
 
-    return null;
+    assert node.getCorrespondingSymbol().getDeclNode().getClass() == ASTFunctionDefNode.class;
+    ASTFunctionDefNode functionDef = (ASTFunctionDefNode) node.getCorrespondingSymbol().getDeclNode();
+    List<Type> paramTypes = new ArrayList<>();
+    if(functionDef.getParams() != null) {
+       paramTypes = functionDef.getParams().getParams().stream().map(p -> p.getDataType().getType()).toList();
+    }
+    Function function = module.getFunction(node.getIdentifier(),paramTypes);
+    CallInstruction newCallInstruction = new CallInstruction(node, function, functionDef.getParams());
+
+    currentBlock.pushInstruction(newCallInstruction);
+
+    return new IRExprResult(new Value(node, node.getIdentifier()), node, node.getCorrespondingSymbol());
   }
 
   @Override
   public IRExprResult visitFunctionDef(ASTFunctionDefNode node) {
-    List<Function.Parameter> paramList = node.getParams().getParams().stream().map(param -> new Function.Parameter(param.getIdentifier(), param.getType() )).toList();
+    List<Function.Parameter> paramList = new ArrayList<>();
+
+    if(node.getParams() != null) {
+      paramList = node.getParams().getParams().stream().map(param -> new Function.Parameter(param.getIdentifier(), param.getDataType().getType())).toList();
+    }
+
     Function newFunction =  new Function(node.getIdentifier(), paramList);
     BasicBlock entryBlock = new BasicBlock(newFunction.getName());
     currentBlock = entryBlock;
-
-    visit(node.getBody());
-
     newFunction.setEntryBlock(currentBlock);
+    visit(node.getBody());
     currentBlock = null;
     module.addFunction(newFunction);
     return null;
@@ -164,7 +182,9 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   @Override
   public IRExprResult visitReturnStmt(ASTReturnStmtNode node) {
-
+    ReturnInstruction newReturnInstruction = new ReturnInstruction(node);
+    pushToCurrentBlock(newReturnInstruction);
+    visit(node.getReturnExpr());
     return null;
   }
 
@@ -224,6 +244,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitTernaryExpr(ASTTernaryExprNode node) {
     // ToDo(Marc): Extend
+
     return null;
   }
 
@@ -290,6 +311,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     }
 
     if (node.getFunctionCall() != null) {
+
       IRExprResult result = visit(node.getFunctionCall());
       node.setValue(result.getValue());
       return new IRExprResult(node.getFunctionCall().getValue(), node, null);
