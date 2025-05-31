@@ -1,0 +1,100 @@
+Compiling with own parser...
+Dumping scopes with symbol tables with type ...
+{
+  "level": 0,
+  "children": [
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "res": {
+            "name": "res",
+            "isUsed": false,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INT",
+              "subType": null
+            }
+          },
+          "aux": {
+            "name": "aux",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_STRING",
+              "subType": null
+            }
+          },
+          "from": {
+            "name": "from",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_STRING",
+              "subType": null
+            }
+          },
+          "to": {
+            "name": "to",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_STRING",
+              "subType": null
+            }
+          },
+          "steps": {
+            "name": "steps",
+            "isUsed": true,
+            "isParam": true,
+            "type": {
+              "superType": "TYPE_INT",
+              "subType": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "level": 1,
+      "children": [ ],
+      "symbolTable": {
+        "symbols": {
+          "res": {
+            "name": "res",
+            "isUsed": false,
+            "isParam": false,
+            "type": {
+              "superType": "TYPE_INT",
+              "subType": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "symbolTable": {
+    "symbols": {
+      "hanoi": {
+        "name": "hanoi",
+        "isUsed": true,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INT",
+          "subType": null
+        }
+      },
+      "main": {
+        "name": "main",
+        "isUsed": false,
+        "isParam": false,
+        "type": {
+          "superType": "TYPE_INT",
+          "subType": null
+        }
+      }
+    }
+  }
+}
+Compilation successful!
