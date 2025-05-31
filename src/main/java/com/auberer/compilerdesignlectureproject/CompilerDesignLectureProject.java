@@ -5,6 +5,8 @@ import com.auberer.compilerdesignlectureproject.antlr.gen.TInfLexer;
 import com.auberer.compilerdesignlectureproject.antlr.gen.TInfParser;
 import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTVisualizer;
+import com.auberer.compilerdesignlectureproject.codegen.CodeGenerator;
+import com.auberer.compilerdesignlectureproject.codegen.Module;
 import com.auberer.compilerdesignlectureproject.lexer.Lexer;
 import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
@@ -107,7 +109,7 @@ public class CompilerDesignLectureProject {
       }
 
       // Generate IR
-      /*String moduleName = path.getFileName().toString();
+      String moduleName = path.getFileName().toString();
       CodeGenerator codeGenerator = new CodeGenerator(moduleName);
       codeGenerator.visit(ast);
       Module irModule = codeGenerator.getModule();
@@ -118,7 +120,7 @@ public class CompilerDesignLectureProject {
         StringBuilder sb = new StringBuilder();
         irModule.dumpIR(sb);
         System.out.println(sb);
-      }*/
+      }
 
       // ToDo(Marc): Implement
 

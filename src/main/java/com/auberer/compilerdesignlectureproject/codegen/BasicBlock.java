@@ -1,6 +1,8 @@
 package com.auberer.compilerdesignlectureproject.codegen;
 
+import com.auberer.compilerdesignlectureproject.codegen.instructions.CondJumpInstruction;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.Instruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class BasicBlock implements IDumpable {
    * @param alreadyDumpedBlocks List of blocks that have already been dumped
    */
   public void dumpIR(StringBuilder sb, List<BasicBlock> alreadyDumpedBlocks) {
+
     // Check if this block has already been dumped
     if (alreadyDumpedBlocks.contains(this) || instructions.isEmpty())
       return;
@@ -44,6 +47,8 @@ public class BasicBlock implements IDumpable {
 
     // Dump the IR of this block
     dumpIR(sb);
+
+
 
     // Dump the IR of the successor blocks
     // ToDo(Marc): Uncomment as soon as jump instructions are implemented
@@ -54,6 +59,7 @@ public class BasicBlock implements IDumpable {
     } else if (lastInstruction instanceof JumpInstruction jumpInstruction) {
       jumpInstruction.getTargetBlock().dumpIR(sb, alreadyDumpedBlocks);
     }*/
+
   }
 
 }
