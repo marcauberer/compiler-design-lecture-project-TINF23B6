@@ -19,7 +19,6 @@ public class CallInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    // call <functionName>(<params>)
     sb.append("call ").append(function.getName()).append("(");
     String params = paramListNode.getParams().stream().map(astLogicalExprNode -> astLogicalExprNode.getValue().getName()).collect(Collectors.joining(","));
     sb.append(params).append(")");

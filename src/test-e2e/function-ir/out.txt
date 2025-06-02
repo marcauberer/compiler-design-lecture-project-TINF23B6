@@ -1,0 +1,21 @@
+Compiling with own parser...
+Dumping IR ...
+module source.tinf:
+
+function hanoi(TYPE_INT steps, TYPE_STRING from, TYPE_STRING aux, TYPE_STRING to): {
+hanoi:
+  alloca res
+  store res
+  return v35
+}
+
+
+
+function main(): {
+main:
+  alloca res
+  store res
+}
+
+
+Compilation successful!

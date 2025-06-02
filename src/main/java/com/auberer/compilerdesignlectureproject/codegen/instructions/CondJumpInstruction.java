@@ -2,7 +2,9 @@ package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
+import lombok.Getter;
 
+@Getter
 public class CondJumpInstruction extends Instruction {
 
   private final ASTNode condition;

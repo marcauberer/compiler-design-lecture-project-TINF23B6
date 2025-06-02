@@ -1,5 +1,5 @@
 Compiling with own parser...
-[main] java.lang.RuntimeException: Other Amount of Arguments Expected STRING
+[main] java.lang.RuntimeException: wrong number of argument Type provided: TYPE_STRING
 	at com.auberer.compilerdesignlectureproject.sema.FunctionTableEntry.validateArgs(FunctionTableEntry.java)
 	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitArgLst(TypeChecker.java)
 	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitArgLst(TypeChecker.java)

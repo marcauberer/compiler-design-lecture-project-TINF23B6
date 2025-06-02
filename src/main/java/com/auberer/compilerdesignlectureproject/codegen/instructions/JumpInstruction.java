@@ -2,7 +2,9 @@ package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
+import lombok.Getter;
 
+@Getter
 public class JumpInstruction extends Instruction {
 
   private final BasicBlock targetBlock;

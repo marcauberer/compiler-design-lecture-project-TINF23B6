@@ -267,10 +267,13 @@ public class Parser implements IParser {
     TokenType tokenType = lexer.getToken().getType();
     if (tokenType == TokenType.TOK_INT_LIT) {
       node.setLiteralType(ASTLiteralNode.LiteralType.INT);
+      node.setLiteralValue(lexer.getToken().getText());
     } else if (tokenType == TokenType.TOK_DOUBLE_LIT) {
       node.setLiteralType(ASTLiteralNode.LiteralType.DOUBLE);
+      node.setLiteralValue(lexer.getToken().getText());
     } else if (tokenType == TokenType.TOK_STRING_LIT) {
       node.setLiteralType(ASTLiteralNode.LiteralType.STRING);
+      node.setLiteralValue(lexer.getToken().getText().substring(1, lexer.getToken().getText().length() - 1));
     } else if (tokenType == TokenType.TOK_TRUE) {
       node.setLiteralType(ASTLiteralNode.LiteralType.BOOL);
       node.setLiteralValue("true");
@@ -505,6 +508,7 @@ public class Parser implements IParser {
 
     TokenType tokenType = lexer.getToken().getType();
     if (tokenType == TokenType.TOK_EQUAL || tokenType == TokenType.TOK_NOT_EQUAL) {
+      node.setOp(tokenType == TokenType.TOK_EQUAL ? ASTEqualityExprNode.EqualityOp.EQ : ASTEqualityExprNode.EqualityOp.NEQ);
       lexer.expectOneOf(Set.of(TokenType.TOK_EQUAL, TokenType.TOK_NOT_EQUAL));
       parseAdditiveExpr();
     }
@@ -520,6 +524,7 @@ public class Parser implements IParser {
     parseMultiplicativeExpr();
 
     while (Set.of(TokenType.TOK_PLUS, TokenType.TOK_MINUS).contains(lexer.getToken().getType())) {
+      node.addOp(lexer.getToken().getType() == TokenType.TOK_PLUS ? ASTAdditiveExprNode.AdditiveOp.PLUS : ASTAdditiveExprNode.AdditiveOp.MINUS);
       lexer.expectOneOf(Set.of(TokenType.TOK_PLUS, TokenType.TOK_MINUS));
       parseMultiplicativeExpr();
     }
@@ -535,6 +540,7 @@ public class Parser implements IParser {
     parseAtomicExpr();
 
     while (Set.of(TokenType.TOK_MUL, TokenType.TOK_DIV).contains(lexer.getToken().getType())) {
+      node.addOp(lexer.getToken().getType() == TokenType.TOK_MUL ? ASTMultiplicativeExprNode.MultiplicativeOp.MUL : ASTMultiplicativeExprNode.MultiplicativeOp.DIV);
       lexer.expectOneOf(Set.of(TokenType.TOK_MUL, TokenType.TOK_DIV));
       parseAtomicExpr();
     }
