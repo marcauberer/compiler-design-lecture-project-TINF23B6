@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.codegen;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.auberer.compilerdesignlectureproject.sema.Type;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.*;
