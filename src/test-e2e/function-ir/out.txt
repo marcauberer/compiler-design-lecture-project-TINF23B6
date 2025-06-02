@@ -5,6 +5,7 @@ module source.tinf:
 function hanoi(TYPE_INT steps, TYPE_STRING from, TYPE_STRING aux, TYPE_STRING to): {
 hanoi:
   alloca res
+  call hanoi(v4,v6,v10,v14)
   store res
   return v35
 }
@@ -14,6 +15,7 @@ hanoi:
 function main(): {
 main:
   alloca res
+  call hanoi(v4,v6,v10,v14)
   store res
 }
 
