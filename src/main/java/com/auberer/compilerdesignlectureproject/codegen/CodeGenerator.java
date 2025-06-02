@@ -151,15 +151,15 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     pushToCurrentBlock(switchInstruction);
 
     for (int i = 0; i < cases.size(); i++) {
-      pushToCurrentBlock( new JumpInstruction(node, caseBlocks.get(i)));
       switchToBlock(caseBlocks.get(i));
       visitChildren(cases.get(i));
+      pushToCurrentBlock(new JumpInstruction(node, endBlock));
     }
 
     if (node.getDefaultBlock() != null) {
-      pushToCurrentBlock( new JumpInstruction(node, defaultBlock));
       switchToBlock(defaultBlock);      
       visitChildren(node.getDefaultBlock());
+      pushToCurrentBlock(new JumpInstruction(node, endBlock));
     }
 
     pushToCurrentBlock(new JumpInstruction(node, endBlock));
