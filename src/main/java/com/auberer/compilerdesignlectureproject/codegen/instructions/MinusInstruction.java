@@ -16,10 +16,10 @@ public class MinusInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("minus ");
-    sb.append(leftOperand.getValue().getName());
-    sb.append(", ");
-    sb.append(rightOperand.getValue().getName());
+    sb.append(node.getValue().getName()).append(" = sub ")
+        .append(leftOperand.getType().toLLVMIRTypeString()).append(" ")
+        .append(leftOperand.getValue().getName()).append(", ")
+        .append(rightOperand.getValue().getName());
   }
 
   @Override

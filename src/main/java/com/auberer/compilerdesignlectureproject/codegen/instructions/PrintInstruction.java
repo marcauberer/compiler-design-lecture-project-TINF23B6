@@ -14,7 +14,10 @@ public class PrintInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("print ").append(exprToPrint.getValue().getName());
+    sb.append(node.getValue().getName())
+        .append(" = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr ")
+        .append(exprToPrint.getValue().getName())
+        .append(")");
   }
 
   @Override

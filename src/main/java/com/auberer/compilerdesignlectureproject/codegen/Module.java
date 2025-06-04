@@ -38,5 +38,11 @@ public class Module implements IDumpable {
       sb.append("\n\n");
       function.dumpIR(sb);
     }
+    sb.append("\n");
+  }
+
+  public void verify() {
+    for (Function function : functions)
+      function.verify();
   }
 }

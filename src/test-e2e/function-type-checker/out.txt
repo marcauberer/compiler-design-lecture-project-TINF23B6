@@ -63,7 +63,7 @@ Dumping scopes with symbol tables with type ...
         "symbols": {
           "res": {
             "name": "res",
-            "isUsed": false,
+            "isUsed": true,
             "isParam": false,
             "type": {
               "superType": "TYPE_INT",

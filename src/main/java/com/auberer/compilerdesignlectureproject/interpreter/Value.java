@@ -26,12 +26,12 @@ public class Value {
 
   public Value(ASTNode node) {
     this.node = node;
-    this.name = "v" + counter++;
+    this.name = "%" + counter++;
   }
 
   public Value(ASTNode node, String name) {
     this.node = node;
-    this.name = name;
+    this.name = "%" + name;
   }
 
   public boolean isTrue() {

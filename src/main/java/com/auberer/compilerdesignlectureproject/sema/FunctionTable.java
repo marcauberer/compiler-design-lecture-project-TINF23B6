@@ -83,35 +83,13 @@ public class FunctionTable {
 
 
     //ToDo Justus: Rewrite this ugly quick and dirty solution
-    public void incDoubleParamCount(){
-        entries.get(pointer).incrementAmountDoubleParams();
+    public void incrementParamCount(SuperType superType){
+        entries.get(pointer).incrementAmountParams(superType);
     }
 
-    public void incStringParamCount(){
-        entries.get(pointer).incrementAmountStringParams();
+    public void incrementParamsDefaults(SuperType superType){
+        entries.get(pointer).incrementParamsDefaults(superType);
     }
 
-    public void incBooleanParamCount(){
-        entries.get(pointer).incrementAmountBooleanParams();
-    }
 
-    public void incIntParamCount(){
-        entries.get(pointer).incrementAmountIntParams();
-    }
-
-    public void incrementAmountIntParamsDefaults(){
-        entries.get(pointer).incrementAmountIntParamsDefaults();
-    }
-
-    public void incrementAmountDoubleParamsDefaults(){
-        entries.get(pointer).incrementAmountDoubleParamsDefaults();
-    }
-
-    public void incrementAmountBooleanParamsDefaults(){
-        entries.get(pointer).incrementAmountBooleanParamsDefaults();
-    }
-
-    public void incrementAmountStringParamsDefaults(){
-        entries.get(pointer).incrementAmountStringParamsDefaults();
-    }
 }

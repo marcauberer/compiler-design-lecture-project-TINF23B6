@@ -16,10 +16,10 @@ public class PlusInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("plus ");
-    sb.append(leftOperand.getValue().getName());
-    sb.append(", ");
-    sb.append(rightOperand.getValue().getName());
+    sb.append(node.getValue().getName()).append(" = add ")
+        .append(leftOperand.getType().toLLVMIRTypeString()).append(" ")
+        .append(leftOperand.getValue().getName()).append(", ")
+        .append(rightOperand.getValue().getName());
   }
 
   @Override

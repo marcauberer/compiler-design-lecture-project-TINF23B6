@@ -1,0 +1,22 @@
+Compiling with own parser...
+Dumping IR ...
+module source.tinf:
+
+define i32 @hanoi(i32 steps, ptr from, ptr aux, ptr to) {
+hanoi:
+  %res = alloca i32, align 4
+  %27 = call i32 @hanoi(%4,%6,%10,%14)
+  store i32 %22 ptr %res, align 4
+  ret i32 %35
+}
+
+define i32 @main() {
+main:
+  %res = alloca i32, align 4
+  %52 = call i32 @hanoi(%4,%6,%10,%14)
+  store i32 %47 ptr %res, align 4
+  %62 = load i32, ptr %res, align 4
+  ret i32 %58
+}
+
+Compilation successful!

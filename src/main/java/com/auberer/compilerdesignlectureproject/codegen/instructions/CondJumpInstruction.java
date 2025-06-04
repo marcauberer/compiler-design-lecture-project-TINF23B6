@@ -2,7 +2,9 @@ package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
+import lombok.Getter;
 
+@Getter
 public class CondJumpInstruction extends Instruction {
 
   private final ASTNode condition;
@@ -18,9 +20,9 @@ public class CondJumpInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("condjump ").append(condition.getValue().getName()).append(" ? ")
-        .append(trueTargetBlock.getLabel()).append(" : ")
-        .append(falseTargetBlock.getLabel());
+    sb.append("br i1 ").append(condition.getValue().getName())
+        .append(", label %").append(trueTargetBlock.getLabel())
+        .append(", label %").append(falseTargetBlock.getLabel());
   }
 
   @Override

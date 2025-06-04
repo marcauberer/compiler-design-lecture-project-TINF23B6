@@ -16,10 +16,10 @@ public class NotEqualInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("not equal ");
-    sb.append(leftOperand.getValue().getName());
-    sb.append(", ");
-    sb.append(rightOperand.getValue().getName());
+    sb.append(node.getValue().getName()).append(" = icmp ne ")
+        .append(node.getType().toLLVMIRTypeString()).append(" ")
+        .append(leftOperand.getValue().getName()).append(", ")
+        .append(rightOperand.getValue().getName());
   }
 
   @Override

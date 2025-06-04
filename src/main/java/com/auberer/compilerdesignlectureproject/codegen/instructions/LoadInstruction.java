@@ -14,7 +14,10 @@ public class LoadInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("load ").append(entry.getName());
+    sb.append(node.getValue().getName()).append(" = load ")
+        .append(node.getType().toLLVMIRTypeString())
+        .append(", ptr ").append(entry.getValue().getName())
+        .append(", align ").append(node.getType().toAlignmentString());
   }
 
   @Override

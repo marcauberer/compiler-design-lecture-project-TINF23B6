@@ -16,10 +16,10 @@ public class EqualInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("equal ");
-    sb.append(leftOperand.getValue().getName());
-    sb.append(", ");
-    sb.append(rightOperand.getValue().getName());
+    sb.append(node.getValue().getName()).append(" = icmp eq ")
+        .append(node.getType().toLLVMIRTypeString()).append(" ")
+        .append(leftOperand.getValue().getName()).append(", ")
+        .append(rightOperand.getValue().getName());
   }
 
   @Override

@@ -16,10 +16,10 @@ public class MulInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("mul ");
-    sb.append(leftOperand.getValue().getName());
-    sb.append(", ");
-    sb.append(rightOperand.getValue().getName());
+    sb.append(node.getValue().getName()).append(" = mul ")
+        .append(node.getType().toLLVMIRTypeString()).append(" ")
+        .append(leftOperand.getValue().getName()).append(", ")
+        .append(rightOperand.getValue().getName());
   }
 
   @Override

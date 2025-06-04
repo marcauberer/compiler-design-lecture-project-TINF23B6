@@ -14,7 +14,9 @@ public class ReturnInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("return ").append(returnExpr.getValue().getName());
+    sb.append("ret ")
+        .append(returnExpr.getType().toLLVMIRTypeString()).append(" ")
+        .append(returnExpr.getValue().getName());
   }
 
   @Override

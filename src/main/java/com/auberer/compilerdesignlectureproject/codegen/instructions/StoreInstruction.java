@@ -14,7 +14,10 @@ public class StoreInstruction extends Instruction {
 
   @Override
   public void dumpIR(StringBuilder sb) {
-    sb.append("store ").append(entry.getName());
+    sb.append("store ").append(entry.getType().toLLVMIRTypeString())
+        .append(" ").append(node.getValue().getName())
+        .append(" ptr ").append(entry.getValue().getName())
+        .append(", align ").append(entry.getType().toAlignmentString());
   }
 
   @Override

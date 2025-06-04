@@ -4,6 +4,7 @@ usage: tinf-compiler args...
  -c,--comparable-output             Only produce comparable output (e.g.
                                     no line numbers in exception stack
                                     traces, etc.)
+    --disable-verifier              Disable the IR verifier
  -h,--help                          Print this help text
  -ir,--dump-ir                      Dump the intermediate representation
  -symtab,--dump-symbol-table        Dump the symbol table along with the

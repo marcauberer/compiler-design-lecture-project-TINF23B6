@@ -1,6 +1,8 @@
 package com.auberer.compilerdesignlectureproject.codegen;
 
+import com.auberer.compilerdesignlectureproject.codegen.instructions.CondJumpInstruction;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.Instruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -44,16 +46,46 @@ public class BasicBlock implements IDumpable {
 
     // Dump the IR of this block
     dumpIR(sb);
-
+    
     // Dump the IR of the successor blocks
-    // ToDo(Marc): Uncomment as soon as jump instructions are implemented
-    /*Instruction lastInstruction = instructions.getLast();
+    for (BasicBlock successor : getSuccessors())
+      successor.dumpIR(sb, alreadyDumpedBlocks);
+  }
+
+  public void verify(List<BasicBlock> alreadyVerifiedBlocks) {
+    // Check if this block has already been verified
+    if (alreadyVerifiedBlocks.contains(this))
+      return;
+    alreadyVerifiedBlocks.add(this);
+
+    // BasicBlock may not be empty
+    if (instructions.isEmpty())
+      throw new IllegalStateException("BasicBlock " + label + " has no instructions");
+
+    // Check for forbidden terminator instruction in the middle of the block
+    for (int i = 0; i < instructions.size() - 1; i++)
+      if (instructions.get(i).isTerminator())
+        throw new IllegalStateException("BasicBlock " + label + " contains a terminator instruction in the middle");
+
+    // The last instruction must be a terminator instruction
+    if (!instructions.getLast().isTerminator())
+      throw new IllegalStateException("BasicBlock " + label + " does not end with a terminator instruction");
+
+    // Continue with successor blocks, if any
+    for (BasicBlock successor : getSuccessors())
+      successor.verify(alreadyVerifiedBlocks);
+  }
+
+  public List<BasicBlock> getSuccessors() {
+    List<BasicBlock> successors = new ArrayList<>();
+    Instruction lastInstruction = instructions.getLast();
     if (lastInstruction instanceof CondJumpInstruction condJumpInstruction) {
-      condJumpInstruction.getTrueTargetBlock().dumpIR(sb, alreadyDumpedBlocks);
-      condJumpInstruction.getFalseTargetBlock().dumpIR(sb, alreadyDumpedBlocks);
+      successors.add(condJumpInstruction.getTrueTargetBlock());
+      successors.add(condJumpInstruction.getFalseTargetBlock());
     } else if (lastInstruction instanceof JumpInstruction jumpInstruction) {
-      jumpInstruction.getTargetBlock().dumpIR(sb, alreadyDumpedBlocks);
-    }*/
+      successors.add(jumpInstruction.getTargetBlock());
+    }
+    return successors;
   }
 
 }
