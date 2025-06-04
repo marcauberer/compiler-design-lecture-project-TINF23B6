@@ -115,17 +115,17 @@ public class CompilerDesignLectureProject {
       codeGenerator.visit(ast);
       Module irModule = codeGenerator.getModule();
 
-      // Verify IR
-      if (!cli.hasOption("disable-verifier")) {
-        irModule.verify();
-      }
-
       // Dump IR
       if (cli.hasOption("ir")) {
         System.out.println("Dumping IR ...");
         StringBuilder sb = new StringBuilder();
         irModule.dumpIR(sb);
         System.out.println(sb);
+      }
+
+      // Verify IR
+      if (!cli.hasOption("disable-verifier")) {
+        irModule.verify();
       }
 
       // ToDo(Marc): Implement
