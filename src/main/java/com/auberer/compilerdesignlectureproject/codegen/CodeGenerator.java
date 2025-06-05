@@ -269,7 +269,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     }
 
     if (node.getDefaultBlock() != null) {
-      switchToBlock(defaultBlock);      
+      switchToBlock(defaultBlock);
       visitChildren(node.getDefaultBlock());
       pushToCurrentBlock(new JumpInstruction(node, endBlock));
     }
