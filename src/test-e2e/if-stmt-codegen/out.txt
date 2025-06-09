@@ -10,13 +10,7 @@ if_body:
   store i32 %21 ptr %i, align 4
   br label %after_if
 after_if:
-  br label %anonymous_block_9
-anonymous_block_9:
-  %i = alloca i32, align 4
-  store i32 %79 ptr %i, align 4
-  br label %after_anonymous_block_9
-after_anonymous_block_9:
-  ret i32 %87
+  ret i32 %86
 if_else:
   br i1 %29, label %if_body, label %if_else
 if_body:
@@ -31,6 +25,8 @@ after_if:
 after_if:
   br label %after_if
 if_else:
+  %i = alloca i32, align 4
+  store i32 %78 ptr %i, align 4
   br label %after_if
 }
 
