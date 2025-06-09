@@ -202,6 +202,17 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 6
+  /*TODO Justus
+
+  Idea:
+  SwitchCase = simple if else
+  switch = if ret (if which can't fail)
+
+  case = else if ()
+
+  default = else
+  */
+
   public Void visitCaseStmt(ASTCaseStmtNode node) {
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
