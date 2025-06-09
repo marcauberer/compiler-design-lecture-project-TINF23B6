@@ -3,6 +3,7 @@ package com.auberer.compilerdesignlectureproject.sema;
 import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
+  //Return Checking with Statemachine (Firstly only work for if or else)
 
   // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
   private Scope rootScope;
@@ -63,10 +64,24 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     currentScope.push(ifScope);
     visitChildren(node);
-
     assert currentScope.peek() == ifScope;
+
     currentScope.pop();
 
+    return null;
+  }
+
+  @Override
+  public Void visitIfStmt(ASTIfStmtNode node) {
+
+    super.visitIfStmt(node);
+    return null;
+  }
+
+  @Override
+  public Void visitElseStmt(ASTElseStmtNode node) {
+
+    super.visitElseStmt(node);
     return null;
   }
 
@@ -106,6 +121,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
+
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName, node);
     if (entry == null) {
