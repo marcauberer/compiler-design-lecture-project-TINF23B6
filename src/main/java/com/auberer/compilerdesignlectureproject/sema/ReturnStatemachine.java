@@ -32,6 +32,9 @@ public class ReturnStatemachine extends StateMachine {
         State deadIfElseIfState = new State("S7");
         addState(deadIfElseIfState);
 
+        State deadIfState = new State("S8");
+        addState(deadIfState);
+
         State returnState = new State("S5");
         returnState.setAcceptState(true);
         addState(returnState);
@@ -56,8 +59,13 @@ public class ReturnStatemachine extends StateMachine {
         addCharTransition(deadIfElseState, deadIfElseIfState, 'i'); // if statement instead of end
         addElseTransition(deadIfElseState, deadIfElseIfState);
 
-        addCharTransition(deadIfElseIfState, deadIfElseState, 'e'); // else (chance to end dead if else)
+        addCharTransition(deadIfElseIfState, deadIfState, 'b'); // bodyend (chance to end dead if else)
         addElseTransition(deadIfElseIfState, deadIfElseIfState);
+
+        addCharTransition(deadIfState, deadIfElseState, 'e');
+        addCharTransition(deadIfState, ifState, 'i');
+        addCharTransition(deadIfState, returnState, 'r');
+        addElseTransition(deadIfState, deadIfState);
 
         addCharTransition(retState, returnIfState, 'r');
         addCharTransition(retState, ifState, 'i');
