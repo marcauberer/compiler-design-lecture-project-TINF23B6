@@ -64,7 +64,6 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   // Team 1
   public Void visitIfBody(ASTIfBodyNode node) {
-    System.out.println("body start");
     Scope current = currentScope.peek();
     Scope ifScope = current.createChildScope();
     node.setScope(ifScope);
@@ -75,14 +74,12 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     currentScope.pop();
     returnStatemachine.processInput('b');
-    System.out.println("body end");
 
     return null;
   }
 
   @Override
   public Void visitIfStmt(ASTIfStmtNode node) {
-    System.out.println("if");
     returnStatemachine.processInput('i');
     super.visitIfStmt(node);
     return null;
@@ -90,11 +87,8 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitElseStmt(ASTElseStmtNode node) {
-    System.out.println("else");
     returnStatemachine.processInput('e');
-    //super.visitElseStmt(node);
     visit(node.getBody());
-    //visitIfBody(node.getChild(ASTIfBodyNode.class, 0));
     return null;
   }
 

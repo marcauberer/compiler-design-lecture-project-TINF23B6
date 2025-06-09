@@ -10,7 +10,6 @@ public abstract class ASTVisitor<T> {
 
   public T visitChildren(ASTNode node) {
     for (ASTNode child : node.getChildren()) {
-      if(child.getClass().toString().equals("class com.auberer.compilerdesignlectureproject.ast.ASTIfBodyNode") || child.getClass().toString().equals("class com.auberer.compilerdesignlectureproject.ast.ASTStmtLstNode")) System.out.println(child.getClass().toString()); // testing if team1 give else stmtLst or ifBody like grama say (its stmtLst)
       child.accept(this);
     }
     return null;
