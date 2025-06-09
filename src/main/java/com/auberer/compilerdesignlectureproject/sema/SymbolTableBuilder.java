@@ -1,15 +1,21 @@
 package com.auberer.compilerdesignlectureproject.sema;
 
 import com.auberer.compilerdesignlectureproject.ast.*;
+import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   //Return Checking with Statemachine (Firstly only work for if or else)
+  ReturnStatemachine returnStatemachine = new ReturnStatemachine();
+
 
   // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
   private Scope rootScope;
 
+
   @Override
   public Void visitEntry(ASTEntryNode node) {
+
+    returnStatemachine.init();
     rootScope = new Scope();
     node.setRootScope(rootScope);
 
@@ -121,7 +127,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
-
+    returnStatemachine.reset();
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName, node);
     if (entry == null) {
@@ -137,6 +143,9 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == scopeFct;
     currentScope.pop();
 
+    if(!returnStatemachine.isInAcceptState()){
+      throw new RuntimeException("Return is missing");
+    }
     return null;
   }
 
@@ -158,6 +167,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitFunctionCall(ASTFunctionCallNode node) {
+
     visitChildren(node);
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = rootScope.lookupSymbol(functionName, node);
@@ -170,6 +180,12 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
+  @Override
+  public Void visitReturnStmt(ASTReturnStmtNode node) {
+    returnStatemachine.processInput('r');
+    super.visitReturnStmt(node);
+    return null;
+  }
 
   // Team 5
   @Override

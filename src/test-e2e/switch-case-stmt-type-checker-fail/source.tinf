@@ -11,4 +11,6 @@ int main := () {
     default:
       print("this is default");
   }
+
+  ret 0;
 }

@@ -9,4 +9,5 @@ int main := () {
       default:
           print("x is something else");
   }
+  ret 0;
 }

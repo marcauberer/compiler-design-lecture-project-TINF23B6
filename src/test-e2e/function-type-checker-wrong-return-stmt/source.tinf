@@ -5,4 +5,6 @@ int test :=(int first; int second = 2; string test){
 
 int main :=(){
     int res = call test(1; "hello");
+
+    ret 0;
 }
