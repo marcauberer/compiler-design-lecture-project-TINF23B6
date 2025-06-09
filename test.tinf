@@ -1,9 +1,28 @@
 int main := () {
-  int i = 3;
-  while (i != 24) {
-    i = i * 2;
-    int a = i + 1;
+  int x = 2;
+  int y = 3;
+
+  switch (x) {
+    case 1:
+      int scopedVar = 10;
+      print(scopedVar);
+    case 2:
+      int scopedVar = 20;
+      print(scopedVar);
+    case 5:
+      print("x is a greeting");
+    default:
+      print("x is something else");
   }
 
-  ret i;
+  switch (y) {
+    case 3:
+      int scopedVar = 30;
+      print(scopedVar);
+    default:
+      int scopedVar = 100;
+      print(scopedVar);
+  }
+
+  ret 0;
 }

@@ -104,11 +104,11 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   @Override
   public ExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     ExprResult conditionResult = visit(node.getCondition());
-    List<ASTCaseStmtNode> caseBlocks = node.getCaseBlocks();
 
+    List<ASTCaseStmtNode> caseBlocks = node.getCaseBlocks();
     for (ASTCaseStmtNode caseBlock : caseBlocks) {
       caseBlock.setConditionResult(conditionResult);
-      visitCaseStmt(caseBlock);
+      visit(caseBlock);
     }
 
     ASTDefaultStmtNode defaultBlock = node.getDefaultBlock();
@@ -126,12 +126,9 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     currentScope.push(scope);
 
     ASTLiteralNode literal = caseBlock.getLiteral();
-    if (literal != null) {
-      ExprResult caseResult = visit(literal);
-      if (!caseResult.getType().is(caseBlock.getConditionResult().getType().getSuperType())) {
-        throw new SemaError(literal, "Case value must be of type " + caseBlock.getConditionResult().getType().getSuperType());
-      }
-    }
+    ExprResult caseResult = visit(literal);
+    if (!caseResult.getType().is(caseBlock.getConditionResult().getType().getSuperType()))
+      throw new SemaError(literal, "Case value must be of type " + caseBlock.getConditionResult().getType().getSuperType());
 
     visit(caseBlock.getStmtLst());
 
@@ -253,20 +250,16 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   @Override
   public ExprResult visitAssignExpr(ASTAssignExprNode node) {
-    Type resultType = new Type(SuperType.TYPE_INVALID);
-
+    ExprResult rhs = visit(node.getRhs());
     if (node.isAssignment()) {
       SymbolTableEntry entry = node.getCurrentSymbol();
       assert entry != null;
 
-      ExprResult rhs = visit(node.getRhs());
       if (!entry.getType().is(rhs.getType().getSuperType()))
         throw new SemaError(node, "Type mismatch in assignment");
-
-      resultType = rhs.getType();
     }
 
-    return new ExprResult(node.setEvaluatedSymbolType(resultType));
+    return new ExprResult(node.setEvaluatedSymbolType(rhs.getType()));
   }
 
   @Override

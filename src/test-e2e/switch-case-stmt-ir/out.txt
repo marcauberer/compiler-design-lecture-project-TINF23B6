@@ -1,0 +1,23 @@
+Compiling with own parser...
+Dumping IR ...
+module source.tinf:
+
+define i32 @main() {
+main:
+  %x = alloca i32, align 4
+  store i32 %7 ptr %x, align 4
+  switch i32 %15, label %default_block_9 i32 %20, label %case_block_0_5 i32 %38, label %case_block_1_7
+case_block_0_5:
+  %31 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %32)
+  br label %end_switch_4
+end_switch_4:
+  ret i32 %75
+case_block_1_7:
+  %49 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %50)
+  br label %end_switch_4
+default_block_9:
+  %66 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %67)
+  br label %end_switch_4
+}
+
+Compilation successful!

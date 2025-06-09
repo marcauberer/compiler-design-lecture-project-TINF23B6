@@ -23,4 +23,6 @@ int main := () {
       int scopedVar = 100;
       print(scopedVar);
   }
+
+  ret 0;
 }

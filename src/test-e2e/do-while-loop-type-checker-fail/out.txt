@@ -4,7 +4,7 @@ Compiling with own parser...
 	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitDoWhileLoop(TypeChecker.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTDoWhileLoopNode.accept(ASTDoWhileLoopNode.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
-	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmt(ASTVisitor.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitStmt(ASTVisitor.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTStmtNode.accept(ASTStmtNode.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visitChildren(ASTVisitor.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visistStmtLst(ASTVisitor.java)

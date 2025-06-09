@@ -28,7 +28,7 @@ public class ASTVisitor<T> {
     return visitChildren(node);
   }
 
-  T visistStmt(ASTStmtNode node) {
+  T visitStmt(ASTStmtNode node) {
     return visitChildren(node);
   }
 

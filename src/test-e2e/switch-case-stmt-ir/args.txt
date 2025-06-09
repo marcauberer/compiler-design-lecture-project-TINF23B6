@@ -1,0 +1,1 @@
+--dump-ir ./src/test-e2e/switch-case-stmt-ir/source.tinf

@@ -253,21 +253,20 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   // Team 6
   @Override
   public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
-    Value value = node.getCondition().getValue();
+    ASTTernaryExprNode condition = node.getCondition();
     List<BasicBlock> caseBlocks = new ArrayList<>();
     List<ASTCaseStmtNode> cases = node.getCaseBlocks();
-    BasicBlock defaultBlock = node.getDefaultBlock() != null ?
-            new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine()) :
-            null;
-    BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
 
     for (int i = 0; i < cases.size(); i++) {
       BasicBlock caseBlock = new BasicBlock("case_block_" + i + "_" + cases.get(i).getCodeLoc().getLine());
       caseBlocks.add(caseBlock);
     }
+    BasicBlock defaultBlock = null;
+    if (node.getDefaultBlock() != null)
+      defaultBlock = new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine());
+    BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
 
-    SwitchInstruction switchInstruction = new SwitchInstruction(node, value, caseBlocks, cases, defaultBlock);
-
+    SwitchInstruction switchInstruction = new SwitchInstruction(node, condition, caseBlocks, cases, defaultBlock);
     pushToCurrentBlock(switchInstruction);
 
     for (int i = 0; i < cases.size(); i++) {
@@ -282,7 +281,6 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
       pushToCurrentBlock(new JumpInstruction(node, endBlock));
     }
 
-    pushToCurrentBlock(new JumpInstruction(node, endBlock));
     switchToBlock(endBlock);
 
     return new IRExprResult(null, node, null);
