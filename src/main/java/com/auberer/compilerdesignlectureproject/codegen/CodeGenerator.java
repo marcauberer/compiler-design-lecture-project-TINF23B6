@@ -103,18 +103,25 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   public IRExprResult visitIfStmt(ASTIfStmtNode node) {
     BasicBlock ifBodyBlock = new BasicBlock("if_body");
-    BasicBlock elseBlock = new BasicBlock("if_else");
     BasicBlock afterIfBlock = new BasicBlock("after_if");
 
-    CondJumpInstruction ifJumpInstruction = new CondJumpInstruction(node, node.getCondition(), ifBodyBlock, elseBlock);
-    pushToCurrentBlock(ifJumpInstruction);
+    if (node.getElseBody() == null) {
+      CondJumpInstruction ifJumpInstruction = new CondJumpInstruction(node, node.getCondition(), ifBodyBlock, afterIfBlock);
+      pushToCurrentBlock(ifJumpInstruction);
 
-    switchToBlock(ifBodyBlock);
-    visit(node.getIfBody());
-    pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+      switchToBlock(ifBodyBlock);
+      visit(node.getIfBody());
+      pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+    } else {
+      BasicBlock elseBlock = new BasicBlock("if_else");
+      CondJumpInstruction ifJumpInstruction = new CondJumpInstruction(node, node.getCondition(), ifBodyBlock, elseBlock);
+      pushToCurrentBlock(ifJumpInstruction);
 
-    switchToBlock(elseBlock);
-    if (node.getElseBody() != null) {
+      switchToBlock(ifBodyBlock);
+      visit(node.getIfBody());
+      pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+
+      switchToBlock(elseBlock);
       visit(node.getElseBody());
       pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
     }
@@ -270,7 +277,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     }
 
     if (node.getDefaultBlock() != null) {
-      switchToBlock(defaultBlock);      
+      switchToBlock(defaultBlock);
       visitChildren(node.getDefaultBlock());
       pushToCurrentBlock(new JumpInstruction(node, endBlock));
     }
