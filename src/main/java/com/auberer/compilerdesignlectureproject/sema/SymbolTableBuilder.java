@@ -145,7 +145,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     currentScope.pop();
 
     if(!returnStatemachine.isInAcceptState()){
-      throw new RuntimeException("Return is missing");
+      throw new RuntimeException("Return is missing State:"+ returnStatemachine.getCurrentState().getName());
     }
     return null;
   }
