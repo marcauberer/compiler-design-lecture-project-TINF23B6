@@ -202,18 +202,19 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 6
-  /*TODO Justus
 
-  Idea:
-  SwitchCase = simple if else
-  switch = if ret (if which can't fail)
-
-  case = else if ()
-
-  default = else
-  */
+  @Override
+  public Void visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    returnStatemachine.processInput('i');
+    returnStatemachine.processInput('r');
+    returnStatemachine.processInput('b');
+    super.visitSwitchCaseStmt(node);
+    return null;
+  }
 
   public Void visitCaseStmt(ASTCaseStmtNode node) {
+    returnStatemachine.processInput('e');
+    returnStatemachine.processInput('i');
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
@@ -222,11 +223,13 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     assert currentScope.peek() == newScope;
     currentScope.pop();
-
+    returnStatemachine.processInput('b');
     return null;
   }
 
   public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+    returnStatemachine.processInput('e');
+
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
@@ -236,6 +239,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == newScope;
     currentScope.pop();
 
+    returnStatemachine.processInput('b');
     return null;
   }
 
