@@ -1,7 +1,2 @@
 Compiling with own parser...
-[main] java.lang.IllegalStateException: BasicBlock case_block_0_4 contains a terminator instruction in the middle
-	at com.auberer.compilerdesignlectureproject.codegen.BasicBlock.verify(BasicBlock.java)
-	at com.auberer.compilerdesignlectureproject.codegen.BasicBlock.verify(BasicBlock.java)
-	at com.auberer.compilerdesignlectureproject.codegen.Function.verify(Function.java)
-	at com.auberer.compilerdesignlectureproject.codegen.Module.verify(Module.java)
-	at com.auberer.compilerdesignlectureproject.CompilerDesignLectureProject.main(CompilerDesignLectureProject.java)
+Compilation successful!
