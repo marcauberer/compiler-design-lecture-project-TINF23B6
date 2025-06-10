@@ -10,8 +10,7 @@ import java.util.List;
 
 public class Scope {
 
-
-  // use flag to ensure not testing ret in loops because they need to be calculating during run time;
+  // use a flag to ensure not testing ret in loops because they need to be calculating during run time;
   // There is only the possibility that they are not relevant
   @JsonIgnore
   @Getter
@@ -29,9 +28,10 @@ public class Scope {
   @JsonProperty("symbolTable")
   SymbolTable symbolTable = new SymbolTable(this);
 
-  public Scope(){}
+  public Scope() {
+  }
 
-  public Scope(boolean isInALoop){
+  public Scope(boolean isInALoop) {
     this.isInALoop = isInALoop;
   }
 

@@ -9,9 +9,8 @@ public abstract class ASTVisitor<T> {
   }
 
   public T visitChildren(ASTNode node) {
-    for (ASTNode child : node.getChildren()) {
+    for (ASTNode child : node.getChildren())
       child.accept(this);
-    }
     return null;
   }
 

@@ -47,7 +47,7 @@ public class BasicBlock implements IDumpable {
 
     // Dump the IR of this block
     dumpIR(sb);
-    
+
     // Dump the IR of the successor blocks
     for (BasicBlock successor : getSuccessors())
       successor.dumpIR(sb, alreadyDumpedBlocks);
@@ -60,7 +60,7 @@ public class BasicBlock implements IDumpable {
     alreadyVerifiedBlocks.add(this);
 
     // BasicBlock may not be empty
-    if (instructions.isEmpty() )
+    if (instructions.isEmpty())
       throw new IllegalStateException("BasicBlock " + label + " has no instructions");
 
     // Check for forbidden terminator instruction in the middle of the block

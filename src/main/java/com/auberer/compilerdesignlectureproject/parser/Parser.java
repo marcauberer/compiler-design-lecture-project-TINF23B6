@@ -352,7 +352,7 @@ public class Parser implements IParser {
     } else if (ASTIfBodyNode.getSelectionSet().contains(tokenType)) {
       node.setContainsIfStmt(false);
       parseIfBody();
-    }else {
+    } else {
       throw new RuntimeException("Unexpected token type: " + tokenType);
     }
 
