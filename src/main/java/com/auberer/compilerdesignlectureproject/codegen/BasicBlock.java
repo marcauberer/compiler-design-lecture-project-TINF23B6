@@ -60,7 +60,7 @@ public class BasicBlock implements IDumpable {
     alreadyVerifiedBlocks.add(this);
 
     // BasicBlock may not be empty
-    if (instructions.isEmpty())
+    if (instructions.isEmpty() )
       throw new IllegalStateException("BasicBlock " + label + " has no instructions");
 
     // Check for forbidden terminator instruction in the middle of the block
