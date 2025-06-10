@@ -4,7 +4,6 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
-  //Return Checking with Statemachine (Firstly only work for if or else)
   ReturnStatemachine returnStatemachine = new ReturnStatemachine();
 
 
@@ -73,21 +72,21 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == ifScope;
 
     currentScope.pop();
-    returnStatemachine.processInput('b');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
 
     return null;
   }
 
   @Override
   public Void visitIfStmt(ASTIfStmtNode node) {
-    returnStatemachine.processInput('i');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('i');
     super.visitIfStmt(node);
     return null;
   }
 
   @Override
   public Void visitElseStmt(ASTElseStmtNode node) {
-    returnStatemachine.processInput('e');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('e');
     visit(node.getBody());
     return null;
   }
@@ -96,7 +95,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
 
-    Scope whileScope = currentScope.peek().createChildScope();
+    Scope whileScope = currentScope.peek().createChildScope(true);
     node.setScope(whileScope);
     currentScope.push(whileScope);
 
@@ -113,7 +112,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitDoWhileLoop(ASTDoWhileLoopNode node) {
 
-    Scope doWhileScope = currentScope.peek().createChildScope();
+    Scope doWhileScope = currentScope.peek().createChildScope(true);
     currentScope.push(doWhileScope);
 
     node.setScope(doWhileScope);
@@ -183,7 +182,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitReturnStmt(ASTReturnStmtNode node) {
-    returnStatemachine.processInput('r');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('r');
     super.visitReturnStmt(node);
     return null;
   }
@@ -191,7 +190,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 5
   @Override
   public Void visitForLoop(ASTForLoopNode node) {
-    Scope scope = currentScope.peek().createChildScope();
+    Scope scope = currentScope.peek().createChildScope(true);
     currentScope.push(scope);
     node.setScope(scope);
     visitChildren(node);
@@ -205,16 +204,22 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
-    returnStatemachine.processInput('i');
-    returnStatemachine.processInput('r');
-    returnStatemachine.processInput('b');
+    Boolean isInALoop = currentScope.peek().getIsInALoop();
+    if(!isInALoop) {
+      returnStatemachine.processInput('i');
+      returnStatemachine.processInput('r');
+      returnStatemachine.processInput('b');
+    }
     super.visitSwitchCaseStmt(node);
     return null;
   }
 
   public Void visitCaseStmt(ASTCaseStmtNode node) {
-    returnStatemachine.processInput('e');
-    returnStatemachine.processInput('i');
+    Boolean isInALoop = currentScope.peek().getIsInALoop();
+    if(!isInALoop) {
+      returnStatemachine.processInput('e');
+      returnStatemachine.processInput('i');
+    }
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
@@ -223,12 +228,12 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     assert currentScope.peek() == newScope;
     currentScope.pop();
-    returnStatemachine.processInput('b');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
     return null;
   }
 
   public Void visitDefaultStmt(ASTDefaultStmtNode node) {
-    returnStatemachine.processInput('e');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('e');
 
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
@@ -239,7 +244,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == newScope;
     currentScope.pop();
 
-    returnStatemachine.processInput('b');
+    if(!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
     return null;
   }
 
