@@ -28,6 +28,6 @@ public class StoreInstruction extends Instruction {
 
   @Override
   public void run(InterpreterEnvironment env) {
-    entry.setValue(node.getValue());
+    entry.getValue().setValueContents(node.getValue());
   }
 }

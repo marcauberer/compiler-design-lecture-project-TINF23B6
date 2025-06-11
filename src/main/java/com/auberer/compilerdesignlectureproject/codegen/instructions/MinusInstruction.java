@@ -46,6 +46,6 @@ public class MinusInstruction extends Instruction {
       default:
         throw new RuntimeException("Minus with illegal types");
     }
-    node.setValue(result);
+    node.getValue().setValueContents(result);
   }
 }

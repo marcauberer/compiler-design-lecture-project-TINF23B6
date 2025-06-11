@@ -1,4 +1,10 @@
 int main := () {
+ double a = 10.0;
+ double b = 5.0;
 
+ print(a+b);
+ print(a-b);
+ print(a*b);
+ print(a/b);
     ret 1;
 }

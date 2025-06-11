@@ -46,6 +46,6 @@ public class DivInstruction extends Instruction {
       default:
         throw new RuntimeException("Div with illegal types");
     }
-    node.setValue(result);
+    node.getValue().setValueContents(result);
   }
 }

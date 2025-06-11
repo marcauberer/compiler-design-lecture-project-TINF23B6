@@ -449,7 +449,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     if (node.getCurrentSymbol() != null) {
       LoadInstruction loadInstruction = new LoadInstruction(node, node.getCurrentSymbol());
       pushToCurrentBlock(loadInstruction);
-      return new IRExprResult(node.getCurrentSymbol().getValue(), node, node.getCurrentSymbol());
+      return new IRExprResult(node.getValue(), node, node.getCurrentSymbol());
     }
 
     if (node.getFunctionCall() != null) {
