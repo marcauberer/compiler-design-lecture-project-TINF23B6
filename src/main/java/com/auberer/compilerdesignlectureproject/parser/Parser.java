@@ -116,12 +116,7 @@ public class Parser implements IParser {
     enterNode(node);
 
     parseType();
-    Token token = lexer.getToken();
-    if (token.getType().equals(TokenType.TOK_IDENTIFIER)) {
-      node.setParamName(token.getText());
-    } else {
-      throw new RuntimeException("Unexpected token type: " + token.getType());
-    }
+    node.setParamName(lexer.getToken().getText());
     lexer.expect(TokenType.TOK_IDENTIFIER);
     if (lexer.getToken().getType() == TokenType.TOK_ASSIGN) {
       lexer.expect(TokenType.TOK_ASSIGN);
@@ -334,7 +329,6 @@ public class Parser implements IParser {
       node.setContainsIfStmt(true);
       parseIfStmt();
     } else if (ASTIfBodyNode.getSelectionSet().contains(tokenType)) {
-      node.setContainsIfStmt(false);
       parseIfBody();
     } else {
       throw new RuntimeException("Unexpected token type: " + tokenType);

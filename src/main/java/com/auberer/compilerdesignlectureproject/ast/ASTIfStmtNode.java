@@ -14,19 +14,15 @@ public class ASTIfStmtNode extends ASTNode {
     return Set.of(TokenType.TOK_IF);
   }
 
-  public ASTParamLstNode getParamLst() {
-    return getChild(ASTParamLstNode.class, 0);
+  public ASTTernaryExprNode getCondition() {
+    return getChild(ASTTernaryExprNode.class, 0);
   }
 
   public ASTIfBodyNode getIfBody() {
     return getChild(ASTIfBodyNode.class, 0);
   }
 
-  public ASTElseStmtNode getElseBody() {
+  public ASTElseStmtNode getElseStmt() {
     return getChild(ASTElseStmtNode.class, 0);
-  }
-
-  public ASTTernaryExprNode getCondition() {
-    return getChild(ASTTernaryExprNode.class, 0);
   }
 }

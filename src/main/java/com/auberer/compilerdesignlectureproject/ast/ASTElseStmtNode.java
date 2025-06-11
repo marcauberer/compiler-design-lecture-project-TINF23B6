@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 public class ASTElseStmtNode extends ASTNode {
 
-  private boolean containsIfStmt;
+  private boolean containsIfStmt = false;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {

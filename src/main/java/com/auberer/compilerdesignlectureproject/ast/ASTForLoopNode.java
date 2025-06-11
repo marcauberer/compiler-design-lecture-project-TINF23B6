@@ -2,14 +2,17 @@ package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import com.auberer.compilerdesignlectureproject.sema.Scope;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 public class ASTForLoopNode extends ASTNode {
 
   private Scope scope;
+
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
     return visitor.visitForLoop(this);

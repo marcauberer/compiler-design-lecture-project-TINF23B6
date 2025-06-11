@@ -13,8 +13,7 @@ public class ASTStmtLstNode extends ASTNode {
   }
 
   public static Set<TokenType> getSelectionSet() {
-    Set<TokenType> selectionSet = new HashSet<>();
-    selectionSet.addAll(ASTStmtNode.getSelectionSet());
+    Set<TokenType> selectionSet = new HashSet<>(ASTStmtNode.getSelectionSet());
     selectionSet.add(TokenType.TOK_RBRACE);
     selectionSet.add(TokenType.TOK_CASE);
     selectionSet.add(TokenType.TOK_DEFAULT);

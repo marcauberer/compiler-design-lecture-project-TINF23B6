@@ -1,11 +1,13 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 public class ASTAdditiveExprNode extends ASTNode {
 
   public enum AdditiveOp {
@@ -25,10 +27,6 @@ public class ASTAdditiveExprNode extends ASTNode {
 
   public void addOp(AdditiveOp op) {
     opList.add(op);
-  }
-
-  public List<AdditiveOp> getOpList() {
-    return opList;
   }
 
   public List<ASTMultiplicativeExprNode> getOperands() {

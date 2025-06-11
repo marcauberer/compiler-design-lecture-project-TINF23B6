@@ -13,8 +13,4 @@ public class ASTAssignStmtNode extends ASTNode {
   public static Set<TokenType> getSelectionSet() {
     return ASTAssignExprNode.getSelectionSet();
   }
-
-  public ASTAssignExprNode getAssignExpr() {
-    return getChild(ASTAssignExprNode.class, 0);
-  }
 }

@@ -2,10 +2,14 @@ package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import com.auberer.compilerdesignlectureproject.sema.Scope;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 public class ASTWhileLoopNode extends ASTNode {
 
   private Scope scope;
@@ -28,11 +32,4 @@ public class ASTWhileLoopNode extends ASTNode {
   public ASTTernaryExprNode getCondition() {
     return getChild(ASTTernaryExprNode.class, 0);
   }
-
-    public Scope getScope() {
-        return scope;
-    }
-    public void setScope(Scope scope) {
-        this.scope = scope;
-    }
 }

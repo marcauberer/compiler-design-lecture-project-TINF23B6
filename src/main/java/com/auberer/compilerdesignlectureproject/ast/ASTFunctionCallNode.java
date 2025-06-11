@@ -24,8 +24,4 @@ public class ASTFunctionCallNode extends ASTNode {
     return Set.of(TokenType.TOK_CALL);
   }
 
-  public ASTArgLstNode getArguments() {
-    return hasArguments ? getChild(ASTArgLstNode.class, 0) : null;
-  }
-
 }

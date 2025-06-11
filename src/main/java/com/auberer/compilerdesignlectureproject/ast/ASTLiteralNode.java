@@ -35,22 +35,22 @@ public class ASTLiteralNode extends ASTNode {
     );
   }
 
-  int getValueAsInt() {
+  public int getValueAsInt() {
     assert literalType == LiteralType.INT;
     return Integer.parseInt(literalValue);
   }
 
-  double getValueAsDouble() {
+  public double getValueAsDouble() {
     assert literalType == LiteralType.DOUBLE;
     return Double.parseDouble(literalValue);
   }
 
-  String getValueAsString() {
+  public String getValueAsString() {
     assert literalType == LiteralType.STRING;
     return literalValue;
   }
 
-  boolean getValueAsBool() {
+  public boolean getValueAsBool() {
     assert literalType == LiteralType.BOOL;
     return Boolean.parseBoolean(literalValue);
   }

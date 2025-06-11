@@ -1,13 +1,12 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
+import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.auberer.compilerdesignlectureproject.lexer.TokenType;
-
 public class ASTSwitchCaseStmtNode extends ASTNode {
-
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
     return visitor.visitSwitchCaseStmt(this);

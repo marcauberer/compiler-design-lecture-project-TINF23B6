@@ -91,22 +91,10 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     Value result = new Value(node);
 
     switch (node.getLiteralType()) {
-      case INT -> {
-        int value = Integer.parseInt(node.getLiteralValue());
-        result.setIntValue(value);
-      }
-      case DOUBLE -> {
-        double value = Double.parseDouble(node.getLiteralValue());
-        result.setDoubleValue(value);
-      }
-      case STRING -> {
-        String value = node.getLiteralValue();
-        result.setStringValue(value);
-      }
-      case BOOL -> {
-        boolean value = Boolean.parseBoolean(node.getLiteralValue());
-        result.setBoolValue(value);
-      }
+      case INT -> result.setIntValue(node.getValueAsInt());
+      case DOUBLE -> result.setDoubleValue(node.getValueAsDouble());
+      case STRING -> result.setStringValue(node.getValueAsString());
+      case BOOL -> result.setBoolValue(node.getValueAsBool());
     }
 
     node.setValue(result);
@@ -119,7 +107,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     BasicBlock ifBodyBlock = new BasicBlock("if_body");
     BasicBlock afterIfBlock = new BasicBlock("after_if");
 
-    if (node.getElseBody() == null) {
+    if (node.getElseStmt() == null) {
       insertCondJump(node, node.getCondition(), ifBodyBlock, afterIfBlock);
 
       switchToBlock(ifBodyBlock);
@@ -134,7 +122,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
       insertJump(node, afterIfBlock);
 
       switchToBlock(elseBlock);
-      visit(node.getElseBody());
+      visit(node.getElseStmt());
       insertJump(node, afterIfBlock);
     }
 
@@ -253,6 +241,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   }
 
   // Team 5
+
   @Override
   public IRExprResult visitForLoop(ASTForLoopNode node) {
     visit(node.getInitialization());
@@ -280,6 +269,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   }
 
   // Team 6
+
   @Override
   public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     ASTTernaryExprNode condition = node.getCondition();
@@ -484,7 +474,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   /**
    * Insert unconditional jump into the current block
    *
-   * @param node Issuing AST node
+   * @param node        Issuing AST node
    * @param targetBlock BasicBlock where to jump to
    */
   private void insertJump(ASTNode node, BasicBlock targetBlock) {
@@ -496,9 +486,9 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   /**
    * Insert conditional jump into the current block
    *
-   * @param node Issuing AST node
-   * @param condition AST node of the condition
-   * @param targetBlockTrue BasicBlock where to jump to if the condition is true
+   * @param node             Issuing AST node
+   * @param condition        AST node of the condition
+   * @param targetBlockTrue  BasicBlock where to jump to if the condition is true
    * @param targetBlockFalse BasicBlock where to jump to if the condition is false
    */
   private void insertCondJump(ASTNode node, ASTNode condition, BasicBlock targetBlockTrue, BasicBlock targetBlockFalse) {

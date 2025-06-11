@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ASTPrintBuiltinCallNode extends ASTNode {
-
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
     return visitor.visitPrintBuiltin(this);
