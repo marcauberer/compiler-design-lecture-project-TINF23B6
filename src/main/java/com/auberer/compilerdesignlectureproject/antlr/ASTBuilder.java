@@ -267,7 +267,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   @Override
   public ASTNode visitReturnStmt(TInfParser.ReturnStmtContext ctx) {
-    ASTParamNode node = new ASTParamNode();
+    ASTReturnStmtNode node = new ASTReturnStmtNode();
     enterNode(node, ctx);
 
     visitChildren(ctx);

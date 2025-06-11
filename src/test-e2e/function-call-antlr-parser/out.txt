@@ -34,10 +34,10 @@ digraph AST {
  L5C0_ASTFunctionDefNode -> L6C0_ASTStmtLstNode;
  L6C0_ASTStmtNode [label="ASTStmtNode"];
  L6C0_ASTStmtLstNode -> L6C0_ASTStmtNode;
- L6C0_ASTParamNode [label="ASTParamNode"];
- L6C0_ASTStmtNode -> L6C0_ASTParamNode;
+ L6C0_ASTReturnStmtNode [label="ASTReturnStmtNode"];
+ L6C0_ASTStmtNode -> L6C0_ASTReturnStmtNode;
  L6C4_ASTTernaryExprNode [label="ASTTernaryExprNode"];
- L6C0_ASTParamNode -> L6C4_ASTTernaryExprNode;
+ L6C0_ASTReturnStmtNode -> L6C4_ASTTernaryExprNode;
  L6C4_ASTEqualityExprNode [label="ASTEqualityExprNode"];
  L6C4_ASTTernaryExprNode -> L6C4_ASTEqualityExprNode;
  L6C4_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
