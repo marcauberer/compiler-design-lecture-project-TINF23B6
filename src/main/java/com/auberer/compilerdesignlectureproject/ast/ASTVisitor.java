@@ -104,7 +104,7 @@ public abstract class ASTVisitor<T> {
     return visitChildren(node);
   }
 
-  public T visitCaseStmt(ASTCaseStmtNode node) {
+  public T visitCaseBlock(ASTCaseBlockNode node) {
     return visitChildren(node);
   }
 

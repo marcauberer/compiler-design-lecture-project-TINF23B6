@@ -23,8 +23,8 @@ public class ASTSwitchCaseStmtNode extends ASTNode {
     return getChild(ASTTernaryExprNode.class, 0);
   }
 
-  public List<ASTCaseStmtNode> getCaseBlocks() {
-    return getChildren(ASTCaseStmtNode.class);
+  public List<ASTCaseBlockNode> getCaseBlocks() {
+    return getChildren(ASTCaseBlockNode.class);
   }
 
   public ASTDefaultStmtNode getDefaultBlock() {

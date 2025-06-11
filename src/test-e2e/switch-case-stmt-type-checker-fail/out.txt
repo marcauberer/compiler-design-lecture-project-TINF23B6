@@ -1,8 +1,8 @@
 Compiling with own parser...
 [main] com.auberer.compilerdesignlectureproject.sema.SemaError: L7C10: Case value must be of type TYPE_INT
-	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitCaseStmt(TypeChecker.java)
-	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitCaseStmt(TypeChecker.java)
-	at com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode.accept(ASTCaseStmtNode.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitCaseBlock(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitCaseBlock(TypeChecker.java)
+	at com.auberer.compilerdesignlectureproject.ast.ASTCaseBlockNode.accept(ASTCaseBlockNode.java)
 	at com.auberer.compilerdesignlectureproject.ast.ASTVisitor.visit(ASTVisitor.java)
 	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitSwitchCaseStmt(TypeChecker.java)
 	at com.auberer.compilerdesignlectureproject.sema.TypeChecker.visitSwitchCaseStmt(TypeChecker.java)

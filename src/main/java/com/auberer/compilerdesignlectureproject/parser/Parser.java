@@ -444,8 +444,8 @@ public class Parser implements IParser {
     return node;
   }
 
-  public ASTCaseStmtNode parseCaseStmt() {
-    ASTCaseStmtNode node = new ASTCaseStmtNode();
+  public ASTCaseBlockNode parseCaseStmt() {
+    ASTCaseBlockNode node = new ASTCaseBlockNode();
     enterNode(node);
 
     lexer.expect(TokenType.TOK_CASE);

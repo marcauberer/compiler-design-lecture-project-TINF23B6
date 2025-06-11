@@ -284,7 +284,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     ASTTernaryExprNode condition = node.getCondition();
     List<BasicBlock> caseBlocks = new ArrayList<>();
-    List<ASTCaseStmtNode> cases = node.getCaseBlocks();
+    List<ASTCaseBlockNode> cases = node.getCaseBlocks();
 
     for (int i = 0; i < cases.size(); i++) {
       BasicBlock caseBlock = new BasicBlock("case_block_" + i + "_" + cases.get(i).getCodeLoc().getLine());

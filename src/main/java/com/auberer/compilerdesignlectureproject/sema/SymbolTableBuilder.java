@@ -212,7 +212,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
-  public Void visitCaseStmt(ASTCaseStmtNode node) {
+  public Void visitCaseBlock(ASTCaseBlockNode node) {
     Boolean isInALoop = currentScope.peek().getIsInALoop();
     if (!isInALoop) {
       returnStatemachine.processInput('e');

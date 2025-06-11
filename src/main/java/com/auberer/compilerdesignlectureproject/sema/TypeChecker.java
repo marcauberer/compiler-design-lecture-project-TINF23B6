@@ -100,8 +100,8 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   public ExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     ExprResult conditionResult = visit(node.getCondition());
 
-    List<ASTCaseStmtNode> caseBlocks = node.getCaseBlocks();
-    for (ASTCaseStmtNode caseBlock : caseBlocks) {
+    List<ASTCaseBlockNode> caseBlocks = node.getCaseBlocks();
+    for (ASTCaseBlockNode caseBlock : caseBlocks) {
       caseBlock.setConditionResult(conditionResult);
       visit(caseBlock);
     }
@@ -116,22 +116,21 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   }
 
   @Override
-  public ExprResult visitCaseStmt(ASTCaseStmtNode caseBlock) {
-    Scope scope = caseBlock.getScope();
+  public ExprResult visitCaseBlock(ASTCaseBlockNode node) {
+    Scope scope = node.getScope();
     currentScope.push(scope);
 
-    ASTLiteralNode literal = caseBlock.getLiteral();
+    ASTLiteralNode literal = node.getLiteral();
     ExprResult caseResult = visit(literal);
-    if (!caseResult.getType().is(caseBlock.getConditionResult().getType().getSuperType()))
-      throw new SemaError(literal, "Case value must be of type " + caseBlock.getConditionResult().getType().getSuperType());
+    if (!caseResult.getType().is(node.getConditionResult().getType().getSuperType()))
+      throw new SemaError(literal, "Case value must be of type " + node.getConditionResult().getType().getSuperType());
 
-    visit(caseBlock.getStmtLst());
+    visit(node.getStmtLst());
 
     assert currentScope.peek() == scope;
     currentScope.pop();
 
-    Type resultType = new Type(SuperType.TYPE_INVALID);
-    return new ExprResult(caseBlock.setEvaluatedSymbolType(resultType));
+    return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
   }
 
   @Override

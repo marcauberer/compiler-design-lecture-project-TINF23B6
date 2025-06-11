@@ -1,4 +1,14 @@
 int main := () {
-  print(1 == 1);
+  int x = 1;
+
+  switch (x) {
+      case 1:
+          print("x is 1a");
+      case 1:
+          print("x is 1b");
+      default:
+          print("x is something else");
+  }
+
   ret 0;
 }

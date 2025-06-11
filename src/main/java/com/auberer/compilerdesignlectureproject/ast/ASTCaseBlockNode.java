@@ -12,14 +12,14 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ASTCaseStmtNode extends ASTNode {
+public class ASTCaseBlockNode extends ASTNode {
 
   private ExprResult conditionResult;
   private Scope scope;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
-    return visitor.visitCaseStmt(this);
+    return visitor.visitCaseBlock(this);
   }
 
   public static Set<TokenType> getSelectionSet() {

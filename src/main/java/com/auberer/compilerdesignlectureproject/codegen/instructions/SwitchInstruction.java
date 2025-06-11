@@ -1,6 +1,6 @@
 package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
-import com.auberer.compilerdesignlectureproject.ast.ASTCaseStmtNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTCaseBlockNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTSwitchCaseStmtNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTTernaryExprNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
@@ -14,10 +14,10 @@ public class SwitchInstruction extends Instruction {
 
   private final ASTTernaryExprNode condition;
   private final List<BasicBlock> caseBlocks;
-  private final List<ASTCaseStmtNode> cases;
+  private final List<ASTCaseBlockNode> cases;
   private final BasicBlock defaultOrEndBlock;
 
-  public SwitchInstruction(ASTSwitchCaseStmtNode node, ASTTernaryExprNode condition, List<BasicBlock> caseBlocks, List<ASTCaseStmtNode> cases, BasicBlock defaultOrEndBlock) {
+  public SwitchInstruction(ASTSwitchCaseStmtNode node, ASTTernaryExprNode condition, List<BasicBlock> caseBlocks, List<ASTCaseBlockNode> cases, BasicBlock defaultOrEndBlock) {
     super(node);
     assert cases.size() == caseBlocks.size();
     this.condition = condition;
@@ -37,10 +37,10 @@ public class SwitchInstruction extends Instruction {
     sb.append("switch ").append(condition.getType().toLLVMIRTypeString()).append(" ")
         .append(condition.getValue().getName()).append(", label %").append(defaultOrEndBlock.getLabel());
     for (int i = 0; i < cases.size(); i++) {
-      ASTCaseStmtNode caseStmt = cases.get(i);
+      ASTCaseBlockNode caseBlockNode = cases.get(i);
       BasicBlock caseBlock = caseBlocks.get(i);
-      sb.append(" ").append(caseStmt.getLiteral().getType().toLLVMIRTypeString()).append(" ")
-          .append(caseStmt.getValue().getName())
+      sb.append(" ").append(caseBlockNode.getLiteral().getType().toLLVMIRTypeString()).append(" ")
+          .append(caseBlockNode.getValue().getName())
           .append(", label %").append(caseBlock.getLabel());
     }
   }
@@ -54,7 +54,7 @@ public class SwitchInstruction extends Instruction {
   public void run(InterpreterEnvironment env) {
     Value conditionValue = condition.getValue();
     for (int i = 0; i < cases.size(); i++) {
-      ASTCaseStmtNode caseNode = cases.get(i);
+      ASTCaseBlockNode caseNode = cases.get(i);
       BasicBlock caseBlock = caseBlocks.get(i);
       Value caseValue = caseNode.getValue();
       if (conditionValue.toString().equals(caseValue.toString())) {
