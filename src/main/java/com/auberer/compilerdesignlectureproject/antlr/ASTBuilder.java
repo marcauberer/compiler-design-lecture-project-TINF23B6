@@ -54,12 +54,12 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTVarDeclNode node = new ASTVarDeclNode();
     enterNode(node, ctx);
 
-    visitType(ctx.type());
+    visit(ctx.type());
 
     String identifierName = ctx.IDENTIFIER().getText();
     node.setVariableName(identifierName);
 
-    visitTernaryExpr(ctx.ternaryExpr());
+    visit(ctx.ternaryExpr());
 
     exitNode(node);
     return node;
@@ -86,7 +86,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
       String identifierName = ctx.IDENTIFIER().getText();
       node.setVariableName(identifierName);
     }
-    visitTernaryExpr(ctx.ternaryExpr());
+    visit(ctx.ternaryExpr());
 
     exitNode(node);
     return node;
@@ -352,10 +352,10 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTTernaryExprNode node = new ASTTernaryExprNode();
     enterNode(node, ctx);
 
-    visitEqualityExpr(ctx.equalityExpr(0));
+    visit(ctx.equalityExpr(0));
     if (ctx.equalityExpr().size() > 1) {
-      visitEqualityExpr(ctx.equalityExpr(1));
-      visitEqualityExpr(ctx.equalityExpr(2));
+      visit(ctx.equalityExpr(1));
+      visit(ctx.equalityExpr(2));
     }
 
     exitNode(node);
@@ -367,10 +367,10 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     ASTEqualityExprNode node = new ASTEqualityExprNode();
     enterNode(node, ctx);
 
-    visitAdditiveExpr(ctx.additiveExpr(0));
+    visit(ctx.additiveExpr(0));
     if (ctx.additiveExpr().size() > 1) {
       node.setOp(ctx.EQUALS() != null ? ASTEqualityExprNode.EqualityOp.EQ : ASTEqualityExprNode.EqualityOp.NEQ);
-      visitAdditiveExpr(ctx.additiveExpr(1));
+      visit(ctx.additiveExpr(1));
     }
 
     exitNode(node);
@@ -429,16 +429,16 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
     enterNode(node, ctx);
 
     if (ctx.literal() != null) {
-      visitLiteral(ctx.literal());
+      visit(ctx.literal());
     } else if (ctx.fctCall() != null) {
-      visitFctCall(ctx.fctCall());
+      visit(ctx.fctCall());
     } else if (ctx.printBuiltinCall() != null) {
-      visitPrintBuiltinCall(ctx.printBuiltinCall());
+      visit(ctx.printBuiltinCall());
     } else if (ctx.IDENTIFIER() != null) {
       String identifierName = ctx.IDENTIFIER().getText();
       node.setVariableName(identifierName);
     } else if (ctx.ternaryExpr() != null) {
-      visitTernaryExpr(ctx.ternaryExpr());
+      visit(ctx.ternaryExpr());
     } else {
       throw new RuntimeException("Unexpected token type");
     }

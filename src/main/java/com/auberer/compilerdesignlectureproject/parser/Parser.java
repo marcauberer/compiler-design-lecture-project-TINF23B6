@@ -50,7 +50,7 @@ public class Parser implements IParser {
     return node;
   }
 
-  public ASTFunctionDefNode parseFctDef() {
+  private void parseFctDef() {
     ASTFunctionDefNode node = new ASTFunctionDefNode();
     enterNode(node);
 
@@ -75,10 +75,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTFunctionCallNode parseFctCall() {
+  private void parseFctCall() {
     ASTFunctionCallNode node = new ASTFunctionCallNode();
     enterNode(node);
 
@@ -97,10 +96,9 @@ public class Parser implements IParser {
     }
     lexer.expect(TokenType.TOK_RPAREN);
     exitNode(node);
-    return node;
   }
 
-  public ASTParamLstNode parseParamLst() {
+  private void parseParamLst() {
     ASTParamLstNode node = new ASTParamLstNode();
     enterNode(node);
 
@@ -111,10 +109,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  private ASTParamNode parseParam() {
+  private void parseParam() {
     ASTParamNode node = new ASTParamNode();
     enterNode(node);
 
@@ -132,10 +129,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTArgLstNode parseArgLst() {
+  private void parseArgLst() {
     ASTArgLstNode node = new ASTArgLstNode();
     enterNode(node);
 
@@ -146,10 +142,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTReturnStmtNode parseReturnStmt() {
+  private void parseReturnStmt() {
     ASTReturnStmtNode node = new ASTReturnStmtNode();
     enterNode(node);
 
@@ -158,10 +153,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTStmtLstNode parseStmtLst() {
+  private void parseStmtLst() {
     ASTStmtLstNode node = new ASTStmtLstNode();
     enterNode(node);
 
@@ -171,10 +165,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTStmtNode parseStmt() {
+  private void parseStmt() {
     ASTStmtNode node = new ASTStmtNode();
     enterNode(node);
 
@@ -202,10 +195,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTVarDeclNode parseVarDeclStmt() {
+  private void parseVarDeclStmt() {
     ASTVarDeclNode node = new ASTVarDeclNode();
     enterNode(node);
 
@@ -217,10 +209,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTAssignStmtNode parseAssignStmt() {
+  private void parseAssignStmt() {
     ASTAssignStmtNode node = new ASTAssignStmtNode();
     enterNode(node);
 
@@ -228,10 +219,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTAssignExprNode parseAssignExpr() {
+  private void parseAssignExpr() {
     ASTAssignExprNode node = new ASTAssignExprNode();
     enterNode(node);
 
@@ -244,10 +234,9 @@ public class Parser implements IParser {
     parseTernaryExpr();
 
     exitNode(node);
-    return node;
   }
 
-  public ASTPrintBuiltinCallNode parsePrintBuiltinCall() {
+  private void parsePrintBuiltinCall() {
     ASTPrintBuiltinCallNode node = new ASTPrintBuiltinCallNode();
     enterNode(node);
 
@@ -257,10 +246,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RPAREN);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTLiteralNode parseLiteral() {
+  private void parseLiteral() {
     ASTLiteralNode node = new ASTLiteralNode();
     enterNode(node);
 
@@ -284,10 +272,9 @@ public class Parser implements IParser {
     lexer.advance();
 
     exitNode(node);
-    return node;
   }
 
-  public ASTTypeNode parseType() {
+  private void parseType() {
     ASTTypeNode node = new ASTTypeNode();
     enterNode(node);
 
@@ -306,10 +293,9 @@ public class Parser implements IParser {
     lexer.expect(tokenType);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTIfStmtNode parseIfStmt() {
+  private void parseIfStmt() {
     ASTIfStmtNode node = new ASTIfStmtNode();
     enterNode(node);
 
@@ -324,10 +310,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTIfBodyNode parseIfBody() {
+  private void parseIfBody() {
     ASTIfBodyNode node = new ASTIfBodyNode();
     enterNode(node);
 
@@ -336,10 +321,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTElseStmtNode parseElseStmt() {
+  private void parseElseStmt() {
     ASTElseStmtNode node = new ASTElseStmtNode();
     enterNode(node);
 
@@ -357,17 +341,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  /**
-   * Parses a while loop
-   *
-   * @return the AST node representing the while loop statement
-   * Rule: whileLoop: WHILE LPAREN ternaryExpr RPAREN LBRACE stmtLst RBRACE;
-   */
-  public ASTWhileLoopNode parseWhileLoopStmt() {
-
+  private void parseWhileLoopStmt() {
     ASTWhileLoopNode node = new ASTWhileLoopNode();
     enterNode(node);
     lexer.expect(TokenType.TOK_WHILE);
@@ -379,11 +355,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-
-  public ASTDoWhileLoopNode parseDoWhileLoop() {
+  private void parseDoWhileLoop() {
     ASTDoWhileLoopNode node = new ASTDoWhileLoopNode();
     enterNode(node);
 
@@ -398,10 +372,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_SEMICOLON);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTForLoopNode parseForLoop() {
+  private void parseForLoop() {
     ASTForLoopNode node = new ASTForLoopNode();
     enterNode(node);
 
@@ -417,10 +390,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTSwitchCaseStmtNode parseSwitchCaseStmt() {
+  private void parseSwitchCaseStmt() {
     ASTSwitchCaseStmtNode node = new ASTSwitchCaseStmtNode();
     enterNode(node);
 
@@ -441,10 +413,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTCaseBlockNode parseCaseStmt() {
+  private void parseCaseStmt() {
     ASTCaseBlockNode node = new ASTCaseBlockNode();
     enterNode(node);
 
@@ -454,10 +425,9 @@ public class Parser implements IParser {
     parseStmtLst();
 
     exitNode(node);
-    return node;
   }
 
-  public ASTDefaultStmtNode parseDefaultStmt() {
+  private void parseDefaultStmt() {
     ASTDefaultStmtNode node = new ASTDefaultStmtNode();
     enterNode(node);
 
@@ -466,10 +436,9 @@ public class Parser implements IParser {
     parseStmtLst();
 
     exitNode(node);
-    return node;
   }
 
-  public ASTAnonymousBlockStmtNode parseAnonymousBlockStmt() {
+  private void parseAnonymousBlockStmt() {
     ASTAnonymousBlockStmtNode node = new ASTAnonymousBlockStmtNode();
     enterNode(node);
 
@@ -478,10 +447,9 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_RBRACE);
 
     exitNode(node);
-    return node;
   }
 
-  public ASTTernaryExprNode parseTernaryExpr() {
+  private void parseTernaryExpr() {
     ASTTernaryExprNode node = new ASTTernaryExprNode();
     enterNode(node);
 
@@ -499,10 +467,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTEqualityExprNode parseEqualityExpr() {
+  private void parseEqualityExpr() {
     ASTEqualityExprNode node = new ASTEqualityExprNode();
     enterNode(node);
 
@@ -516,10 +483,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTAdditiveExprNode parseAdditiveExpr() {
+  private void parseAdditiveExpr() {
     ASTAdditiveExprNode node = new ASTAdditiveExprNode();
     enterNode(node);
 
@@ -532,10 +498,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTMultiplicativeExprNode parseMultiplicativeExpr() {
+  private void parseMultiplicativeExpr() {
     ASTMultiplicativeExprNode node = new ASTMultiplicativeExprNode();
     enterNode(node);
 
@@ -548,10 +513,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
 
-  public ASTAtomicExprNode parseAtomicExpr() {
+  private void parseAtomicExpr() {
     ASTAtomicExprNode node = new ASTAtomicExprNode();
     enterNode(node);
 
@@ -572,8 +536,9 @@ public class Parser implements IParser {
     }
 
     exitNode(node);
-    return node;
   }
+
+  // ------------------ AST node helpers ------------------
 
   private void enterNode(ASTNode node) {
     // Attach CodeLoc to AST node
