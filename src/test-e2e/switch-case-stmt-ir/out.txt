@@ -6,7 +6,8 @@ define i32 @main() {
 main:
   %x = alloca i32, align 4
   store i32 %81 ptr %x, align 4
-  switch i32 %15, label %default_block_9 i32 %20, label %case_block_0_5 i32 %38, label %case_block_1_7
+  %19 = load i32, ptr %x, align 4
+  switch i32 %19, label %default_block_9 i32 %20, label %case_block_0_5 i32 %38, label %case_block_1_7
 case_block_0_5:
   %31 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %83)
   br label %end_switch_4
@@ -20,4 +21,5 @@ default_block_9:
   br label %end_switch_4
 }
 
+x is 1a
 Compilation successful!

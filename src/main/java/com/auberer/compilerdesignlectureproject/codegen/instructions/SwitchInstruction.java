@@ -1,6 +1,7 @@
 package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTCaseBlockNode;
+import com.auberer.compilerdesignlectureproject.ast.ASTLiteralNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTSwitchCaseStmtNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTTernaryExprNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
@@ -54,9 +55,9 @@ public class SwitchInstruction extends Instruction {
   public void run(InterpreterEnvironment env) {
     Value conditionValue = condition.getValue();
     for (int i = 0; i < cases.size(); i++) {
-      ASTCaseBlockNode caseNode = cases.get(i);
+      ASTLiteralNode caseLiteralNode = cases.get(i).getLiteral();
       BasicBlock caseBlock = caseBlocks.get(i);
-      Value caseValue = caseNode.getValue();
+      Value caseValue = caseLiteralNode.getValue();
       if (conditionValue.toString().equals(caseValue.toString())) {
         env.setInstructionIterator(caseBlock.getInstructions().listIterator());
         return;

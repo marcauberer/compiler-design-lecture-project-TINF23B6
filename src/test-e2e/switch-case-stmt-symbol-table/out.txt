@@ -127,4 +127,6 @@ Dumping scopes with symbol tables ...
     }
   }
 }
+20
+30
 Compilation successful!
