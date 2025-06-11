@@ -19,12 +19,12 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
 
   final FunctionTable functionTable = new FunctionTable();
 
-  public TypeChecker(ASTEntryNode entryNode) {
-    this.entryNode = entryNode;
-  }
-
   public TypeChecker() {
     this.entryNode = null;
+  }
+
+  public TypeChecker(ASTEntryNode entryNode) {
+    this.entryNode = entryNode;
   }
 
   @Override
@@ -73,29 +73,210 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   }
 
   @Override
-  public ExprResult visitTernaryExpr(ASTTernaryExprNode node) {
-    if (node.getTrueBranch() != null) {
-      assert node.getFalseBranch() != null;
+  public ExprResult visitVarDecl(ASTVarDeclNode node) {
+    ExprResult lhs = visit(node.getDataType());
+    ExprResult rhs = visit(node.getInitExpr());
 
-      visitChildren(node);
-      var condition = node.getCondition();
-      var trueBranch = node.getTrueBranch();
-      var falseBranch = node.getFalseBranch();
-      if (!condition.getType().is(SuperType.TYPE_BOOL))
-        throw new SemaError(node, "Ternary condition must be of type bool");
+    if (!lhs.getType().is(rhs.getType().getSuperType()))
+      throw new SemaError(node, "Type mismatch in variable declaration");
 
-      if (!trueBranch.getType().is(falseBranch.getType().getSuperType()))
-        throw new SemaError(node, "Ternary branches must have the same type");
+    SymbolTableEntry entry = node.getCurrentSymbol();
+    assert entry != null;
+    entry.setType(lhs.getType());
 
-      return new ExprResult(node.setEvaluatedSymbolType(trueBranch.getType()));
-    } else {
-      ExprResult result = visit(node.getEqualityExpr());
-      node.setEvaluatedSymbolType(result.getType());
-      return result;
+    return new ExprResult(node.setEvaluatedSymbolType(lhs.getType()));
+  }
+
+  @Override
+  public ExprResult visitAssignStmt(ASTAssignStmtNode node) {
+    visitChildren(node);
+    return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
+  }
+
+  @Override
+  public ExprResult visitAssignExpr(ASTAssignExprNode node) {
+    ExprResult rhs = visit(node.getRhs());
+    if (node.isAssignment()) {
+      SymbolTableEntry entry = node.getCurrentSymbol();
+      assert entry != null;
+
+      if (!entry.getType().is(rhs.getType().getSuperType()))
+        throw new SemaError(node, "Type mismatch in assignment");
     }
+
+    return new ExprResult(node.setEvaluatedSymbolType(rhs.getType()));
+  }
+
+  // Team 1
+
+  @Override
+  public ExprResult visitIfStmt(ASTIfStmtNode node) {
+    visitChildren(node);
+
+    ASTTernaryExprNode condition = node.getCondition();
+    if (!condition.getType().is(SuperType.TYPE_BOOL)) {
+      throw new SemaError(node, "If condition must be of type bool");
+    }
+
+    ASTIfBodyNode bodyNode = node.getIfBody();
+    Scope bodyScope = bodyNode.getScope();
+    currentScope.push(bodyScope);
+    visit(bodyNode);
+
+    assert currentScope.peek() == bodyScope;
+    currentScope.pop();
+
+    return null;
+  }
+
+  // Team 2
+
+  @Override
+  public ExprResult visitWhileLoopStmt(ASTWhileLoopNode node) {
+    Scope whileLoopScope = node.getScope();
+    currentScope.push(whileLoopScope);
+
+    ASTTernaryExprNode conditionNode = node.getCondition();
+    ExprResult exprResult = visit(conditionNode);
+    if (!exprResult.getType().is(SuperType.TYPE_BOOL)) {
+      throw new SemaError(node, "Wrong type: " + exprResult.getType().toString() + ". Type must be bool");
+    }
+
+    ASTStmtLstNode bodyNode = node.getBody();
+    visit(bodyNode);
+
+    assert currentScope.peek() == whileLoopScope;
+    currentScope.pop();
+
+    Type resultType = new Type(SuperType.TYPE_INVALID);
+    return new ExprResult(node.setEvaluatedSymbolType(resultType));
+  }
+
+  // Team 3
+
+  @Override
+  public ExprResult visitDoWhileLoop(ASTDoWhileLoopNode node) {
+    Scope dowhileLoopScope = node.getScope();
+    currentScope.push(dowhileLoopScope);
+
+    ASTStmtLstNode stmtLstNode = node.getBody();
+    visit(stmtLstNode);
+
+    assert currentScope.peek() == dowhileLoopScope;
+    currentScope.pop();
+
+    ASTTernaryExprNode ternaryExprNode = node.getCondition();
+    ExprResult exprResult = visit(ternaryExprNode);
+    if (!exprResult.getType().is(SuperType.TYPE_BOOL)) {
+      throw new SemaError(node, "Wrong type: " + exprResult.getType().toString() + ". Type must be bool");
+    }
+    Type resultType = new Type(SuperType.TYPE_INVALID);
+    return new ExprResult(node.setEvaluatedSymbolType(resultType));
+  }
+
+  // Team 4
+
+  @Override
+  public ExprResult visitFunctionDef(ASTFunctionDefNode node) {
+    functionTable.createEntry(node);
+    Type retType = visitType(node.getReturnType()).getType();
+    functionTable.setCurrentReturnType(retType);
+    SymbolTableEntry entry = node.getCurrentSymbol();
+
+    assert entry != null;
+    entry.setType(retType);
+
+    if (node.getParams() != null) {
+      visitParamLst(node.getParams());
+    }
+    visit(node.getBody());
+    return null;
+  }
+
+  @Override
+  public ExprResult visitParam(ASTParamNode node) {
+    SymbolTableEntry entry = node.getCurrentSymbol();
+    assert entry != null;
+
+    ExprResult lhs = visit(node.getDataType());
+
+    functionTable.incrementParamCount(lhs.getType().getSuperType());
+
+    entry.setType(lhs.getType());
+
+    if (node.getDefaultValue() != null) {
+      ExprResult rhs = visit(node.getDefaultValue());
+      if (!rhs.getType().is(rhs.getType().getSuperType()))
+        throw new SemaError(node, "Type mismatch in default Type");
+      else {
+        functionTable.incrementParamsDefaults(rhs.getType().getSuperType());
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
+    String identifier = node.getIdentifier();
+    Type retType = functionTable.getTypeByIdentifier(identifier);
+    functionTable.setPointer(functionTable.getPointerByIdentifier(identifier));
+    visitChildren(node);
+    functionTable.resetPointer();
+    return new ExprResult(retType);
+  }
+
+  @Override
+  public ExprResult visitArgLst(ASTArgLstNode node) {
+    ArrayList<ASTAtomicExprNode> arguments = node.getArgs();
+    EnumMap<SuperType, Integer> providedArgs = new EnumMap<>(SuperType.class);
+    for (ASTAtomicExprNode arg : arguments) {
+      ExprResult result = visit(arg);
+      providedArgs.merge(result.getType().getSuperType(), 1, Integer::sum);
+    }
+    functionTable.getActiveEntry().validateArgs(providedArgs);
+    return null;
+  }
+
+  @Override
+  public ExprResult visitReturnStmt(ASTReturnStmtNode node) {
+    ExprResult result = visit(node.getReturnExpr());
+    SuperType returnType = functionTable.getActiveEntry().getReturnType().getSuperType();
+    if (!result.getType().getSuperType().equals(returnType)) {
+      throw new RuntimeException("Return type mismatch");
+    }
+    return null;
+  }
+
+  // Team 5
+
+  @Override
+  public ExprResult visitForLoop(ASTForLoopNode node) {
+    ASTVarDeclNode varDeclNode = node.getInitialization();
+    ExprResult varDeclResult = visit(varDeclNode);
+    if (!varDeclResult.getType().is(SuperType.TYPE_INT)) {
+      throw new SemaError(node, "Please initialize an Integer.");
+    }
+
+    ASTTernaryExprNode ternaryExprNode = node.getCondition();
+    ExprResult condResult = visit(ternaryExprNode);
+    if (!condResult.getType().is(SuperType.TYPE_BOOL)) {
+      throw new SemaError(ternaryExprNode, "The loop condition must be of type bool.");
+    }
+
+    ASTAssignExprNode assignExprNode = node.getIncrement();
+    visit(assignExprNode);
+
+    Scope bodyScope = node.getScope();
+    currentScope.push(bodyScope);
+    ASTStmtLstNode stmtLstNode = node.getBody();
+    visit(stmtLstNode);
+    currentScope.pop();
+
+    return new ExprResult(new Type(SuperType.TYPE_INVALID));
   }
 
   // Team 6
+
   @Override
   public ExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
     ExprResult conditionResult = visit(node.getCondition());
@@ -144,6 +325,43 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     currentScope.pop();
 
     return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
+  }
+
+  // Team 7
+
+  @Override
+  public ExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
+    Scope scope = node.getScope();
+    currentScope.push(scope);
+
+    visitChildren(node);
+
+    assert currentScope.peek() == scope;
+    currentScope.pop();
+    return null;
+  }
+
+  @Override
+  public ExprResult visitTernaryExpr(ASTTernaryExprNode node) {
+    if (node.getTrueBranch() != null) {
+      assert node.getFalseBranch() != null;
+
+      visitChildren(node);
+      var condition = node.getCondition();
+      var trueBranch = node.getTrueBranch();
+      var falseBranch = node.getFalseBranch();
+      if (!condition.getType().is(SuperType.TYPE_BOOL))
+        throw new SemaError(node, "Ternary condition must be of type bool");
+
+      if (!trueBranch.getType().is(falseBranch.getType().getSuperType()))
+        throw new SemaError(node, "Ternary branches must have the same type");
+
+      return new ExprResult(node.setEvaluatedSymbolType(trueBranch.getType()));
+    } else {
+      ExprResult result = visit(node.getEqualityExpr());
+      node.setEvaluatedSymbolType(result.getType());
+      return result;
+    }
   }
 
   @Override
@@ -233,214 +451,5 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     SymbolTableEntry entry = node.getCurrentSymbol();
     return new ExprResult(node.setEvaluatedSymbolType(entry.getType()));
   }
-
-  @Override
-  public ExprResult visitVarDecl(ASTVarDeclNode node) {
-    ExprResult lhs = visit(node.getDataType());
-    ExprResult rhs = visit(node.getInitExpr());
-
-    if (!lhs.getType().is(rhs.getType().getSuperType()))
-      throw new SemaError(node, "Type mismatch in variable declaration");
-
-    SymbolTableEntry entry = node.getCurrentSymbol();
-    assert entry != null;
-    entry.setType(lhs.getType());
-
-    return new ExprResult(node.setEvaluatedSymbolType(lhs.getType()));
-  }
-
-  @Override
-  public ExprResult visitAssignStmt(ASTAssignStmtNode node) {
-    visitChildren(node);
-    return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
-  }
-
-  @Override
-  public ExprResult visitAssignExpr(ASTAssignExprNode node) {
-    ExprResult rhs = visit(node.getRhs());
-    if (node.isAssignment()) {
-      SymbolTableEntry entry = node.getCurrentSymbol();
-      assert entry != null;
-
-      if (!entry.getType().is(rhs.getType().getSuperType()))
-        throw new SemaError(node, "Type mismatch in assignment");
-    }
-
-    return new ExprResult(node.setEvaluatedSymbolType(rhs.getType()));
-  }
-
-  @Override
-  public ExprResult visitIfStmt(ASTIfStmtNode node) {
-    visitChildren(node);
-
-    ASTTernaryExprNode condition = node.getCondition();
-      if (!condition.getType().is(SuperType.TYPE_BOOL)) {
-        throw new SemaError(node, "If condition must be of type bool");
-    }
-
-      ASTIfBodyNode bodyNode = node.getIfBody();
-      Scope bodyScope = bodyNode.getScope();
-      currentScope.push(bodyScope);
-      visit(bodyNode);
-
-      assert currentScope.peek() == bodyScope;
-      currentScope.pop();
-
-      return null;
-  }
-  
-  @Override
-  public ExprResult visitForLoop(ASTForLoopNode node) {
-    ASTVarDeclNode varDeclNode = node.getInitialization();
-    ExprResult varDeclResult = visit(varDeclNode);
-    if (!varDeclResult.getType().is(SuperType.TYPE_INT)) {
-      throw new SemaError(node, "Please initialize an Integer.");
-    }
-
-    ASTTernaryExprNode ternaryExprNode = node.getCondition();
-    ExprResult condResult = visit(ternaryExprNode);
-    if (!condResult.getType().is(SuperType.TYPE_BOOL)) {
-      throw new SemaError(ternaryExprNode, "The loop condition must be of type bool.");
-    }
-
-    ASTAssignExprNode assignExprNode = node.getIncrement();
-    visit(assignExprNode);
-
-    Scope bodyScope = node.getScope();
-    currentScope.push(bodyScope);
-    ASTStmtLstNode stmtLstNode = node.getBody();
-    visit(stmtLstNode);
-    currentScope.pop();
-
-    return new ExprResult(new Type(SuperType.TYPE_INVALID));
-  }
-
-  @Override
-  public ExprResult visitWhileLoopStmt(ASTWhileLoopNode node) {
-    Scope whileLoopScope = node.getScope();
-    currentScope.push(whileLoopScope);
-
-    ASTTernaryExprNode conditionNode = node.getCondition();
-    ExprResult exprResult = visit(conditionNode);
-    if (!exprResult.getType().is(SuperType.TYPE_BOOL)) {
-      throw new SemaError(node, "Wrong type: " + exprResult.getType().toString() + ". Type must be bool");
-    }
-
-    ASTStmtLstNode bodyNode = node.getBody();
-    visit(bodyNode);
-
-    assert currentScope.peek() == whileLoopScope;
-    currentScope.pop();
-
-    Type resultType = new Type(SuperType.TYPE_INVALID);
-    return new ExprResult(node.setEvaluatedSymbolType(resultType));
-  }
-
-
-  @Override
-  public ExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
-    Scope scope = node.getScope();
-    currentScope.push(scope);
-
-    visitChildren(node);
-
-    assert currentScope.peek() == scope;
-    currentScope.pop();
-    return null;
-  }
-
-  @Override
-  public ExprResult visitDoWhileLoop(ASTDoWhileLoopNode node) {
-    Scope dowhileLoopScope = node.getScope();
-    currentScope.push(dowhileLoopScope);
-
-    ASTStmtLstNode stmtLstNode = node.getBody();
-    visit(stmtLstNode);
-
-    assert currentScope.peek() == dowhileLoopScope;
-    currentScope.pop();
-
-    ASTTernaryExprNode ternaryExprNode = node.getCondition();
-    ExprResult exprResult = visit(ternaryExprNode);
-    if (!exprResult.getType().is(SuperType.TYPE_BOOL)) {
-      throw new SemaError(node, "Wrong type: " + exprResult.getType().toString() + ". Type must be bool");
-    }
-    Type resultType = new Type(SuperType.TYPE_INVALID);
-    return new ExprResult(node.setEvaluatedSymbolType(resultType));
-  }
-
-  @Override
-  public ExprResult visitParam(ASTParamNode node) {
-    SymbolTableEntry entry = node.getCurrentSymbol();
-    assert entry != null;
-
-    ExprResult lhs = visit(node.getDataType());
-
-    functionTable.incrementParamCount(lhs.getType().getSuperType());
-
-    entry.setType(lhs.getType());
-
-    if (node.getDefaultValue() != null) {
-      ExprResult rhs = visit(node.getDefaultValue());
-      if (!rhs.getType().is(rhs.getType().getSuperType()))
-        throw new SemaError(node, "Type mismatch in default Type");
-      else {
-        functionTable.incrementParamsDefaults(rhs.getType().getSuperType());
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public ExprResult visitFunctionDef(ASTFunctionDefNode node) {
-    functionTable.createEntry(node);
-    Type retType = visitType(node.getReturnType()).getType();
-    functionTable.setCurrentReturnType(retType);
-    SymbolTableEntry entry = node.getCurrentSymbol();
-
-    assert entry != null;
-    entry.setType(retType);
-
-    if (node.getParams() != null) {
-      visitParamLst(node.getParams());
-    }
-    visit(node.getBody());
-    return null;
-  }
-
-  @Override
-  public ExprResult visitFunctionCall(ASTFunctionCallNode node) {
-    String identifier = node.getIdentifier();
-    Type retType = functionTable.getTypeByIdentifier(identifier);
-    functionTable.setPointer(functionTable.getPointerByIdentifier(identifier));
-    visitChildren(node);
-    functionTable.resetPointer();
-    return new ExprResult(retType);
-  }
-
-  @Override
-  public ExprResult visitArgLst(ASTArgLstNode node) {
-    ArrayList<ASTAtomicExprNode> arguments = node.getArgs();
-    EnumMap<SuperType, Integer> providedArgs= new EnumMap<>(SuperType.class);
-    for (ASTAtomicExprNode arg : arguments) {
-      ExprResult result = visit(arg);
-      providedArgs.merge(result.getType().getSuperType(), 1, Integer::sum);
-    }
-    functionTable.getActiveEntry().validateArgs(providedArgs);
-    return null;
-  }
-
-  @Override
-  public ExprResult visitReturnStmt(ASTReturnStmtNode node) {
-    ExprResult result = visit(node.getReturnExpr());
-    SuperType returnType = functionTable.getActiveEntry().getReturnType().getSuperType();
-    if (!result.getType().getSuperType().equals(returnType)) {
-      throw new RuntimeException("Return type mismatch");
-    }
-    return null;
-  }
-
-
-
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Type {
+
   private SuperType superType;
   private String subType;
 

@@ -4,17 +4,13 @@ import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class Scope {
-
-  // use a flag to ensure not testing ret in loops because they need to be calculating during run time;
-  // There is only the possibility that they are not relevant
-  @JsonIgnore
-  @Getter
-  Boolean isInALoop = false;
 
   @JsonIgnore
   Scope parent = null;
@@ -28,8 +24,11 @@ public class Scope {
   @JsonProperty("symbolTable")
   SymbolTable symbolTable = new SymbolTable(this);
 
-  public Scope() {
-  }
+  // use a flag to ensure not testing ret in loops because they need to be calculating during run time;
+  // There is only the possibility that they are not relevant
+  @JsonIgnore
+  @Getter
+  Boolean isInALoop = false;
 
   public Scope(boolean isInALoop) {
     this.isInALoop = isInALoop;
@@ -63,5 +62,4 @@ public class Scope {
   public SymbolTableEntry lookupSymbolStrict(String name, ASTNode lookupNode) {
     return symbolTable.lookupStrict(name, lookupNode);
   }
-
 }

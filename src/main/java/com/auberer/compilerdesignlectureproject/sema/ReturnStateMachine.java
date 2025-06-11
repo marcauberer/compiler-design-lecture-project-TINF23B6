@@ -4,7 +4,7 @@ import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.State;
 import com.auberer.compilerdesignlectureproject.lexer.statemachine.StateMachine;
 
-// Abuse lexer statemachine
+// Abuse lexer state machine
 
 /*
 INFO:
@@ -78,7 +78,7 @@ public class ReturnStateMachine extends StateMachine {
     addCharTransition(retState, ifState, 'i');
     addElseTransition(retState, retState);
 
-    addCharTransition(returnState, retState, 'e'); // after succesfull finishing the elseif there is an else => inside an if clause
+    addCharTransition(returnState, retState, 'e'); // after successful finishing the elseif there is an else => inside an if-clause
     addCharTransition(returnState, returnIfState, 'i'); // unnecessary if
     addElseTransition(returnState, returnState);
 
@@ -93,7 +93,6 @@ public class ReturnStateMachine extends StateMachine {
 
   @Override
   public TokenType getTokenType() {
-    System.out.println("... lol no");
     return null;
   }
 }

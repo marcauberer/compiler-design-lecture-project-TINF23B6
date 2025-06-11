@@ -11,7 +11,6 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitEntry(ASTEntryNode node) {
-
     returnStatemachine.init();
     rootScope = new Scope();
     node.setRootScope(rootScope);
@@ -60,6 +59,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 1
+
   public Void visitIfBody(ASTIfBodyNode node) {
     Scope current = currentScope.peek();
     Scope ifScope = current.createChildScope();
@@ -90,6 +90,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 2
+
   @Override
   public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
 
@@ -107,6 +108,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
 
   // Team 3
+
   @Override
   public Void visitDoWhileLoop(ASTDoWhileLoopNode node) {
 
@@ -123,6 +125,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 4
+
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
     returnStatemachine.reset();
@@ -151,6 +154,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
+
     String paramName = node.getParamName();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName, node);
     if (entry == null) {
@@ -160,13 +164,14 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     } else {
       throw new SemaError(node, "Parameter identifier" + paramName + " already used");
     }
+
     return null;
   }
 
   @Override
   public Void visitFunctionCall(ASTFunctionCallNode node) {
-
     visitChildren(node);
+
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = rootScope.lookupSymbol(functionName, node);
     if (entry == null) {
@@ -180,12 +185,14 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitReturnStmt(ASTReturnStmtNode node) {
-    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('r');
-    super.visitReturnStmt(node);
+    if (!currentScope.peek().getIsInALoop())
+      returnStatemachine.processInput('r');
+    visit(node.getReturnExpr());
     return null;
   }
 
   // Team 5
+
   @Override
   public Void visitForLoop(ASTForLoopNode node) {
     Scope scope = currentScope.peek().createChildScope(true);
