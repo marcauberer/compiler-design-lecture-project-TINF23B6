@@ -50,6 +50,6 @@ public class PlusInstruction extends Instruction {
       default:
         throw new RuntimeException("Plus with illegal types");
     }
-    node.setValue(result);
+    node.getValue().setValueContents(result);
   }
 }

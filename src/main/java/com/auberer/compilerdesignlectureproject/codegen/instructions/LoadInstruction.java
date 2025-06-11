@@ -28,6 +28,6 @@ public class LoadInstruction extends Instruction {
 
   @Override
   public void run(InterpreterEnvironment env) {
-    node.setValue(entry.getValue());
+    node.getValue().setValueContents(entry.getValue());
   }
 }

@@ -46,6 +46,6 @@ public class MulInstruction extends Instruction {
       default:
         throw new RuntimeException("Mul with illegal types");
     }
-    node.setValue(result);
+    node.getValue().setValueContents(result);
   }
 }

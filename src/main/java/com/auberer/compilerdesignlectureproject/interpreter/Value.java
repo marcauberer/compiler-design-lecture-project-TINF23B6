@@ -55,4 +55,21 @@ public class Value {
       default -> throw new RuntimeException("Type not supported for printing: " + superType);
     };
   }
+
+  public void setValueContents(Value value) {
+    switch (this.node.getType().getSuperType()) {
+      case TYPE_INT:
+        setIntValue(value.getIntValue());
+        break;
+      case TYPE_DOUBLE:
+        setDoubleValue(value.getDoubleValue());
+        break;
+      case TYPE_STRING:
+        setStringValue(value.getStringValue());
+        break;
+      case TYPE_BOOL:
+        setBoolValue(value.isTrue());
+        break;
+    }
+  }
 }

@@ -45,4 +45,5 @@ public abstract class ASTNode implements IVisitable {
   CodeLoc codeLoc;
   Type type = new Type(SuperType.TYPE_INVALID);
   Value value = new Value(this);
+
 }
