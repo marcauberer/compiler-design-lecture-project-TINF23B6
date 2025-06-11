@@ -29,6 +29,7 @@ public class Lexer implements ILexer {
     stateMachines.add(new KeywordStateMachine("int", TokenType.TOK_TYPE_INT));
     stateMachines.add(new KeywordStateMachine("double", TokenType.TOK_TYPE_DOUBLE));
     stateMachines.add(new KeywordStateMachine("string", TokenType.TOK_TYPE_STRING));
+    stateMachines.add(new KeywordStateMachine("bool", TokenType.TOK_TYPE_BOOL));
     stateMachines.add(new KeywordStateMachine("if", TokenType.TOK_IF));
     stateMachines.add(new KeywordStateMachine("else", TokenType.TOK_ELSE));
     stateMachines.add(new KeywordStateMachine("switch", TokenType.TOK_SWITCH));

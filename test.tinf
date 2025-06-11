@@ -1,13 +1,9 @@
 int main := () {
-  int x = 1;
-
-  switch (x) {
-      case 1:
-          print("x is 1a");
-      case 1:
-          print("x is 1b");
-      default:
-          print("x is something else");
+  bool i = 1 != 1;
+  if (i) {
+    print("1");
+  } else {
+    print(2);
   }
 
   ret 0;
