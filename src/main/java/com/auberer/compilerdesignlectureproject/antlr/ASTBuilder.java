@@ -343,6 +343,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
     visit(ctx.equalityExpr(0));
     if (ctx.equalityExpr().size() > 1) {
+      node.setExpanded(true);
       visit(ctx.equalityExpr(1));
       visit(ctx.equalityExpr(2));
     }
