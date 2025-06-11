@@ -37,13 +37,12 @@ public class SelectInstruction extends Instruction {
   @Override
   public void run(InterpreterEnvironment env) {
     assert condition.getType().is(SuperType.TYPE_BOOL);
-    Value result = new Value(node);
+    Value result = node.getValue();
     switch(trueValue.getType().getSuperType()) {
       case TYPE_INT -> result.setIntValue(condition.getValue().isTrue() ? trueValue.getValue().getIntValue() : falseValue.getValue().getIntValue());
       case TYPE_DOUBLE -> result.setDoubleValue(condition.getValue().isTrue() ? trueValue.getValue().getDoubleValue() : falseValue.getValue().getDoubleValue());
       case TYPE_STRING -> result.setStringValue(condition.getValue().isTrue() ? trueValue.getValue().getStringValue() : falseValue.getValue().getStringValue());
       case TYPE_BOOL -> result.setBoolValue(condition.getValue().isTrue() ? trueValue.getValue().isTrue() : falseValue.getValue().isTrue());
     }
-    node.setValue(result);
   }
 }

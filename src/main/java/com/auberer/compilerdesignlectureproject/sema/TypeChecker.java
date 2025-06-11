@@ -45,11 +45,6 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
   public ExprResult visitPrintBuiltin(ASTPrintBuiltinCallNode node) {
     ASTTernaryExprNode expr = node.getExpr();
     visit(expr);
-
-    if (!expr.getType().isOneOf(SuperType.TYPE_INT, SuperType.TYPE_DOUBLE, SuperType.TYPE_STRING)) {
-      throw new SemaError(node, "print() expects an integer, double or string as argument");
-    }
-
     return new ExprResult(new Type(SuperType.TYPE_INVALID));
   }
 

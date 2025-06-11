@@ -33,7 +33,6 @@ public class EqualInstruction extends Instruction {
   public void run(InterpreterEnvironment env) {
     Value lhs = leftOperand.getValue();
     Value rhs = rightOperand.getValue();
-    Value result = new Value(node);
     boolean resultValue = switch (leftOperand.getType().getSuperType()) {
       case TYPE_INT -> lhs.getIntValue() == rhs.getIntValue();
       case TYPE_DOUBLE -> lhs.getDoubleValue() == rhs.getDoubleValue();
@@ -41,7 +40,6 @@ public class EqualInstruction extends Instruction {
       case TYPE_BOOL -> lhs.isTrue() == rhs.isTrue();
       default -> false;
     };
-    result.setBoolValue(resultValue);
-    node.setValue(result);
+    node.getValue().setBoolValue(resultValue);
   }
 }

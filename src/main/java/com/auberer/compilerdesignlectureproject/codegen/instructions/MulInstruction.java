@@ -33,7 +33,7 @@ public class MulInstruction extends Instruction {
   public void run(InterpreterEnvironment env) {
     Value lhs = leftOperand.getValue();
     Value rhs = rightOperand.getValue();
-    Value result = new Value(node);
+    Value result = node.getValue();
     switch (leftOperand.getType().getSuperType()) {
       case TYPE_INT: {
         result.setIntValue(lhs.getIntValue() * rhs.getIntValue());
@@ -46,6 +46,5 @@ public class MulInstruction extends Instruction {
       default:
         throw new RuntimeException("Mul with illegal types");
     }
-    node.getValue().setValueContents(result);
   }
 }
