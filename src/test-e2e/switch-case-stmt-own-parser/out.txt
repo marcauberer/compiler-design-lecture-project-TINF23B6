@@ -130,10 +130,10 @@ digraph AST {
  L8C17_ASTMultiplicativeExprNode -> L8C17_ASTAtomicExprNode;
  L8C17_ASTLiteralNode [label="ASTLiteralNode"];
  L8C17_ASTAtomicExprNode -> L8C17_ASTLiteralNode;
- L9C7_ASTDefaultStmtNode [label="ASTDefaultStmtNode"];
- L2C3_ASTSwitchCaseStmtNode -> L9C7_ASTDefaultStmtNode;
+ L9C7_ASTDefaultBlockNode [label="ASTDefaultBlockNode"];
+ L2C3_ASTSwitchCaseStmtNode -> L9C7_ASTDefaultBlockNode;
  L10C11_ASTStmtLstNode [label="ASTStmtLstNode"];
- L9C7_ASTDefaultStmtNode -> L10C11_ASTStmtLstNode;
+ L9C7_ASTDefaultBlockNode -> L10C11_ASTStmtLstNode;
  L10C11_ASTStmtNode [label="ASTStmtNode"];
  L10C11_ASTStmtLstNode -> L10C11_ASTStmtNode;
  L10C11_ASTAssignStmtNode [label="ASTAssignStmtNode"];

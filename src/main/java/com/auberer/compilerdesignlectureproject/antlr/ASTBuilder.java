@@ -302,17 +302,6 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
   }
 
   @Override
-  public ASTNode visitCaseBlockLst(TInfParser.CaseBlockLstContext ctx) {
-    ASTCaseBlockNode node = new ASTCaseBlockNode();
-    enterNode(node, ctx);
-
-    visitChildren(ctx);
-
-    exitNode(node);
-    return node;
-  }
-
-  @Override
   public ASTNode visitCaseBlock(TInfParser.CaseBlockContext ctx) {
     ASTCaseBlockNode node = new ASTCaseBlockNode();
     enterNode(node, ctx);
@@ -325,7 +314,7 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
   @Override
   public ASTNode visitDefaultBlock(TInfParser.DefaultBlockContext ctx) {
-    ASTDefaultStmtNode node = new ASTDefaultStmtNode();
+    ASTDefaultBlockNode node = new ASTDefaultBlockNode();
     enterNode(node, ctx);
 
     visitChildren(ctx);

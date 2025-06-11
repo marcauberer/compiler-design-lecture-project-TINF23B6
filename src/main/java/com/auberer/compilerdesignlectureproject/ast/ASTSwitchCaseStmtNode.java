@@ -27,7 +27,7 @@ public class ASTSwitchCaseStmtNode extends ASTNode {
     return getChildren(ASTCaseBlockNode.class);
   }
 
-  public ASTDefaultStmtNode getDefaultBlock() {
-    return getChild(ASTDefaultStmtNode.class, 0);
+  public ASTDefaultBlockNode getDefaultBlock() {
+    return getChild(ASTDefaultBlockNode.class, 0);
   }
 }

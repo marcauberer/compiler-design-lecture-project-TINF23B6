@@ -106,7 +106,7 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
       visit(caseBlock);
     }
 
-    ASTDefaultStmtNode defaultBlock = node.getDefaultBlock();
+    ASTDefaultBlockNode defaultBlock = node.getDefaultBlock();
     if (defaultBlock != null) {
       visit(defaultBlock);
     }
@@ -125,7 +125,20 @@ public class TypeChecker extends ASTSemaVisitor<ExprResult> {
     if (!caseResult.getType().is(node.getConditionResult().getType().getSuperType()))
       throw new SemaError(literal, "Case value must be of type " + node.getConditionResult().getType().getSuperType());
 
-    visit(node.getStmtLst());
+    visit(node.getBody());
+
+    assert currentScope.peek() == scope;
+    currentScope.pop();
+
+    return new ExprResult(node.setEvaluatedSymbolType(new Type(SuperType.TYPE_INVALID)));
+  }
+
+  @Override
+  public ExprResult visitDefaultBlock(ASTDefaultBlockNode node) {
+    Scope scope = node.getScope();
+    currentScope.push(scope);
+
+    visit(node.getBody());
 
     assert currentScope.peek() == scope;
     currentScope.pop();

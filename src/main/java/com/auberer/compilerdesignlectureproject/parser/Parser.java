@@ -403,11 +403,11 @@ public class Parser implements IParser {
     lexer.expect(TokenType.TOK_LBRACE);
 
     do {
-      parseCaseStmt();
+      parseCaseBlock();
     } while (lexer.getToken().getType() == TokenType.TOK_CASE);
 
     if (lexer.getToken().getType() == TokenType.TOK_DEFAULT) {
-      parseDefaultStmt();
+      parseDefaultBlock();
     }
 
     lexer.expect(TokenType.TOK_RBRACE);
@@ -415,7 +415,7 @@ public class Parser implements IParser {
     exitNode(node);
   }
 
-  private void parseCaseStmt() {
+  private void parseCaseBlock() {
     ASTCaseBlockNode node = new ASTCaseBlockNode();
     enterNode(node);
 
@@ -427,8 +427,8 @@ public class Parser implements IParser {
     exitNode(node);
   }
 
-  private void parseDefaultStmt() {
-    ASTDefaultStmtNode node = new ASTDefaultStmtNode();
+  private void parseDefaultBlock() {
+    ASTDefaultBlockNode node = new ASTDefaultBlockNode();
     enterNode(node);
 
     lexer.expect(TokenType.TOK_DEFAULT);

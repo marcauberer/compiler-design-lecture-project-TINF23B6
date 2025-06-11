@@ -1,14 +1,13 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
 import com.auberer.compilerdesignlectureproject.sema.ExprResult;
 import com.auberer.compilerdesignlectureproject.sema.Scope;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -32,7 +31,7 @@ public class ASTCaseBlockNode extends ASTNode {
     return getChild(ASTLiteralNode.class, 0);
   }
 
-  public ASTStmtLstNode getStmtLst() {
+  public ASTStmtLstNode getBody() {
     return getChild(ASTStmtLstNode.class, 0);
   }
 }

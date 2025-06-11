@@ -108,7 +108,7 @@ public abstract class ASTVisitor<T> {
     return visitChildren(node);
   }
 
-  public T visitDefaultStmt(ASTDefaultStmtNode node) {
+  public T visitDefaultBlock(ASTDefaultBlockNode node) {
     return visitChildren(node);
   }
 

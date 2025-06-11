@@ -24,8 +24,6 @@ digraph AST {
  L2C10_ASTMultiplicativeExprNode -> L2C10_ASTAtomicExprNode;
  L3C6_ASTCaseBlockNode [label="ASTCaseBlockNode"];
  L2C2_ASTSwitchCaseStmtNode -> L3C6_ASTCaseBlockNode;
- L3C6_ASTCaseBlockNode [label="ASTCaseBlockNode"];
- L3C6_ASTCaseBlockNode -> L3C6_ASTCaseBlockNode;
  L3C11_ASTLiteralNode [label="ASTLiteralNode"];
  L3C6_ASTCaseBlockNode -> L3C11_ASTLiteralNode;
  L4C10_ASTStmtLstNode [label="ASTStmtLstNode"];
@@ -61,7 +59,7 @@ digraph AST {
  L4C16_ASTLiteralNode [label="ASTLiteralNode"];
  L4C16_ASTAtomicExprNode -> L4C16_ASTLiteralNode;
  L5C6_ASTCaseBlockNode [label="ASTCaseBlockNode"];
- L3C6_ASTCaseBlockNode -> L5C6_ASTCaseBlockNode;
+ L2C2_ASTSwitchCaseStmtNode -> L5C6_ASTCaseBlockNode;
  L5C11_ASTLiteralNode [label="ASTLiteralNode"];
  L5C6_ASTCaseBlockNode -> L5C11_ASTLiteralNode;
  L6C10_ASTStmtLstNode [label="ASTStmtLstNode"];
@@ -97,7 +95,7 @@ digraph AST {
  L6C16_ASTLiteralNode [label="ASTLiteralNode"];
  L6C16_ASTAtomicExprNode -> L6C16_ASTLiteralNode;
  L7C6_ASTCaseBlockNode [label="ASTCaseBlockNode"];
- L3C6_ASTCaseBlockNode -> L7C6_ASTCaseBlockNode;
+ L2C2_ASTSwitchCaseStmtNode -> L7C6_ASTCaseBlockNode;
  L7C11_ASTLiteralNode [label="ASTLiteralNode"];
  L7C6_ASTCaseBlockNode -> L7C11_ASTLiteralNode;
  L8C10_ASTStmtLstNode [label="ASTStmtLstNode"];
@@ -132,10 +130,10 @@ digraph AST {
  L8C16_ASTMultiplicativeExprNode -> L8C16_ASTAtomicExprNode;
  L8C16_ASTLiteralNode [label="ASTLiteralNode"];
  L8C16_ASTAtomicExprNode -> L8C16_ASTLiteralNode;
- L9C6_ASTDefaultStmtNode [label="ASTDefaultStmtNode"];
- L2C2_ASTSwitchCaseStmtNode -> L9C6_ASTDefaultStmtNode;
+ L9C6_ASTDefaultBlockNode [label="ASTDefaultBlockNode"];
+ L2C2_ASTSwitchCaseStmtNode -> L9C6_ASTDefaultBlockNode;
  L10C10_ASTStmtLstNode [label="ASTStmtLstNode"];
- L9C6_ASTDefaultStmtNode -> L10C10_ASTStmtLstNode;
+ L9C6_ASTDefaultBlockNode -> L10C10_ASTStmtLstNode;
  L10C10_ASTStmtNode [label="ASTStmtNode"];
  L10C10_ASTStmtLstNode -> L10C10_ASTStmtNode;
  L10C10_ASTAssignStmtNode [label="ASTAssignStmtNode"];

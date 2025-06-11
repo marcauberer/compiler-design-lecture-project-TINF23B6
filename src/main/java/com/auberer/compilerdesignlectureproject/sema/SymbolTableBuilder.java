@@ -230,7 +230,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     return null;
   }
 
-  public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+  public Void visitDefaultBlock(ASTDefaultBlockNode node) {
     if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('e');
 
     Scope current = currentScope.peek();

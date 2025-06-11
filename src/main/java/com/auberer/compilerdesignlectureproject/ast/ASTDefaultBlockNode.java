@@ -1,15 +1,22 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
 import com.auberer.compilerdesignlectureproject.lexer.TokenType;
+import com.auberer.compilerdesignlectureproject.sema.Scope;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ASTDefaultStmtNode extends ASTNode {
+@Getter
+@Setter
+public class ASTDefaultBlockNode extends ASTNode {
+
+  private Scope scope;
 
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
-    return visitor.visitDefaultStmt(this);
+    return visitor.visitDefaultBlock(this);
   }
 
   public static Set<TokenType> getSelectionSet() {
@@ -18,7 +25,7 @@ public class ASTDefaultStmtNode extends ASTNode {
     return selectionSet;
   }
 
-  public ASTDefaultStmtNode getBody() {
-    return getChild(ASTDefaultStmtNode.class, 0);
+  public ASTStmtLstNode getBody() {
+    return getChild(ASTStmtLstNode.class, 0);
   }
 }
