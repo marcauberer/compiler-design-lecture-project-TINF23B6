@@ -166,4 +166,20 @@ digraph AST {
  L10C16_ASTMultiplicativeExprNode -> L10C16_ASTAtomicExprNode;
  L10C16_ASTLiteralNode [label="ASTLiteralNode"];
  L10C16_ASTAtomicExprNode -> L10C16_ASTLiteralNode;
+ L12C2_ASTStmtNode [label="ASTStmtNode"];
+ L2C2_ASTStmtLstNode -> L12C2_ASTStmtNode;
+ L12C2_ASTParamNode [label="ASTParamNode"];
+ L12C2_ASTStmtNode -> L12C2_ASTParamNode;
+ L12C6_ASTTernaryExprNode [label="ASTTernaryExprNode"];
+ L12C2_ASTParamNode -> L12C6_ASTTernaryExprNode;
+ L12C6_ASTEqualityExprNode [label="ASTEqualityExprNode"];
+ L12C6_ASTTernaryExprNode -> L12C6_ASTEqualityExprNode;
+ L12C6_ASTAdditiveExprNode [label="ASTAdditiveExprNode"];
+ L12C6_ASTEqualityExprNode -> L12C6_ASTAdditiveExprNode;
+ L12C6_ASTMultiplicativeExprNode [label="ASTMultiplicativeExprNode"];
+ L12C6_ASTAdditiveExprNode -> L12C6_ASTMultiplicativeExprNode;
+ L12C6_ASTAtomicExprNode [label="ASTAtomicExprNode"];
+ L12C6_ASTMultiplicativeExprNode -> L12C6_ASTAtomicExprNode;
+ L12C6_ASTLiteralNode [label="ASTLiteralNode"];
+ L12C6_ASTAtomicExprNode -> L12C6_ASTLiteralNode;
 }

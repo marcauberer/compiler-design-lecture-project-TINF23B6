@@ -9,7 +9,7 @@ import java.util.Set;
 public class ASTStmtLstNode extends ASTNode {
   @Override
   public <T> T accept(ASTVisitor<T> visitor) {
-    return visitor.visistStmtLst(this);
+    return visitor.visitStmtLst(this);
   }
 
   public static Set<TokenType> getSelectionSet() {

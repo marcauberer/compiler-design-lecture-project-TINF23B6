@@ -36,6 +36,20 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   }
 
   @Override
+  public IRExprResult visitStmtLst(ASTStmtLstNode node) {
+    List<ASTStmtNode> statements = node.getStmts();
+    for (ASTStmtNode stmt : statements) {
+      // Visit the next statement
+      visit(stmt);
+
+      // If the block is already terminated, do not visit dead code
+      if (isBlockTerminated(currentBlock))
+        break;
+    }
+    return null;
+  }
+
+  @Override
   public IRExprResult visitVarDecl(ASTVarDeclNode node) {
     AllocaInstruction allocaInstruction = new AllocaInstruction(node, node.getCurrentSymbol(), node.getVariableName());
     pushToCurrentBlock(allocaInstruction);
@@ -103,20 +117,25 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
   public IRExprResult visitIfStmt(ASTIfStmtNode node) {
     BasicBlock ifBodyBlock = new BasicBlock("if_body");
-    BasicBlock elseBlock = new BasicBlock("if_else");
     BasicBlock afterIfBlock = new BasicBlock("after_if");
 
-    CondJumpInstruction ifJumpInstruction = new CondJumpInstruction(node, node.getCondition(), ifBodyBlock, elseBlock);
-    pushToCurrentBlock(ifJumpInstruction);
+    if (node.getElseBody() == null) {
+      insertCondJump(node, node.getCondition(), ifBodyBlock, afterIfBlock);
 
-    switchToBlock(ifBodyBlock);
-    visit(node.getIfBody());
-    pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+      switchToBlock(ifBodyBlock);
+      visit(node.getIfBody());
+      insertJump(node, afterIfBlock);
+    } else {
+      BasicBlock elseBlock = new BasicBlock("if_else");
+      insertCondJump(node, node.getCondition(), ifBodyBlock, elseBlock);
 
-    switchToBlock(elseBlock);
-    if (node.getElseBody() != null) {
+      switchToBlock(ifBodyBlock);
+      visit(node.getIfBody());
+      insertJump(node, afterIfBlock);
+
+      switchToBlock(elseBlock);
       visit(node.getElseBody());
-      pushToCurrentBlock(new JumpInstruction(node, afterIfBlock));
+      insertJump(node, afterIfBlock);
     }
 
     switchToBlock(afterIfBlock);
@@ -132,15 +151,15 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     BasicBlock bodyBlock = new BasicBlock("while_body");
     BasicBlock endBlock = new BasicBlock("while_end");
 
-    pushToCurrentBlock(new JumpInstruction(node, conditionBlock));
+    insertJump(node, conditionBlock);
 
     switchToBlock(conditionBlock);
     IRExprResult condResult = visit(node.getCondition());
-    pushToCurrentBlock(new CondJumpInstruction(node, condResult.getValue().getNode(), bodyBlock, endBlock));
+    insertCondJump(node, condResult.getNode(), bodyBlock, endBlock);
 
     switchToBlock(bodyBlock);
     visit(node.getBody());
-    pushToCurrentBlock(new JumpInstruction(node, conditionBlock));
+    insertJump(node, conditionBlock);
 
     switchToBlock(endBlock);
     return new IRExprResult(null, node, null);
@@ -151,17 +170,18 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitDoWhileLoop(ASTDoWhileLoopNode node) {
     BasicBlock bodyBlock = new BasicBlock("do_while_body");
+    BasicBlock condBlock = new BasicBlock("do_while_cond");
     BasicBlock endBlock = new BasicBlock("do_while_end");
 
-    JumpInstruction entryJump = new JumpInstruction(node, bodyBlock);
-    pushToCurrentBlock(entryJump);
+    insertJump(node, bodyBlock);
+
     switchToBlock(bodyBlock);
-
     visit(node.getBody());
-    visit(node.getCondition());
+    insertJump(node, condBlock);
 
-    CondJumpInstruction condJumpInstruction = new CondJumpInstruction(node, node.getCondition(), bodyBlock, endBlock);
-    pushToCurrentBlock(condJumpInstruction);
+    switchToBlock(condBlock);
+    visit(node.getCondition());
+    insertCondJump(node, node.getCondition(), bodyBlock, endBlock);
 
     switchToBlock(endBlock);
     return new IRExprResult(null, node, null);
@@ -182,8 +202,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
     assert function != null;
     CallInstruction newCallInstruction = new CallInstruction(node, function, functionDef.getParams());
-
-    currentBlock.pushInstruction(newCallInstruction);
+    pushToCurrentBlock(newCallInstruction);
 
     return new IRExprResult(new Value(node, node.getIdentifier()), node, node.getCorrespondingSymbol());
   }
@@ -191,9 +210,8 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitFunctionDef(ASTFunctionDefNode node) {
     List<Function.Parameter> paramList = new ArrayList<>();
-
     if (node.getParams() != null) {
-      paramList = node.getParams().getParams().stream().map(param -> new Function.Parameter(param.getIdentifier(), param.getDataType().getType())).toList();
+      paramList = node.getParams().getParams().stream().map(param -> new Function.Parameter(param.getParamName(), param.getDataType().getType())).toList();
     }
 
     Function newFunction = new Function(node.getIdentifier(), node.getReturnType().getType(), paramList);
@@ -201,10 +219,29 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     module.addFunction(newFunction);
     currentBlock = entryBlock;
     newFunction.setEntryBlock(currentBlock);
-    visit(node.getBody());
-    currentBlock = null;
 
+    if (node.getParams() != null) {
+      visit(node.getParams());
+    }
+
+    visit(node.getBody());
+
+    finalizeFunction();
     return null;
+  }
+
+  @Override
+  public IRExprResult visitParam(ASTParamNode node) {
+    AllocaInstruction allocaInstruction = new AllocaInstruction(node, node.getCurrentSymbol(), node.getParamName());
+    pushToCurrentBlock(allocaInstruction);
+
+    if (node.getDefaultValue() != null) {
+      visit(node.getDefaultValue());
+      StoreInstruction storeInstruction = new StoreInstruction(node.getDefaultValue(), node.getCurrentSymbol());
+      pushToCurrentBlock(storeInstruction);
+    }
+
+    return new IRExprResult(node.getValue(), node, node.getCurrentSymbol());
   }
 
   @Override
@@ -224,58 +261,55 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     BasicBlock incrementBlock = new BasicBlock("for_increment");
     BasicBlock afterLoopBlock = new BasicBlock("after_for");
 
-    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+    insertJump(node, condBlock);
 
     switchToBlock(condBlock);
     IRExprResult condResult = visit(node.getCondition());
-    pushToCurrentBlock(new CondJumpInstruction(node, condResult.getValue().getNode(), bodyBlock, afterLoopBlock));
+    insertCondJump(node, condResult.getValue().getNode(), bodyBlock, afterLoopBlock);
 
     switchToBlock(bodyBlock);
     visit(node.getBody());
-    pushToCurrentBlock(new JumpInstruction(node, incrementBlock));
+    insertJump(node, incrementBlock);
 
     switchToBlock(incrementBlock);
     visit(node.getIncrement());
-    pushToCurrentBlock(new JumpInstruction(node, condBlock));
+    insertJump(node, condBlock);
 
     switchToBlock(afterLoopBlock);
-
     return new IRExprResult(null, node, null);
   }
 
   // Team 6
   @Override
   public IRExprResult visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
-    Value value = node.getCondition().getValue();
+    ASTTernaryExprNode condition = node.getCondition();
     List<BasicBlock> caseBlocks = new ArrayList<>();
     List<ASTCaseStmtNode> cases = node.getCaseBlocks();
-    BasicBlock defaultBlock = node.getDefaultBlock() != null ?
-            new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine()) :
-            null;
-    BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
 
     for (int i = 0; i < cases.size(); i++) {
       BasicBlock caseBlock = new BasicBlock("case_block_" + i + "_" + cases.get(i).getCodeLoc().getLine());
       caseBlocks.add(caseBlock);
     }
+    BasicBlock defaultBlock = null;
+    if (node.getDefaultBlock() != null)
+      defaultBlock = new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine());
+    BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
 
-    SwitchInstruction switchInstruction = new SwitchInstruction(node, value, caseBlocks, cases, defaultBlock);
-
+    SwitchInstruction switchInstruction = new SwitchInstruction(node, condition, caseBlocks, cases, defaultBlock);
     pushToCurrentBlock(switchInstruction);
 
     for (int i = 0; i < cases.size(); i++) {
       switchToBlock(caseBlocks.get(i));
       visitChildren(cases.get(i));
-      pushToCurrentBlock(new JumpInstruction(node, endBlock));
+      insertJump(node, endBlock);
     }
 
     if (node.getDefaultBlock() != null) {
-      switchToBlock(defaultBlock);      
+      switchToBlock(defaultBlock);
       visitChildren(node.getDefaultBlock());
-      pushToCurrentBlock(new JumpInstruction(node, endBlock));
+      insertJump(node, endBlock);
     }
 
-    pushToCurrentBlock(new JumpInstruction(node, endBlock));
     switchToBlock(endBlock);
 
     return new IRExprResult(null, node, null);
@@ -286,16 +320,14 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitAnonymousBlockStmt(ASTAnonymousBlockStmtNode node) {
     BasicBlock newBlock = new BasicBlock("anonymous_block_" + node.getCodeLoc().getLine());
-    JumpInstruction jumpInAnonymousBlockInstruction = new JumpInstruction(node, newBlock);
-    pushToCurrentBlock(jumpInAnonymousBlockInstruction);
+    insertJump(node, newBlock);
 
     switchToBlock(newBlock);
 
     visitChildren(node);
 
     BasicBlock afterBlock = new BasicBlock("after_" + newBlock.getLabel());
-    JumpInstruction jumpOutInstruction = new JumpInstruction(node, afterBlock);
-    pushToCurrentBlock(jumpOutInstruction);
+    insertJump(node, afterBlock);
 
     switchToBlock(afterBlock);
     return new IRExprResult(null, node, null);
@@ -308,25 +340,26 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     BasicBlock exitBlock = new BasicBlock("ternary_exit");
 
     ASTEqualityExprNode condition = node.getCondition();
-    visit(condition);
+    IRExprResult result = visit(condition);
 
     if (node.isExpanded()) {
-      CondJumpInstruction condJump = new CondJumpInstruction(node, condition, trueBlock, falseBlock);
-      pushToCurrentBlock(condJump);
+      insertCondJump(node, condition, trueBlock, falseBlock);
 
       switchToBlock(trueBlock);
       ASTEqualityExprNode trueBranch = node.getTrueBranch();
       visit(trueBranch);
-      pushToCurrentBlock(new JumpInstruction(node, exitBlock));
+      insertJump(node, exitBlock);
 
       switchToBlock(falseBlock);
       ASTEqualityExprNode falseBranch = node.getFalseBranch();
       visit(falseBranch);
-      pushToCurrentBlock(new JumpInstruction(node, exitBlock));
+      insertJump(node, exitBlock);
 
       switchToBlock(exitBlock);
       SelectInstruction selectInstruction = new SelectInstruction(node, condition, trueBranch, falseBranch);
       pushToCurrentBlock(selectInstruction);
+    } else {
+      node.setValue(result.getValue());
     }
 
     return new IRExprResult(node.getValue(), node, null);
@@ -335,7 +368,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitEqualityExpr(ASTEqualityExprNode node) {
     List<ASTAdditiveExprNode> operands = node.getOperands();
-    visit(operands.getFirst());
+    IRExprResult result = visit(operands.getFirst());
     if (operands.size() == 2) {
       visit(operands.getLast());
       if (node.getOp() == ASTEqualityExprNode.EqualityOp.EQ) {
@@ -347,16 +380,20 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
       } else {
         assert false : "Unexpected equality operator";
       }
+    } else {
+      node.setValue(result.getValue());
     }
-
     return new IRExprResult(node.getValue(), node, null);
   }
 
   @Override
   public IRExprResult visitAdditiveExpr(ASTAdditiveExprNode node) {
     List<ASTMultiplicativeExprNode> operandsList = node.getOperands();
-    if (operandsList.size() == 1)
-      return visit(operandsList.getFirst());
+    if (operandsList.size() == 1) {
+      IRExprResult result = visit(operandsList.getFirst());
+      node.setValue(result.getValue());
+      return result;
+    }
     List<ASTAdditiveExprNode.AdditiveOp> operatorsList = node.getOpList();
 
     // Visit the first operand
@@ -381,8 +418,11 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   @Override
   public IRExprResult visitMultiplicativeExpr(ASTMultiplicativeExprNode node) {
     List<ASTAtomicExprNode> operandsList = node.getOperands();
-    if (operandsList.size() == 1)
-      return visit(operandsList.getFirst());
+    if (operandsList.size() == 1) {
+      IRExprResult result = visit(operandsList.getFirst());
+      node.setValue(result.getValue());
+      return result;
+    }
     List<ASTMultiplicativeExprNode.MultiplicativeOp> operatorsList = node.getOpList();
 
     // Visit the first operand
@@ -441,6 +481,32 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
   }
 
   /**
+   * Insert unconditional jump into the current block
+   *
+   * @param node Issuing AST node
+   * @param targetBlock BasicBlock where to jump to
+   */
+  private void insertJump(ASTNode node, BasicBlock targetBlock) {
+    if (isBlockTerminated(currentBlock))
+      return;
+    pushToCurrentBlock(new JumpInstruction(node, targetBlock));
+  }
+
+  /**
+   * Insert conditional jump into the current block
+   *
+   * @param node Issuing AST node
+   * @param condition AST node of the condition
+   * @param targetBlockTrue BasicBlock where to jump to if the condition is true
+   * @param targetBlockFalse BasicBlock where to jump to if the condition is false
+   */
+  private void insertCondJump(ASTNode node, ASTNode condition, BasicBlock targetBlockTrue, BasicBlock targetBlockFalse) {
+    if (isBlockTerminated(currentBlock))
+      return;
+    pushToCurrentBlock(new CondJumpInstruction(node, condition, targetBlockTrue, targetBlockFalse));
+  }
+
+  /**
    * Can be used to set the instruction insert point to a specific block
    *
    * @param targetBlock Block to switch to
@@ -483,7 +549,6 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
    */
   private void finalizeFunction() {
     assert currentBlock != null;
-    assert isBlockTerminated(currentBlock);
     currentBlock = null;
   }
 

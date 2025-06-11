@@ -4,11 +4,15 @@ import com.auberer.compilerdesignlectureproject.ast.*;
 
 public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
-  // global rootscope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
+  ReturnStateMachine returnStatemachine = new ReturnStateMachine();
+
+  // global root scope (enable fctCalls to lookupSymbolStrict independent of the Scope degree(depth))
   private Scope rootScope;
 
   @Override
   public Void visitEntry(ASTEntryNode node) {
+
+    returnStatemachine.init();
     rootScope = new Scope();
     node.setRootScope(rootScope);
 
@@ -63,10 +67,25 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     currentScope.push(ifScope);
     visitChildren(node);
-
     assert currentScope.peek() == ifScope;
-    currentScope.pop();
 
+    currentScope.pop();
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
+
+    return null;
+  }
+
+  @Override
+  public Void visitIfStmt(ASTIfStmtNode node) {
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('i');
+    super.visitIfStmt(node);
+    return null;
+  }
+
+  @Override
+  public Void visitElseStmt(ASTElseStmtNode node) {
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('e');
+    visit(node.getBody());
     return null;
   }
 
@@ -74,7 +93,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitWhileLoopStmt(ASTWhileLoopNode node) {
 
-    Scope whileScope = currentScope.peek().createChildScope();
+    Scope whileScope = currentScope.peek().createChildScope(true);
     node.setScope(whileScope);
     currentScope.push(whileScope);
 
@@ -91,7 +110,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitDoWhileLoop(ASTDoWhileLoopNode node) {
 
-    Scope doWhileScope = currentScope.peek().createChildScope();
+    Scope doWhileScope = currentScope.peek().createChildScope(true);
     currentScope.push(doWhileScope);
 
     node.setScope(doWhileScope);
@@ -106,6 +125,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   // Team 4
   @Override
   public Void visitFunctionDef(ASTFunctionDefNode node) {
+    returnStatemachine.reset();
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(functionName, node);
     if (entry == null) {
@@ -121,6 +141,9 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == scopeFct;
     currentScope.pop();
 
+    if (!returnStatemachine.isInAcceptState()) {
+      throw new RuntimeException("Return is missing State:" + returnStatemachine.getCurrentState().getName());
+    }
     return null;
   }
 
@@ -128,7 +151,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   @Override
   public Void visitParam(ASTParamNode node) {
     visitChildren(node);
-    String paramName = node.getIdentifier();
+    String paramName = node.getParamName();
     SymbolTableEntry entry = currentScope.peek().lookupSymbolStrict(paramName, node);
     if (entry == null) {
       entry = currentScope.peek().insertSymbol(paramName, node);
@@ -142,23 +165,30 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
   @Override
   public Void visitFunctionCall(ASTFunctionCallNode node) {
+
     visitChildren(node);
     String functionName = node.getIdentifier();
     SymbolTableEntry entry = rootScope.lookupSymbol(functionName, node);
     if (entry == null) {
-      throw new SemaError(node,"function " + functionName + " not declared");
-    }else {
+      throw new SemaError(node, "function " + functionName + " not declared");
+    } else {
       node.setCorrespondingSymbol(entry);
     }
 
     return null;
   }
 
+  @Override
+  public Void visitReturnStmt(ASTReturnStmtNode node) {
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('r');
+    super.visitReturnStmt(node);
+    return null;
+  }
 
   // Team 5
   @Override
   public Void visitForLoop(ASTForLoopNode node) {
-    Scope scope = currentScope.peek().createChildScope();
+    Scope scope = currentScope.peek().createChildScope(true);
     currentScope.push(scope);
     node.setScope(scope);
     visitChildren(node);
@@ -169,7 +199,25 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
   }
 
   // Team 6
+
+  @Override
+  public Void visitSwitchCaseStmt(ASTSwitchCaseStmtNode node) {
+    Boolean isInALoop = currentScope.peek().getIsInALoop();
+    if (!isInALoop) {
+      returnStatemachine.processInput('i');
+      returnStatemachine.processInput('r');
+      returnStatemachine.processInput('b');
+    }
+    super.visitSwitchCaseStmt(node);
+    return null;
+  }
+
   public Void visitCaseStmt(ASTCaseStmtNode node) {
+    Boolean isInALoop = currentScope.peek().getIsInALoop();
+    if (!isInALoop) {
+      returnStatemachine.processInput('e');
+      returnStatemachine.processInput('i');
+    }
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
@@ -178,11 +226,13 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
 
     assert currentScope.peek() == newScope;
     currentScope.pop();
-
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
     return null;
   }
 
   public Void visitDefaultStmt(ASTDefaultStmtNode node) {
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('e');
+
     Scope current = currentScope.peek();
     Scope newScope = current.createChildScope();
     currentScope.push(newScope);
@@ -192,6 +242,7 @@ public class SymbolTableBuilder extends ASTSemaVisitor<Void> {
     assert currentScope.peek() == newScope;
     currentScope.pop();
 
+    if (!currentScope.peek().getIsInALoop()) returnStatemachine.processInput('b');
     return null;
   }
 

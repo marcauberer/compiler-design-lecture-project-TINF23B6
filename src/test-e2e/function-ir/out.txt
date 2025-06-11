@@ -4,6 +4,13 @@ module source.tinf:
 
 define i32 @hanoi(i32 steps, ptr from, ptr aux, ptr to) {
 hanoi:
+  %steps = alloca i32, align 4
+  %from = alloca ptr, align 8
+  store ptr %63 ptr %from, align 8
+  %aux = alloca ptr, align 8
+  store ptr %64 ptr %aux, align 8
+  %to = alloca ptr, align 8
+  store ptr %65 ptr %to, align 8
   %res = alloca i32, align 4
   %27 = call i32 @hanoi(%4,%6,%10,%14)
   store i32 %22 ptr %res, align 4

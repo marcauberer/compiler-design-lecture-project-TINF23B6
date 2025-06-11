@@ -10,7 +10,8 @@ import java.util.Set;
 @Getter
 @Setter
 public class ASTParamNode extends ASTNode {
-  private String identifier;
+
+  private String paramName;
   private SymbolTableEntry currentSymbol;
 
   @Override

@@ -56,12 +56,10 @@ digraph AST {
  L3C9_ASTAtomicExprNode -> L3C9_ASTLiteralNode;
  L4C2_ASTElseStmtNode [label="ASTElseStmtNode"];
  L2C1_ASTIfStmtNode -> L4C2_ASTElseStmtNode;
- L4C6_ASTStmtNode [label="ASTStmtNode"];
- L2C1_ASTStmtLstNode -> L4C6_ASTStmtNode;
- L4C6_ASTAnonymousBlockStmtNode [label="ASTAnonymousBlockStmtNode"];
- L4C6_ASTStmtNode -> L4C6_ASTAnonymousBlockStmtNode;
+ L4C6_ASTIfBodyNode [label="ASTIfBodyNode"];
+ L4C2_ASTElseStmtNode -> L4C6_ASTIfBodyNode;
  L5C1_ASTStmtLstNode [label="ASTStmtLstNode"];
- L4C6_ASTAnonymousBlockStmtNode -> L5C1_ASTStmtLstNode;
+ L4C6_ASTIfBodyNode -> L5C1_ASTStmtLstNode;
  L5C1_ASTStmtNode [label="ASTStmtNode"];
  L5C1_ASTStmtLstNode -> L5C1_ASTStmtNode;
  L5C1_ASTVarDeclNode [label="ASTVarDeclNode"];

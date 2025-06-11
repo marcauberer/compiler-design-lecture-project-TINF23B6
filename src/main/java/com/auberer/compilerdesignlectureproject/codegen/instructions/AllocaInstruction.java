@@ -1,6 +1,7 @@
 package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
+import com.auberer.compilerdesignlectureproject.interpreter.InterpreterEnvironment;
 import com.auberer.compilerdesignlectureproject.interpreter.Value;
 import com.auberer.compilerdesignlectureproject.sema.SymbolTableEntry;
 
@@ -25,4 +26,7 @@ public class AllocaInstruction extends Instruction {
   public void trace(StringBuilder sb) {
     sb.append(node.getCodeLoc().toString()).append(": alloca");
   }
+
+  @Override
+  public void run(InterpreterEnvironment env) {}
 }

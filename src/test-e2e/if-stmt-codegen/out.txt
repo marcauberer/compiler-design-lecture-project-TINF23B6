@@ -1,0 +1,33 @@
+Compiling with own parser...
+Dumping IR ...
+module source.tinf:
+
+define i32 @main() {
+main:
+  br i1 %6, label %if_body, label %if_else
+if_body:
+  %i = alloca i32, align 4
+  store i32 %21 ptr %i, align 4
+  br label %after_if
+after_if:
+  ret i32 %86
+if_else:
+  br i1 %29, label %if_body, label %if_else
+if_body:
+  %i = alloca i32, align 4
+  store i32 %44 ptr %i, align 4
+  br i1 %52, label %if_body, label %after_if
+if_body:
+  store i32 %66 ptr %i, align 4
+  br label %after_if
+after_if:
+  br label %after_if
+after_if:
+  br label %after_if
+if_else:
+  %i = alloca i32, align 4
+  store i32 %78 ptr %i, align 4
+  br label %after_if
+}
+
+Compilation successful!

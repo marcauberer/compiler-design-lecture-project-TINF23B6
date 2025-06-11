@@ -1,0 +1,26 @@
+int whileIgnoreRet := () {
+    while (1 == 1) {
+    ret 0;
+    }
+    ret 0;
+}
+
+int forIgnoreRet := () {
+    for (int i = 0; i != 10; i = i + 1) {
+            i = i + 1;
+            ret 0;
+    }
+    ret 0;
+}
+
+int doIgnoreRet := () {
+    do {
+        int i = 0;
+        ret 0;
+    } while (i != 8);
+    ret 0;
+}
+
+int main := () {
+    ret 0;
+}

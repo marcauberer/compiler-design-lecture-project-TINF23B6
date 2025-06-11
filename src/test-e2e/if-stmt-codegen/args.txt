@@ -1,0 +1,1 @@
+--dump-ir ./src/test-e2e/if-stmt-codegen/source.tinf

@@ -13,6 +13,8 @@ do_while_body:
   store i32 %19 ptr %i, align 4
   %a = alloca i32, align 4
   store i32 %29 ptr %a, align 4
+  br label %do_while_cond
+do_while_cond:
   %39 = load i32, ptr %i, align 4
   %36 = icmp ne i1 %37, %40
   br i1 %35, label %do_while_body, label %do_while_end

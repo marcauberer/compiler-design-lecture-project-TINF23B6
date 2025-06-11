@@ -1,6 +1,6 @@
 package com.auberer.compilerdesignlectureproject.ast;
 
-public class ASTVisitor<T> {
+public abstract class ASTVisitor<T> {
 
   // Generic visit methods
 
@@ -20,15 +20,15 @@ public class ASTVisitor<T> {
     return visitChildren(node);
   }
 
+  public T visitStmtLst(ASTStmtLstNode node) {
+    return visitChildren(node);
+  }
+
+  public T visitStmt(ASTStmtNode node) {
+    return visitChildren(node);
+  }
+
   public T visitPrintBuiltin(ASTPrintBuiltinCallNode node) {
-    return visitChildren(node);
-  }
-
-  T visistStmtLst(ASTStmtLstNode node) {
-    return visitChildren(node);
-  }
-
-  T visistStmt(ASTStmtNode node) {
     return visitChildren(node);
   }
 

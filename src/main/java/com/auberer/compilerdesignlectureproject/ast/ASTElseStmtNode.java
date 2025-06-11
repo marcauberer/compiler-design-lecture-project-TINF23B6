@@ -22,6 +22,6 @@ public class ASTElseStmtNode extends ASTNode {
   }
 
   public ASTNode getBody() {
-    return containsIfStmt ? getChild(ASTIfBodyNode.class, 0) : getChild(ASTElseStmtNode.class, 0);
+    return containsIfStmt ? getChild(ASTIfStmtNode.class, 0) : getChild(ASTIfBodyNode.class, 0);
   }
 }

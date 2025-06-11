@@ -3,6 +3,7 @@ package com.auberer.compilerdesignlectureproject.codegen;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.CondJumpInstruction;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.Instruction;
 import com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction;
+import com.auberer.compilerdesignlectureproject.codegen.instructions.SwitchInstruction;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class BasicBlock implements IDumpable {
 
     // Dump the IR of this block
     dumpIR(sb);
-    
+
     // Dump the IR of the successor blocks
     for (BasicBlock successor : getSuccessors())
       successor.dumpIR(sb, alreadyDumpedBlocks);
@@ -84,6 +85,8 @@ public class BasicBlock implements IDumpable {
       successors.add(condJumpInstruction.getFalseTargetBlock());
     } else if (lastInstruction instanceof JumpInstruction jumpInstruction) {
       successors.add(jumpInstruction.getTargetBlock());
+    } else if (lastInstruction instanceof SwitchInstruction switchInstruction) {
+      successors.addAll(switchInstruction.getTargetBlocks());
     }
     return successors;
   }

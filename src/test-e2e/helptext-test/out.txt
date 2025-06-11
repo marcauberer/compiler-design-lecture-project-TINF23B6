@@ -9,6 +9,8 @@ usage: tinf-compiler args...
  -ir,--dump-ir                      Dump the intermediate representation
  -symtab,--dump-symbol-table        Dump the symbol table along with the
                                     scopes
+ -t,--trace                         Enables tracing while interpreting the
+                                    generated IR
  -tokens,--dump-tokens              Dump the lexed tokens
  -types,--dump-typed-symbol-table   Dump the symbol table along with the
                                     scopes and the types

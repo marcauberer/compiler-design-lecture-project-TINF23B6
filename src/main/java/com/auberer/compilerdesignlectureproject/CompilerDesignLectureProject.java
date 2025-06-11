@@ -7,6 +7,7 @@ import com.auberer.compilerdesignlectureproject.ast.ASTEntryNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTVisualizer;
 import com.auberer.compilerdesignlectureproject.codegen.CodeGenerator;
 import com.auberer.compilerdesignlectureproject.codegen.Module;
+import com.auberer.compilerdesignlectureproject.interpreter.InterpreterEnvironment;
 import com.auberer.compilerdesignlectureproject.lexer.Lexer;
 import com.auberer.compilerdesignlectureproject.parser.Parser;
 import com.auberer.compilerdesignlectureproject.reader.Reader;
@@ -40,7 +41,8 @@ public class CompilerDesignLectureProject {
         .addOption("symtab", "dump-symbol-table", false, "Dump the symbol table along with the scopes")
         .addOption("types", "dump-typed-symbol-table", false, "Dump the symbol table along with the scopes and the types")
         .addOption("ir", "dump-ir", false, "Dump the intermediate representation")
-        .addOption(null, "disable-verifier", false, "Disable the IR verifier");
+        .addOption(null, "disable-verifier", false, "Disable the IR verifier")
+        .addOption("t", "trace", false, "Enables tracing while interpreting the generated IR");
 
     DefaultParser cliParser = new DefaultParser();
     try {
@@ -128,7 +130,10 @@ public class CompilerDesignLectureProject {
         irModule.verify();
       }
 
-      // ToDo(Marc): Implement
+      // Interpret
+      boolean doTracing = cli.hasOption("trace");
+      InterpreterEnvironment environment = new InterpreterEnvironment(irModule, doTracing);
+      environment.interpret();
 
       System.out.println("Compilation successful!");
     } catch (ParseException e) {

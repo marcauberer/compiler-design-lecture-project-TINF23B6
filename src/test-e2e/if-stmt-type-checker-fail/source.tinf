@@ -6,4 +6,5 @@ int main := () {
         int i = 2;
         i=x+i;
     }
+    ret 0;
 }

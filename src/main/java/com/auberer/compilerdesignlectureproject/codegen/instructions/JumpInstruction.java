@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTNode;
 import com.auberer.compilerdesignlectureproject.codegen.BasicBlock;
+import com.auberer.compilerdesignlectureproject.interpreter.InterpreterEnvironment;
 import lombok.Getter;
 
 @Getter
@@ -22,6 +23,11 @@ public class JumpInstruction extends Instruction {
   @Override
   public void trace(StringBuilder sb) {
     sb.append(node.getCodeLoc().toString()).append(": jump");
+  }
+
+  @Override
+  public void run(InterpreterEnvironment env) {
+    env.setInstructionIterator(targetBlock.getInstructions().listIterator());
   }
 
   @Override

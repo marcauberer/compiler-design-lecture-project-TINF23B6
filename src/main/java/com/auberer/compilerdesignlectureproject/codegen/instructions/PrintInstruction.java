@@ -2,6 +2,7 @@ package com.auberer.compilerdesignlectureproject.codegen.instructions;
 
 import com.auberer.compilerdesignlectureproject.ast.ASTPrintBuiltinCallNode;
 import com.auberer.compilerdesignlectureproject.ast.ASTTernaryExprNode;
+import com.auberer.compilerdesignlectureproject.interpreter.InterpreterEnvironment;
 
 public class PrintInstruction extends Instruction {
 
@@ -23,5 +24,10 @@ public class PrintInstruction extends Instruction {
   @Override
   public void trace(StringBuilder sb) {
     sb.append(node.getCodeLoc().toString()).append(": builtin function: print");
+  }
+
+  @Override
+  public void run(InterpreterEnvironment env) {
+    System.out.println(exprToPrint.getValue());
   }
 }

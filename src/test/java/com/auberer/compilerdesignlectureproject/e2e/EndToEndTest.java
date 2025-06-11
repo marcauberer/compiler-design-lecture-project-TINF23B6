@@ -57,6 +57,7 @@ public class EndToEndTest {
 
       List<String> command = new ArrayList<>();
       command.add(System.getProperty("java.home") + "/bin/java");
+      command.add("-ea");
       command.add("-cp");
       command.add(System.getProperty("java.class.path"));
       command.add(CompilerDesignLectureProject.class.getCanonicalName());
