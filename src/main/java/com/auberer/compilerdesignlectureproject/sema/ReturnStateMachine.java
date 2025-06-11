@@ -23,6 +23,9 @@ public class ReturnStateMachine extends StateMachine {
     State ifState = new State("S2");
     addState(ifState);
 
+    State deadState = new State("S9");
+    addState(deadState);
+
     State retState = new State("S3");
     addState(retState);
 
@@ -52,8 +55,12 @@ public class ReturnStateMachine extends StateMachine {
     addElseTransition(stateStart, stateStart);
 
     addCharTransition(ifState, retState, 'r'); // return in if
-    addCharTransition(ifState, deadIfElseState, 'e'); // else without ret
+    addCharTransition(ifState, deadState, 'b'); //
     addElseTransition(ifState, ifState);
+
+    addCharTransition(deadState, deadIfElseState, 'e');
+    addCharTransition(deadState, returnState, 'r');
+    addElseTransition(deadState, deadState);
 
     addCharTransition(deadIfElseState, stateStart, 'b'); // ifbody end => terminating dead if else statement
     addCharTransition(deadIfElseState, deadIfElseIfState, 'i'); // if statement instead of end
@@ -86,6 +93,7 @@ public class ReturnStateMachine extends StateMachine {
 
   @Override
   public TokenType getTokenType() {
+    System.out.println("... lol no");
     return null;
   }
 }
