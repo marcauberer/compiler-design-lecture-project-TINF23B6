@@ -7,18 +7,18 @@ main:
   br i1 %6, label %if_body, label %if_else
 if_body:
   %i = alloca i32, align 4
-  store i32 %21 ptr %i, align 4
+  store i32 %92 ptr %i, align 4
   br label %after_if
 after_if:
-  ret i32 %86
+  ret i32 %96
 if_else:
   br i1 %29, label %if_body, label %if_else
 if_body:
   %i = alloca i32, align 4
-  store i32 %44 ptr %i, align 4
+  store i32 %93 ptr %i, align 4
   br i1 %52, label %if_body, label %after_if
 if_body:
-  store i32 %66 ptr %i, align 4
+  store i32 %94 ptr %i, align 4
   br label %after_if
 after_if:
   br label %after_if
@@ -26,7 +26,7 @@ after_if:
   br label %after_if
 if_else:
   %i = alloca i32, align 4
-  store i32 %78 ptr %i, align 4
+  store i32 %95 ptr %i, align 4
   br label %after_if
 }
 

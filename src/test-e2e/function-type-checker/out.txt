@@ -8,18 +8,9 @@ Dumping scopes with symbol tables with type ...
       "children": [ ],
       "symbolTable": {
         "symbols": {
-          "res": {
-            "name": "res",
-            "isUsed": false,
-            "isParam": false,
-            "type": {
-              "superType": "TYPE_INT",
-              "subType": null
-            }
-          },
           "aux": {
             "name": "aux",
-            "isUsed": true,
+            "isUsed": false,
             "isParam": true,
             "type": {
               "superType": "TYPE_STRING",
@@ -28,7 +19,7 @@ Dumping scopes with symbol tables with type ...
           },
           "from": {
             "name": "from",
-            "isUsed": true,
+            "isUsed": false,
             "isParam": true,
             "type": {
               "superType": "TYPE_STRING",
@@ -37,7 +28,7 @@ Dumping scopes with symbol tables with type ...
           },
           "to": {
             "name": "to",
-            "isUsed": true,
+            "isUsed": false,
             "isParam": true,
             "type": {
               "superType": "TYPE_STRING",
@@ -46,7 +37,7 @@ Dumping scopes with symbol tables with type ...
           },
           "steps": {
             "name": "steps",
-            "isUsed": true,
+            "isUsed": false,
             "isParam": true,
             "type": {
               "superType": "TYPE_INT",

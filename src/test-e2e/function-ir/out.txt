@@ -6,24 +6,21 @@ define i32 @hanoi(i32 steps, ptr from, ptr aux, ptr to) {
 hanoi:
   %steps = alloca i32, align 4
   %from = alloca ptr, align 8
-  store ptr %63 ptr %from, align 8
+  store ptr %49 ptr %from, align 8
   %aux = alloca ptr, align 8
-  store ptr %64 ptr %aux, align 8
+  store ptr %50 ptr %aux, align 8
   %to = alloca ptr, align 8
-  store ptr %65 ptr %to, align 8
-  %res = alloca i32, align 4
-  %27 = call i32 @hanoi(%4,%6,%10,%14)
-  store i32 %22 ptr %res, align 4
-  ret i32 %35
+  store ptr %51 ptr %to, align 8
+  ret i32 %52
 }
 
 define i32 @main() {
 main:
   %res = alloca i32, align 4
-  %52 = call i32 @hanoi(%4,%6,%10,%14)
-  store i32 %47 ptr %res, align 4
-  %62 = load i32, ptr %res, align 4
-  ret i32 %58
+  %38 = call i32 @hanoi(%4,%6,%10,%14)
+  store i32 %38 ptr %res, align 4
+  %48 = load i32, ptr %res, align 4
+  ret i32 %48
 }
 
 Compilation successful!

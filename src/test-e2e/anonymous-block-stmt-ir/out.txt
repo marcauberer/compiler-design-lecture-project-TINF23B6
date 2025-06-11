@@ -7,22 +7,22 @@ main:
   br label %anonymous_block_3
 anonymous_block_3:
   %a = alloca i32, align 4
-  store i32 %10 ptr %a, align 4
+  store i32 %63 ptr %a, align 4
   %b = alloca double, align 8
-  store double %19 ptr %b, align 8
+  store double %64 ptr %b, align 8
   br label %anonymous_block_7
 anonymous_block_7:
   %x = alloca i32, align 4
-  store i32 %31 ptr %x, align 4
+  store i32 %65 ptr %x, align 4
   %y = alloca ptr, align 8
-  store ptr %40 ptr %y, align 8
+  store ptr %66 ptr %y, align 8
   br label %after_anonymous_block_7
 after_anonymous_block_7:
   br label %after_anonymous_block_3
 after_anonymous_block_3:
   %c = alloca i32, align 4
-  store i32 %49 ptr %c, align 4
-  ret i32 %57
+  store i32 %67 ptr %c, align 4
+  ret i32 %68
 }
 
 Compilation successful!

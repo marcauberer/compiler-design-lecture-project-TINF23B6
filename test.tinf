@@ -1,10 +1,14 @@
 int main := () {
- double a = 10.0;
- double b = 5.0;
+  int x = 1;
 
- print(a+b);
- print(a-b);
- print(a*b);
- print(a/b);
-    ret 1;
+  switch (x) {
+      case 1:
+          print("x is 1a");
+      case 1:
+          print("x is 1b");
+      default:
+          print("x is something else");
+  }
+
+  ret 0;
 }

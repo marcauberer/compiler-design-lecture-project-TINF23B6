@@ -1,5 +1,5 @@
 int main := () {
-    int i = 3;
+    int i = 2;
 
     # For loop
     for (int j = 0; i != 10; i = i + 1) {
