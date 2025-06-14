@@ -1,0 +1,3 @@
+Compiling with own parser...
+3
+Compilation successful!

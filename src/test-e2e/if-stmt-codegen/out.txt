@@ -4,29 +4,39 @@ module source.tinf:
 
 define i32 @main() {
 main:
-  br i1 %6, label %if_body, label %if_else
+  br label %if_condition
+if_condition:
+  %7 = icmp eq i1 %92, %93
+  br i1 %7, label %if_body, label %if_else
 if_body:
   %i = alloca i32, align 4
-  store i32 %92 ptr %i, align 4
-  br label %after_if
-after_if:
-  ret i32 %96
-if_else:
-  br i1 %29, label %if_body, label %if_else
-if_body:
-  %i = alloca i32, align 4
-  store i32 %93 ptr %i, align 4
-  br i1 %52, label %if_body, label %after_if
-if_body:
   store i32 %94 ptr %i, align 4
   br label %after_if
 after_if:
+  ret i32 %101
+if_else:
+  br label %if_condition
+if_condition:
+  %30 = icmp eq i1 %95, %96
+  br i1 %30, label %if_body, label %if_else
+if_body:
+  %i = alloca i32, align 4
+  store i32 %97 ptr %i, align 4
+  br label %if_condition
+if_condition:
+  %56 = load i32, ptr %i, align 4
+  %53 = icmp eq i1 %56, %98
+  br i1 %53, label %if_body, label %after_if
+if_body:
+  store i32 %99 ptr %i, align 4
+  br label %after_if
+after_if:
   br label %after_if
 after_if:
   br label %after_if
 if_else:
   %i = alloca i32, align 4
-  store i32 %95 ptr %i, align 4
+  store i32 %100 ptr %i, align 4
   br label %after_if
 }
 
