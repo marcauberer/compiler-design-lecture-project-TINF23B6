@@ -1,0 +1,6 @@
+Compiling with own parser...
+x is 1
+is 1
+z is 23.43
+x is something else
+Compilation successful!

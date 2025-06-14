@@ -1,0 +1,56 @@
+int main := () {
+
+  int x = 1;
+
+  switch (x) {
+    case 2:
+      print("x is 2");
+    case 1:
+      print("x is 1");
+    default:
+      print("x is something else");
+  }
+
+  string y = "cwwefcas";
+
+  switch (y) {
+    case "cwwefcas":
+      print("is 1");
+    case "csa":
+      print("is 2");
+    default:
+      print("x is something else");
+  }
+
+  double z = 23.43;
+
+  switch (z) {
+    case 23.53:
+      print("z is 2");
+    case 23.43:
+      print("z is 23.43");
+    default:
+      print("x is something else");
+  }
+
+  double a = 238.43;
+
+  switch (a) {
+    case 23.53:
+      print("x is 2");
+    case 23.43:
+      print("z is 23.43");
+    default:
+      print("x is something else");
+  }
+
+
+  switch (a) {
+      case 23.53:
+        print("x is 2");
+      case 23.43:
+        print("z is 23.43");
+    }
+
+  ret 0;
+}
