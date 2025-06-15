@@ -1,0 +1,19 @@
+Compiling with own parser...
+> L2C3: jump
+> L3C5: alloca
+> L3C13: store
+> L4C11: load
+> L4C5: builtin function: print
+2
+> L6C5: jump
+> L7C7: alloca
+> L7C15: store
+> L8C13: load
+> L8C17: load
+> L8C13: binary operation: add expression
+> L8C7: builtin function: print
+7
+> L6C5: jump
+> L2C3: jump
+> L11C3: return
+Compilation successful!
