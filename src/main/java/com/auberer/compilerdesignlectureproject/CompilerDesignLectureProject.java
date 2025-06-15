@@ -17,9 +17,7 @@ import com.auberer.compilerdesignlectureproject.util.CustomJSONPrettyPrinter;
 import com.auberer.compilerdesignlectureproject.util.CustomUncaughtExceptionHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,7 +157,7 @@ public class CompilerDesignLectureProject {
 
   static ASTEntryNode parseWithANTLRParser(Path path) throws IOException {
     // Setup ANTLR
-    ANTLRInputStream input = new ANTLRFileStream(path.toString());
+    CharStream input = CharStreams.fromFileName(path.toString());
 
     // Lex
     TInfLexer lexer = new TInfLexer(input);
@@ -169,7 +167,7 @@ public class CompilerDesignLectureProject {
     TInfParser parser = new TInfParser(tokens);
     TInfParser.EntryContext entryContext = parser.entry();
 
-    // Transform parsetree to AST
+    // Transform the parse tree to AST
     ASTBuilder astBuilder = new ASTBuilder();
     return (ASTEntryNode) astBuilder.visitEntry(entryContext);
   }
