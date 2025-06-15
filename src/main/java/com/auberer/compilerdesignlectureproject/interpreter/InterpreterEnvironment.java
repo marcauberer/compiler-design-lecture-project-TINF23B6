@@ -37,7 +37,9 @@ public class InterpreterEnvironment {
     while (instructionIterator != null && instructionIterator.hasNext()) {
       Instruction instruction = instructionIterator.next();
       if (doTracing) {
-        System.out.println(instruction);
+        StringBuilder sb = new StringBuilder("> ");
+        instruction.trace(sb);
+        System.out.println(sb);
       }
       instruction.run(this);
     }
