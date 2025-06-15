@@ -177,6 +177,8 @@ public class ASTBuilder extends TInfBaseVisitor<ASTNode> {
 
     visitChildren(ctx);
 
+    node.setContainsIfStmt(ctx.ifStmt() != null);
+
     exitNode(node);
     return node;
   }
