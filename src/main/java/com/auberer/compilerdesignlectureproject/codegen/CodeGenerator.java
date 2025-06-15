@@ -290,9 +290,15 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     if (node.getDefaultBlock() != null)
       defaultBlock = new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine());
     BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
+    BasicBlock defaultOrEndBlock;
+    if (defaultBlock == null) {
+      defaultOrEndBlock = endBlock;
+    } else {
+      defaultOrEndBlock = defaultBlock;
+    }
 
     visit(condition);
-    SwitchInstruction switchInstruction = new SwitchInstruction(node, condition, caseBlocks, cases, defaultBlock);
+    SwitchInstruction switchInstruction = new SwitchInstruction(node, condition, caseBlocks, cases, defaultOrEndBlock);
     pushToCurrentBlock(switchInstruction);
 
     for (int i = 0; i < cases.size(); i++) {
