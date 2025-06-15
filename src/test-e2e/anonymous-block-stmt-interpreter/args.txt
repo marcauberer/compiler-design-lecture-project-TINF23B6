@@ -1,0 +1,1 @@
+--dump-ir --trace ./src/test-e2e/anonymous-block-stmt-interpreter/source.tinf

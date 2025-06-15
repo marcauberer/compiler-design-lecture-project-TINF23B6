@@ -1,0 +1,45 @@
+Compiling with own parser...
+Dumping IR ...
+module source.tinf:
+
+define i32 @main() {
+main:
+  br label %anonymous_block_2
+anonymous_block_2:
+  %i = alloca i32, align 4
+  store i32 %66 ptr %i, align 4
+  %29 = load i32, ptr %i, align 4
+  %24 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %29)
+  br label %anonymous_block_6
+anonymous_block_6:
+  %n = alloca i32, align 4
+  store i32 %67 ptr %n, align 4
+  %55 = load i32, ptr %n, align 4
+  %57 = load i32, ptr %i, align 4
+  %53 = add i32 %55, %57
+  %50 = call i32 (ptr, ...) @printf(ptr noundef @.str, ptr %53)
+  br label %after_anonymous_block_6
+after_anonymous_block_6:
+  br label %after_anonymous_block_2
+after_anonymous_block_2:
+  ret i32 %68
+}
+
+com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction@dcf3e99
+com.auberer.compilerdesignlectureproject.codegen.instructions.AllocaInstruction@6d9c638
+com.auberer.compilerdesignlectureproject.codegen.instructions.StoreInstruction@7dc5e7b4
+com.auberer.compilerdesignlectureproject.codegen.instructions.LoadInstruction@75a1cd57
+com.auberer.compilerdesignlectureproject.codegen.instructions.PrintInstruction@3d012ddd
+2
+com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction@6f2b958e
+com.auberer.compilerdesignlectureproject.codegen.instructions.AllocaInstruction@1eb44e46
+com.auberer.compilerdesignlectureproject.codegen.instructions.StoreInstruction@6504e3b2
+com.auberer.compilerdesignlectureproject.codegen.instructions.LoadInstruction@515f550a
+com.auberer.compilerdesignlectureproject.codegen.instructions.LoadInstruction@626b2d4a
+com.auberer.compilerdesignlectureproject.codegen.instructions.PlusInstruction@5e91993f
+com.auberer.compilerdesignlectureproject.codegen.instructions.PrintInstruction@379619aa
+7
+com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction@cac736f
+com.auberer.compilerdesignlectureproject.codegen.instructions.JumpInstruction@5e265ba4
+com.auberer.compilerdesignlectureproject.codegen.instructions.ReturnInstruction@156643d4
+Compilation successful!
