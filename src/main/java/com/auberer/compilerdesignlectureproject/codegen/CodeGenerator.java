@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CodeGenerator extends ASTVisitor<IRExprResult> {
 
@@ -290,12 +291,7 @@ public class CodeGenerator extends ASTVisitor<IRExprResult> {
     if (node.getDefaultBlock() != null)
       defaultBlock = new BasicBlock("default_block_" + node.getDefaultBlock().getCodeLoc().getLine());
     BasicBlock endBlock = new BasicBlock("end_switch_" + node.getCodeLoc().getLine());
-    BasicBlock defaultOrEndBlock;
-    if (defaultBlock == null) {
-      defaultOrEndBlock = endBlock;
-    } else {
-      defaultOrEndBlock = defaultBlock;
-    }
+    BasicBlock defaultOrEndBlock = Objects.requireNonNullElse(defaultBlock, endBlock);
 
     visit(condition);
     SwitchInstruction switchInstruction = new SwitchInstruction(node, condition, caseBlocks, cases, defaultOrEndBlock);
